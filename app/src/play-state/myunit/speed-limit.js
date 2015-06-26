@@ -1,6 +1,8 @@
 playState.speedLimitOfUnit = function() {
+  let hud = HUD.instance;
+  hud.context = this;
 
-  if (this.hudVelocityBar.counter.current >= this.LIMIT_VELOCITY * 0.95) {
+  if (hud.velocityBar.counter.current >= this.LIMIT_VELOCITY * 0.95) {
     this.soundEffectOfCautionForSpeed.play();
     if (!this.contains(this.slowDownText)) {
       this.addChild(this.slowDownText);

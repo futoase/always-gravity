@@ -87,31 +87,124 @@ var stageColor = '010101';
 var titleState = new Kiwi.State('Title');
 var playState = new Kiwi.State('Play');
 
-titleState.create = function () {
-  Kiwi.State.prototype.create.call(this);
+var hudSingleton = Symbol();
+var hudSingletonEnforcer = Symbol();
 
-  this.game.stage.color = titleStageColor;
+var HUD = (function () {
+  function HUD(enforcer) {
+    _classCallCheck(this, HUD);
 
-  this.setGameKeys();
-  this.createTitleText();
-};
-
-titleState.preload = function () {
-  Kiwi.State.prototype.preload.call(this);
-};
-
-titleState.update = function () {
-  Kiwi.State.prototype.update.call(this);
-
-  if (this.startInputIsActive()) {
-    this.destroyTitleText();
-    this.game.states.switchState('Play');
+    if (enforcer !== hudSingletonEnforcer) {
+      throw 'Cannot construct singleton!';
+    }
   }
 
-  if (this.exitInputIsActive()) {
-    ipc.sendSync('quit');
-  }
-};
+  _createClass(HUD, [{
+    key: 'createVelocityBar',
+    value: function createVelocityBar() {
+      if (this._velocityBar) {
+        return this._velocityBar;
+      }
+
+      var context = this.context;
+
+      var hud = new Kiwi.HUD.Widget.Bar(context.game, 0, context.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
+
+      this._velocityBar = hud;
+
+      return hud;
+    }
+  }, {
+    key: 'createHitPointBar',
+    value: function createHitPointBar() {
+      if (this._hitPointBar) {
+        return this._hitPointBar;
+      }
+
+      var context = this.context;
+
+      var hud = new Kiwi.HUD.Widget.Bar(context.game, context.CURRENT_HITPOINT, context.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
+
+      this._hitPointBar = hud;
+
+      return hud;
+    }
+  }, {
+    key: 'createGameScoreCounter',
+    value: function createGameScoreCounter() {
+      if (this._gameScoreCounter) {
+        return this._gameScoreCounter;
+      }
+
+      var context = this.context;
+
+      var hud = new Kiwi.HUD.Widget.TextField(context.game, '', 50, 60);
+
+      hud.prefix = 'SCORE: ';
+      hud.style.color = 'white';
+      hud.style['font-size'] = '24px';
+      hud.text = context.gameScoreCounter;
+
+      this._gameScoreCounter = hud;
+
+      return hud;
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      var context = this.context;
+      var currentVelocityX = Math.abs(context.myUnit.physics.velocity.x);
+      var currentVelocityY = Math.abs(context.myUnit.physics.velocity.y);
+
+      this.velocityBar = currentVelocityX + currentVelocityY;
+
+      this.gameScoreCounter = context.gameScoreCounter;
+    }
+  }, {
+    key: 'context',
+    set: function set(value) {
+      this._context = value;
+    },
+    get: function get() {
+      return this._context;
+    }
+  }, {
+    key: 'velocityBar',
+    get: function get() {
+      return this._velocityBar;
+    },
+    set: function set(value) {
+      if (this._velocityBar) {
+        this._velocityBar.counter.current = value;
+      }
+    }
+  }, {
+    key: 'hitPointBar',
+    get: function get() {
+      return this._hitPointBar;
+    }
+  }, {
+    key: 'gameScoreCounter',
+    get: function get() {
+      return this._gameScoreCounter;
+    },
+    set: function set(value) {
+      if (this._gameScoreCounter) {
+        this._gameScoreCounter.text = value;
+      }
+    }
+  }], [{
+    key: 'instance',
+    get: function get() {
+      if (!this[hudSingleton]) {
+        this[hudSingleton] = new HUD(hudSingletonEnforcer);
+      }
+      return this[hudSingleton];
+    }
+  }]);
+
+  return HUD;
+})();
 
 titleState.startInputIsActive = function () {
   return this.startKey.isDown;
@@ -151,6 +244,32 @@ titleState.destroyTitleText = function () {
   this.removeChild(this.subTitleText);
   this.removeChild(this.startText);
   this.removeChild(this.quitText);
+};
+
+titleState.create = function () {
+  Kiwi.State.prototype.create.call(this);
+
+  this.game.stage.color = titleStageColor;
+
+  this.setGameKeys();
+  this.createTitleText();
+};
+
+titleState.preload = function () {
+  Kiwi.State.prototype.preload.call(this);
+};
+
+titleState.update = function () {
+  Kiwi.State.prototype.update.call(this);
+
+  if (this.startInputIsActive()) {
+    this.destroyTitleText();
+    this.game.states.switchState('Play');
+  }
+
+  if (this.exitInputIsActive()) {
+    ipc.sendSync('quit');
+  }
 };
 
 playState.setConfig = function () {
@@ -234,7 +353,7 @@ playState.update = function () {
 
   this.updateMyUnit();
   this.updateGravity();
-  this.updateHud();
+  this.updateHUD();
 
   if (this.contains(this.myUnit) && this.shootInputIsActive()) {
     this.shootBullet();
@@ -595,31 +714,22 @@ playState.createStarAndAppendGroup = function () {
 };
 
 playState.createHUD = function () {
-  this.hudVelocityBar = new Kiwi.HUD.Widget.Bar(this.game, 0, this.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
-  this.game.huds.defaultHUD.addWidget(this.hudVelocityBar);
+  var hud = HUD.instance;
+  hud.context = this;
 
-  this.hudHitPointBar = new Kiwi.HUD.Widget.Bar(this.game, this.CURRENT_HITPOINT, this.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
-  this.game.huds.defaultHUD.addWidget(this.hudHitPointBar);
-
-  this.hudGameScoreCounter = new Kiwi.HUD.Widget.TextField(this.game, '', 50, 60);
-  this.game.huds.defaultHUD.addWidget(this.hudGameScoreCounter);
-
-  this.hudGameScoreCounter.prefix = 'SCORE: ';
-  this.hudGameScoreCounter.style.color = 'white';
-  this.hudGameScoreCounter.style['font-size'] = '24px';
-  this.hudGameScoreCounter.text = this.gameScoreCounter;
+  this.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
+  this.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
+  this.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
 };
 
 playState.destroyHUD = function () {
   this.game.huds.defaultHUD.removeAllWidgets();
 };
 
-playState.updateHud = function () {
-  var currentVelocityX = Math.abs(this.myUnit.physics.velocity.x);
-  var currentVelocityY = Math.abs(this.myUnit.physics.velocity.y);
-
-  this.hudVelocityBar.counter.current = currentVelocityX + currentVelocityY;
-  this.hudGameScoreCounter.text = this.gameScoreCounter;
+playState.updateHUD = function () {
+  var hud = HUD.instance;
+  hud.context = this;
+  hud.update();
 };
 
 playState.leftInputIsActive = function () {
@@ -681,6 +791,9 @@ playState.setMusics = function () {
 };
 
 playState.checkCollisionOfMyUnit = function (object) {
+  var hud = HUD.instance;
+  hud.context = this;
+
   if (!this.contains(this.myUnit) || this.isGameOver) {
     return;
   }
@@ -690,7 +803,7 @@ playState.checkCollisionOfMyUnit = function (object) {
 
   if (isOverlap && this.CURRENT_HITPOINT >= 1) {
     this.CURRENT_HITPOINT--;
-    this.hudHitPointBar.counter.current--;
+    hud.hitPointBar.counter.current--;
     this.spawnExplosion(this.myUnit.x, this.myUnit.y);
     this.soundEffectOfMyUnitExplosion.play();
     Helper.revive(object);
@@ -698,7 +811,7 @@ playState.checkCollisionOfMyUnit = function (object) {
 
   if (isOverlapOfRhombus || this.CURRENT_HITPOINT < 1) {
     this.CURRENT_HITPOINT = 0;
-    this.hudHitPointBar.counter.current = 0;
+    hud.hitPointBar.counter.current = 0;
     this.explosionOfMyUnit();
   }
 };
@@ -761,8 +874,10 @@ playState.updateGravity = function () {
 };
 
 playState.speedLimitOfUnit = function () {
+  var hud = HUD.instance;
+  hud.context = this;
 
-  if (this.hudVelocityBar.counter.current >= this.LIMIT_VELOCITY * 0.95) {
+  if (hud.velocityBar.counter.current >= this.LIMIT_VELOCITY * 0.95) {
     this.soundEffectOfCautionForSpeed.play();
     if (!this.contains(this.slowDownText)) {
       this.addChild(this.slowDownText);
@@ -821,11 +936,14 @@ playState.updateMyUnit = function () {
 };
 
 playState.overTheLimitVelocityCount = function () {
+  var hud = HUD.instance;
+  hud.context = this;
+
   if (this.overTheLimitVelocityCounter === undefined) {
     this.overTheLimitVelocityCounter = 0;
   }
 
-  if (this.hudVelocityBar.counter.current >= this.LIMIT_VELOCITY) {
+  if (hud.velocityBar.counter.current >= this.LIMIT_VELOCITY) {
     if (this.contains(this.slowDownCountText)) {
       this.slowDownCountText.text = this.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
     }

@@ -1,4 +1,7 @@
 playState.checkCollisionOfMyUnit = function(object) {
+  let hud = HUD.instance;
+  hud.context = this;
+
   if (!this.contains(this.myUnit) || this.isGameOver) {
     return;
   }
@@ -8,7 +11,7 @@ playState.checkCollisionOfMyUnit = function(object) {
 
   if (isOverlap && this.CURRENT_HITPOINT >= 1) {
     this.CURRENT_HITPOINT--;
-    this.hudHitPointBar.counter.current--;
+    hud.hitPointBar.counter.current--;
     this.spawnExplosion(this.myUnit.x, this.myUnit.y);
     this.soundEffectOfMyUnitExplosion.play();
     Helper.revive(object);
@@ -16,7 +19,7 @@ playState.checkCollisionOfMyUnit = function(object) {
 
   if (isOverlapOfRhombus || this.CURRENT_HITPOINT < 1) {
     this.CURRENT_HITPOINT = 0;
-    this.hudHitPointBar.counter.current = 0;
+    hud.hitPointBar.counter.current = 0;
     this.explosionOfMyUnit();
   }
 };

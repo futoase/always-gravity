@@ -3,7 +3,7 @@ playState.update = function() {
 
   this.updateMyUnit();
   this.updateGravity();
-  this.updateHud();
+  this.updateHUD();
 
   if (this.contains(this.myUnit) && this.shootInputIsActive()) {
     this.shootBullet();
