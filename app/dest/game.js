@@ -1,18 +1,27 @@
 'use strict';
 
-var Helper = (function () {
-  var self = this;
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-  return {
-    getMember: function getMember(members) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var Helper = (function () {
+  function Helper() {
+    _classCallCheck(this, Helper);
+  }
+
+  _createClass(Helper, null, [{
+    key: 'getMember',
+    value: function getMember(members) {
       return members[parseInt(Math.random() * (members.length - 1))];
-    },
-    strewnSprite: function strewnSprite(sprite, limit, acceleration, cb, option) {
+    }
+  }, {
+    key: 'strewnSprite',
+    value: function strewnSprite(sprite, limit, acceleration, cb, option) {
       if (acceleration === null || acceleration === undefined) {
         return;
       }
 
-      var isRevive;
+      var isRevive = undefined;
 
       if (option !== null && option !== undefined) {
         isRevive = option.revive;
@@ -31,29 +40,39 @@ var Helper = (function () {
       if (typeof cb === 'function') {
         cb(sprite);
       }
-    },
-    revive: function revive(sprite) {
+    }
+  }, {
+    key: 'revive',
+    value: function revive(sprite) {
       sprite.y = -sprite.height;
       sprite.x = parseInt(Math.random() * 800);
       sprite.physics.velocity.y = 0;
       sprite.physics.acceleration.y = 0;
       sprite.alive = true;
-    },
-    checkSpritePosition: function checkSpritePosition(sprite) {
+    }
+  }, {
+    key: 'checkSpritePosition',
+    value: function checkSpritePosition(sprite) {
       if (sprite.x > this.game.stage.width || sprite.y > this.game.stage.height || sprite.x < 0 || sprite.y < 0) {
         sprite.alive = false;
       }
-    },
-    updateSpriteRotation: function updateSpriteRotation(sprite, rotate) {
+    }
+  }, {
+    key: 'updateSpriteRotation',
+    value: function updateSpriteRotation(sprite, rotate) {
       if (rotate === null) {
         rotate = 1;
       }
       sprite.transform.rotation += Kiwi.Utils.GameMath.degreesToRadians(rotate);
-    },
-    radian: function radian(angle) {
+    }
+  }, {
+    key: 'radian',
+    value: function radian(angle) {
       return parseInt(angle) * Math.PI / 180;
     }
-  };
+  }]);
+
+  return Helper;
 })();
 
 var gameOptions = {
