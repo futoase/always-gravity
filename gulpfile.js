@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
+var babel = require('gulp-babel');
 
 gulp.task('concat', function(cb){
   return gulp.src([
@@ -12,6 +13,7 @@ gulp.task('concat', function(cb){
     './app/src/base/game.js'
   ])
   .pipe(concat('game.js'))
+  .pipe(babel())
   .pipe(gulp.dest('./app/dest/'))
 });
 

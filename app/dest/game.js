@@ -1,11 +1,13 @@
-var Helper = (function() {
+'use strict';
+
+var Helper = (function () {
   var self = this;
 
   return {
-    getMember: function(members) {
+    getMember: function getMember(members) {
       return members[parseInt(Math.random() * (members.length - 1))];
     },
-    strewnSprite: function(sprite, limit, acceleration, cb, option) {
+    strewnSprite: function strewnSprite(sprite, limit, acceleration, cb, option) {
       if (acceleration === null || acceleration === undefined) {
         return;
       }
@@ -14,53 +16,45 @@ var Helper = (function() {
 
       if (option !== null && option !== undefined) {
         isRevive = option.revive;
-      }
-      else {
+      } else {
         isRevive = true;
       }
 
       if (sprite.y < limit.y) {
         sprite.physics.acceleration.y += acceleration.y;
-      }
-      else {
+      } else {
         if (isRevive) {
           Helper.revive(sprite);
         }
       }
 
-      if (typeof(cb) === 'function') {
+      if (typeof cb === 'function') {
         cb(sprite);
       }
     },
-    revive: function(sprite) {
+    revive: function revive(sprite) {
       sprite.y = -sprite.height;
       sprite.x = parseInt(Math.random() * 800);
       sprite.physics.velocity.y = 0;
       sprite.physics.acceleration.y = 0;
       sprite.alive = true;
     },
-    checkSpritePosition: function(sprite) {
-      if (sprite.x > this.game.stage.width ||
-          sprite.y > this.game.stage.height ||
-          sprite.x < 0 ||
-          sprite.y < 0) {
+    checkSpritePosition: function checkSpritePosition(sprite) {
+      if (sprite.x > this.game.stage.width || sprite.y > this.game.stage.height || sprite.x < 0 || sprite.y < 0) {
         sprite.alive = false;
       }
     },
-    updateSpriteRotation: function(sprite, rotate) {
+    updateSpriteRotation: function updateSpriteRotation(sprite, rotate) {
       if (rotate === null) {
         rotate = 1;
       }
-      sprite.transform.rotation += (
-        Kiwi.Utils.GameMath.degreesToRadians(rotate)
-      );
+      sprite.transform.rotation += Kiwi.Utils.GameMath.degreesToRadians(rotate);
     },
-    radian: function(angle) {
+    radian: function radian(angle) {
       return parseInt(angle) * Math.PI / 180;
     }
   };
 })();
-
 
 var gameOptions = {
   width: 800,
@@ -74,7 +68,7 @@ var stageColor = '010101';
 var titleState = new Kiwi.State('Title');
 var playState = new Kiwi.State('Play');
 
-titleState.create = function() {
+titleState.create = function () {
   Kiwi.State.prototype.create.call(this);
 
   this.game.stage.color = titleStageColor;
@@ -83,11 +77,11 @@ titleState.create = function() {
   this.createTitleText();
 };
 
-titleState.preload = function() {
+titleState.preload = function () {
   Kiwi.State.prototype.preload.call(this);
-}
+};
 
-titleState.update = function() {
+titleState.update = function () {
   Kiwi.State.prototype.update.call(this);
 
   if (this.startInputIsActive()) {
@@ -100,59 +94,47 @@ titleState.update = function() {
   }
 };
 
-titleState.startInputIsActive = function() {
+titleState.startInputIsActive = function () {
   return this.startKey.isDown;
 };
 
-titleState.exitInputIsActive = function() {
+titleState.exitInputIsActive = function () {
   return this.exitKey.isDown;
 };
 
-titleState.setGameKeys = function() {
-  this.startKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.SPACEBAR
-  );
-  this.exitKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.ESC
-  );
+titleState.setGameKeys = function () {
+  this.startKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.SPACEBAR);
+  this.exitKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
 };
 
-titleState.createTitleText = function() {
-  this.titleText = new Kiwi.GameObjects.TextField(
-    this, "Always Gravity", this.game.stage.width / 2, 200, "#ffffff", 48, "bold", "monospace"
-  );
+titleState.createTitleText = function () {
+  this.titleText = new Kiwi.GameObjects.TextField(this, 'Always Gravity', this.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
   this.titleText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 
   this.addChild(this.titleText);
 
-  this.subTitleText = new Kiwi.GameObjects.TextField(
-    this, "常に重力", this.game.stage.width / 2, 270, "#ffffff", 24, "bold", "monospace"
-  );
+  this.subTitleText = new Kiwi.GameObjects.TextField(this, '常に重力', this.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace');
   this.subTitleText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
   this.addChild(this.subTitleText);
 
-  this.startText = new Kiwi.GameObjects.TextField(
-    this, "START: SPACEBAR", this.game.stage.width / 2, 320, "#ffffff", 20, "bold", "monospace"
-  );
+  this.startText = new Kiwi.GameObjects.TextField(this, 'START: SPACEBAR', this.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace');
   this.startText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 
   this.addChild(this.startText);
 
-  this.quitText = new Kiwi.GameObjects.TextField(
-    this, "QUIT: ESC", this.game.stage.width / 2, this.startText.y + 30, "#ffffff", 20, "bold", "monospace"
-  );
+  this.quitText = new Kiwi.GameObjects.TextField(this, 'QUIT: ESC', this.game.stage.width / 2, this.startText.y + 30, '#ffffff', 20, 'bold', 'monospace');
   this.quitText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
   this.addChild(this.quitText);
 };
 
-titleState.destroyTitleText = function() {
+titleState.destroyTitleText = function () {
   this.removeChild(this.titleText);
   this.removeChild(this.subTitleText);
   this.removeChild(this.startText);
   this.removeChild(this.quitText);
 };
 
-playState.setConfig = function() {
+playState.setConfig = function () {
   this.game.stage.color = stageColor;
   this.SHOT_DELAY = 100;
   this.NUMBER_OF_STAR = 30;
@@ -188,7 +170,7 @@ playState.setConfig = function() {
   this.gameScoreCounter = 0;
 };
 
-playState.create = function() {
+playState.create = function () {
   Kiwi.State.prototype.create.call(this);
 
   this.setConfig();
@@ -202,7 +184,7 @@ playState.create = function() {
   this.createSlowDownCountText();
 };
 
-playState.preload = function() {
+playState.preload = function () {
   Kiwi.State.prototype.preload.call(this);
 
   this.addSpriteSheet('myUnit', './assets/images/unit.png', 32, 32);
@@ -228,7 +210,7 @@ playState.preload = function() {
   this.addAudio('caution-of-speed-se', './assets/media/caution-of-speed.wav');
 };
 
-playState.update = function() {
+playState.update = function () {
   Kiwi.State.prototype.update.call(this);
 
   this.updateMyUnit();
@@ -246,46 +228,39 @@ playState.update = function() {
   }
 };
 
-playState.checkCollision = function(bullet) {
+playState.checkCollision = function (bullet) {
   var cubeMembers = this.cubePool.members;
   var circleMembers = this.circlePool.members;
   var cylinderMembers = this.cylinderPool.members;
 
   for (var i = 0; i < cubeMembers.length; i++) {
     if (bullet.physics.overlaps(cubeMembers[i])) {
-      this.overlapOnObject(
-        bullet, cubeMembers[i], { soundEffectVolume: 0.3 }
-      );
+      this.overlapOnObject(bullet, cubeMembers[i], { soundEffectVolume: 0.3 });
     }
   }
 
   for (var i = 0; i < circleMembers.length; i++) {
     if (bullet.physics.overlaps(circleMembers[i])) {
-      this.overlapOnObject(
-        bullet, circleMembers[i], { soundEffectVolume: 0.6 }
-      );
+      this.overlapOnObject(bullet, circleMembers[i], { soundEffectVolume: 0.6 });
     }
   }
 
   for (var i = 0; i < cylinderMembers.length; i++) {
-    if (bullet.physics.overlaps(cylinderMembers[i])){
-      this.overlapOnObject(
-        bullet, cylinderMembers[i], { soundEffectVolume: 0.6 }
-      );
+    if (bullet.physics.overlaps(cylinderMembers[i])) {
+      this.overlapOnObject(bullet, cylinderMembers[i], { soundEffectVolume: 0.6 });
     }
   }
 };
 
-
-playState.deadBullet = function(bullet) {
+playState.deadBullet = function (bullet) {
   bullet.x = -1000;
   bullet.y = -1000;
   bullet.alive = false;
 };
 
-playState.getFirstDeadBullet = function() {
+playState.getFirstDeadBullet = function () {
   var bulletMembers = this.bulletPool.members;
-  for(var i = bulletMembers.length - 1; i >= 0; i--) {
+  for (var i = bulletMembers.length - 1; i >= 0; i--) {
     if (bulletMembers[i].alive === false) {
       return bulletMembers[i];
     }
@@ -293,12 +268,11 @@ playState.getFirstDeadBullet = function() {
   return null;
 };
 
-playState.overlapOnObject = function(bullet, object, option) {
+playState.overlapOnObject = function (bullet, object, option) {
   var soundEffectVolume;
   if (option && option.soundEffectVolume !== undefined) {
     soundEffectVolume = option.soundEffectVolume;
-  }
-  else{
+  } else {
     soundEffectVolume = 1.0;
   }
 
@@ -309,12 +283,12 @@ playState.overlapOnObject = function(bullet, object, option) {
   this.gameScoreCounter += object.score;
 };
 
-playState.shootBullet = function() {
+playState.shootBullet = function () {
   if (this.lastBulletShotAt === undefined) {
     this.lastBulletShotAt = 0;
   }
 
-  if ((this.game.time.now() - this.lastBulletShotAt) < this.SHOT_DELAY) {
+  if (this.game.time.now() - this.lastBulletShotAt < this.SHOT_DELAY) {
     return;
   }
 
@@ -333,72 +307,48 @@ playState.shootBullet = function() {
 
   bullet.rotation = this.myUnit.rotation;
 
-  bullet.physics.velocity.x = (
-    Math.cos(bullet.rotation) * this.BULLET_SPEED
-  );
-  bullet.physics.velocity.y = (
-    Math.sin(bullet.rotation) * this.BULLET_SPEED
-  );
+  bullet.physics.velocity.x = Math.cos(bullet.rotation) * this.BULLET_SPEED;
+  bullet.physics.velocity.y = Math.sin(bullet.rotation) * this.BULLET_SPEED;
 
   this.soundEffectOfBullet.stop();
   this.soundEffectOfBullet.play();
 };
 
-
-playState.playSoundEffectOfExplosion = function(volume) {
+playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.stop();
   this.soundEffectOfExplosion.volume = volume;
   this.soundEffectOfExplosion.play();
 };
 
-playState.spawnSpriteOfCircle = function() {
+playState.spawnSpriteOfCircle = function () {
   var self = this;
-  Helper.strewnSprite(
-    Helper.getMember(this.circlePool.members),
-    { y: this.game.stage.height },
-    { y: 2 },
-    function (sprite) {
-      var tween = self.game.tweens.create(sprite);
-      tween.to(
-        { x: self.myUnit.x },
-        1000,
-        Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true
-      );
-      tween.start();
-    }
-  );
+  Helper.strewnSprite(Helper.getMember(this.circlePool.members), { y: this.game.stage.height }, { y: 2 }, function (sprite) {
+    var tween = self.game.tweens.create(sprite);
+    tween.to({ x: self.myUnit.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
+    tween.start();
+  });
 };
 
-playState.spawnSpriteOfCube = function() {
-  Helper.strewnSprite(
-    Helper.getMember(this.cubePool.members),
-    { y: this.game.stage.height },
-    { y: 5 }
-  );
+playState.spawnSpriteOfCube = function () {
+  Helper.strewnSprite(Helper.getMember(this.cubePool.members), { y: this.game.stage.height }, { y: 5 });
 };
 
-playState.spawnSpriteOfCylinder = function() {
-  Helper.strewnSprite(
-    Helper.getMember(this.cylinderPool.members),
-    { y: this.game.stage.height },
-    { y: 10 }
-  );
+playState.spawnSpriteOfCylinder = function () {
+  Helper.strewnSprite(Helper.getMember(this.cylinderPool.members), { y: this.game.stage.height }, { y: 10 });
 };
 
-playState.destroyFinishCellIndexOfExplosion = function() {
+playState.destroyFinishCellIndexOfExplosion = function () {
   var explosionMembers = this.explosionPool.members;
 
-  for(var i = 0; i < explosionMembers.length; i++) {
+  for (var i = 0; i < explosionMembers.length; i++) {
     if (explosionMembers[i].cellIndex >= 3) {
       explosionMembers[i].destroy();
     }
   }
 };
 
-playState.spawnExplosion = function(x, y) {
-  var explosion = new Kiwi.GameObjects.Sprite(
-    this, this.textures.explosion, x, y
-  );
+playState.spawnExplosion = function (x, y) {
+  var explosion = new Kiwi.GameObjects.Sprite(this, this.textures.explosion, x, y);
   this.explosionPool.addChild(explosion);
   explosion.x = x - explosion.width * 0.5;
   explosion.y = y - explosion.height * 0.5;
@@ -406,8 +356,7 @@ playState.spawnExplosion = function(x, y) {
   explosion.animation.play('explosion');
 };
 
-
-playState.destroyObjects = function() {
+playState.destroyObjects = function () {
   this.destroyGroups();
   this.destroyMusics();
   this.destroyHUD();
@@ -415,16 +364,14 @@ playState.destroyObjects = function() {
   this.myUnit.destroy();
 };
 
-playState.gameOver = function(){
+playState.gameOver = function () {
   if (this.isGameOver) {
     return;
   }
 
   this.destroyObjects();
 
-  this.musicGameOver = new Kiwi.Sound.Audio(
-    this.game, 'musicGameover', 1, false
-  );
+  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
   this.musicGameOver.play();
 
   this.createGameOverText();
@@ -444,53 +391,44 @@ playState.gameOver = function(){
   }
 };
 
-playState.whenGameOverInputKeys = function() {
+playState.whenGameOverInputKeys = function () {
   if (this.exitGameInputIsActive()) {
     ipc.sendSync('quit');
   }
 
-  if (this.restartInputIsActive()){
+  if (this.restartInputIsActive()) {
     window.location.reload(true);
   }
 };
 
-playState.createBulletAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_BULLET; i++) {
-    var bullet = new Kiwi.GameObjects.Sprite(
-      this, this.textures.bullet, -100, -100
-    );
+playState.createBulletAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_BULLET; i++) {
+    var bullet = new Kiwi.GameObjects.Sprite(this, this.textures.bullet, -100, -100);
     bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
     this.bulletPool.addChild(bullet);
     bullet.anchorPointX = bullet.width * 0.5;
     bullet.anchorPointY = bullet.height * 0.5;
-    bullet.physics = bullet.components.add(
-      new Kiwi.Components.ArcadePhysics(bullet, bullet.box)
-    );
+    bullet.physics = bullet.components.add(new Kiwi.Components.ArcadePhysics(bullet, bullet.box));
     bullet.alive = false;
     bullet.index = i;
   }
 };
 
-
-playState.createCircleAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_CIRCLE; i++) {
-    var circle = new Kiwi.GameObjects.Sprite(
-      this, this.textures.circle, -100, -100
-    )
+playState.createCircleAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_CIRCLE; i++) {
+    var circle = new Kiwi.GameObjects.Sprite(this, this.textures.circle, -100, -100);
     circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
     this.circlePool.addChild(circle);
     circle.anchorPointX = circle.width * 0.5;
     circle.anchorPointY = circle.height * 0.5;
-    circle.physics = circle.components.add(
-      new Kiwi.Components.ArcadePhysics(circle, circle.box)
-    );
+    circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
     circle.x = parseInt(Math.random() * 800);
     circle.index = i;
     circle.score = 500;
   }
 };
 
-playState.createGroups = function() {
+playState.createGroups = function () {
   this.starPool = new Kiwi.Group(this);
   this.addChild(this.starPool);
   this.createStarAndAppendGroup();
@@ -527,39 +465,30 @@ playState.createGroups = function() {
   this.addChild(this.explosionPool);
 };
 
-
-playState.createCubeAndApppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_CUBE; i++) {
-    var cube = new Kiwi.GameObjects.Sprite(
-      this, this.textures.cube, -100, -100
-    );
+playState.createCubeAndApppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_CUBE; i++) {
+    var cube = new Kiwi.GameObjects.Sprite(this, this.textures.cube, -100, -100);
     cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);
     this.cubePool.addChild(cube);
     cube.anchorPointX = cube.width * 0.5;
     cube.anchorPointY = cube.height * 0.5;
-    cube.physics = cube.components.add(
-      new Kiwi.Components.ArcadePhysics(cube, cube.box)
-    );
+    cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
     cube.x = parseInt(Math.random() * 800);
     cube.index = i;
     cube.score = 100;
   }
 };
 
-playState.createCylinderAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_CYLINDER; i++) {
-    var cylinder = new Kiwi.GameObjects.Sprite(
-      this, this.textures.cylinder, -100, -100
-    );
+playState.createCylinderAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_CYLINDER; i++) {
+    var cylinder = new Kiwi.GameObjects.Sprite(this, this.textures.cylinder, -100, -100);
     cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
     cylinder.animation.play('cycle');
     cylinder.hitbox = new Kiwi.Geom.Rectangle(0, 10, 30, 110);
     this.cylinderPool.addChild(cylinder);
     cylinder.anchorPointX = cylinder.x * 0.5;
     cylinder.anchorPointY = cylinder.y * 0.5;
-    cylinder.physics = cylinder.components.add(
-      new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box)
-    );
+    cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
     cylinder.x = parseInt(Math.random() * 800);
     cylinder.y = -cylinder.height;
     cylinder.index = i;
@@ -567,8 +496,7 @@ playState.createCylinderAndAppendGroup = function() {
   }
 };
 
-
-playState.destroyGroups = function(){
+playState.destroyGroups = function () {
   this.starPool.removeChildren(0, this.starPool.members.length);
   this.cubePool.removeChildren(0, this.cubePool.members.length);
   this.circlePool.removeChildren(0, this.circlePool.members.length);
@@ -578,7 +506,7 @@ playState.destroyGroups = function(){
   this.rhombusPool.removeChildren(0, this.rhombusPool.members.length);
 };
 
-playState.forEachOfPool = function() {
+playState.forEachOfPool = function () {
   this.starPool.forEach(this, Helper.checkSpritePosition);
   this.cubePool.forEach(this, function (cube) {
     Helper.updateSpriteRotation(cube, 5);
@@ -586,7 +514,7 @@ playState.forEachOfPool = function() {
   this.cubePool.forEach(this, Helper.checkSpritePosition);
   this.cylinderPool.forEach(this, Helper.checkSpritePosition);
   this.circlePool.forEach(this, Helper.checkSpritePosition);
-  this.circlePool.forEach(this, function(circle) {
+  this.circlePool.forEach(this, function (circle) {
     Helper.updateSpriteRotation(circle, 30);
   });
   this.circlePool.forEach(this, this.checkCollisionOfMyUnit);
@@ -596,88 +524,65 @@ playState.forEachOfPool = function() {
   this.rhombusPool.forEach(this, this.checkCollisionOfMyUnit);
   this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
   this.rhombusSplinterPool.forEach(this, this.checkCollisionOfMyUnit);
-}
+};
 
-playState.createMyUnitSplinterAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_MYUNIT_SPLINTER; i++) {
-    var myUnitSplinter = new Kiwi.GameObjects.Sprite(
-      this, this.textures.myUnitSplinter, -100, -100
-    );
+playState.createMyUnitSplinterAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_MYUNIT_SPLINTER; i++) {
+    var myUnitSplinter = new Kiwi.GameObjects.Sprite(this, this.textures.myUnitSplinter, -100, -100);
 
     this.myUnitSplinterPool.addChild(myUnitSplinter);
     myUnitSplinter.animation.add('explosion', [0, 1, 2, 3, 4, 5], 0.05, true);
-    myUnitSplinter.physics = myUnitSplinter.components.add(
-      new Kiwi.Components.ArcadePhysics(myUnitSplinter, myUnitSplinter.box)
-    );
+    myUnitSplinter.physics = myUnitSplinter.components.add(new Kiwi.Components.ArcadePhysics(myUnitSplinter, myUnitSplinter.box));
     myUnitSplinter.index = i;
   }
 };
 
-playState.createRhombusSplinterAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
-    var rhombusSplinter = new Kiwi.GameObjects.Sprite(
-      this, this.textures.rhombus, -100, -100
-    );
+playState.createRhombusSplinterAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
+    var rhombusSplinter = new Kiwi.GameObjects.Sprite(this, this.textures.rhombus, -100, -100);
     this.rhombusSplinterPool.addChild(rhombusSplinter);
-    rhombusSplinter.physics = rhombusSplinter.components.add(
-      new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox)
-    );
+    rhombusSplinter.physics = rhombusSplinter.components.add(new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox));
     rhombusSplinter.index = i;
   }
 };
 
-playState.createRhombusAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_RHOMBUS; i++) {
-    var rhombus = new Kiwi.GameObjects.Sprite(
-      this, this.textures.rhombus, -100, -100
-    );
+playState.createRhombusAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_RHOMBUS; i++) {
+    var rhombus = new Kiwi.GameObjects.Sprite(this, this.textures.rhombus, -100, -100);
     this.rhombusPool.addChild(rhombus);
-    rhombus.physics = rhombus.components.add(
-      new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box)
-    );
+    rhombus.physics = rhombus.components.add(new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box));
     rhombus.x = this.game.stage.width / 2 - rhombus.width;
     rhombus.y = -rhombus.height;
     rhombus.index = i;
   }
 };
 
-playState.createStarAndAppendGroup = function() {
-  for(var i = 0; i < this.NUMBER_OF_STAR; i++) {
-    var star = new Kiwi.GameObjects.Sprite(
-      this, this.textures.star, -100, -100
-    );
+playState.createStarAndAppendGroup = function () {
+  for (var i = 0; i < this.NUMBER_OF_STAR; i++) {
+    var star = new Kiwi.GameObjects.Sprite(this, this.textures.star, -100, -100);
     this.starPool.addChild(star);
     star.anchorPointX = star.width * 0.5;
     star.anchorPointY = star.height * 0.5;
-    star.physics = star.components.add(
-      new Kiwi.Components.ArcadePhysics(star, star.box)
-    );
+    star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
     star.physics.acceleration.y = 1;
     star.x = parseInt(Math.random() * 800);
     if (i < parseInt(this.NUMBER_OF_STAR / 3)) {
       star.y = parseInt(Math.random() * 600);
-    }
-    else {
+    } else {
       star.y = -1 * parseInt(Math.random() * 200);
     }
     star.index = i;
   }
 };
 
-playState.createHUD = function() {
-  this.hudVelocityBar = new Kiwi.HUD.Widget.Bar(
-    this.game, 0, this.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
-  );
+playState.createHUD = function () {
+  this.hudVelocityBar = new Kiwi.HUD.Widget.Bar(this.game, 0, this.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
   this.game.huds.defaultHUD.addWidget(this.hudVelocityBar);
 
-  this.hudHitPointBar = new Kiwi.HUD.Widget.Bar(
-    this.game, this.CURRENT_HITPOINT, this.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
-  );
+  this.hudHitPointBar = new Kiwi.HUD.Widget.Bar(this.game, this.CURRENT_HITPOINT, this.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
   this.game.huds.defaultHUD.addWidget(this.hudHitPointBar);
 
-  this.hudGameScoreCounter = new Kiwi.HUD.Widget.TextField(
-    this.game, '', 50, 60
-  );
+  this.hudGameScoreCounter = new Kiwi.HUD.Widget.TextField(this.game, '', 50, 60);
   this.game.huds.defaultHUD.addWidget(this.hudGameScoreCounter);
 
   this.hudGameScoreCounter.prefix = 'SCORE: ';
@@ -686,67 +591,52 @@ playState.createHUD = function() {
   this.hudGameScoreCounter.text = this.gameScoreCounter;
 };
 
-
-playState.destroyHUD = function() {
+playState.destroyHUD = function () {
   this.game.huds.defaultHUD.removeAllWidgets();
 };
 
-playState.updateHud = function() {
+playState.updateHud = function () {
   var currentVelocityX = Math.abs(this.myUnit.physics.velocity.x);
   var currentVelocityY = Math.abs(this.myUnit.physics.velocity.y);
 
-  this.hudVelocityBar.counter.current = (
-    currentVelocityX + currentVelocityY
-  );
+  this.hudVelocityBar.counter.current = currentVelocityX + currentVelocityY;
   this.hudGameScoreCounter.text = this.gameScoreCounter;
 };
 
-playState.leftInputIsActive = function() {
+playState.leftInputIsActive = function () {
   return this.leftKey.isDown;
 };
 
-playState.rightInputIsActive = function() {
+playState.rightInputIsActive = function () {
   return this.rightKey.isDown;
 };
 
-playState.upInputIsActive = function() {
+playState.upInputIsActive = function () {
   return this.upKey.isDown;
 };
 
-playState.shootInputIsActive = function() {
+playState.shootInputIsActive = function () {
   return this.shootKey.isDown;
 };
 
-playState.restartInputIsActive = function() {
+playState.restartInputIsActive = function () {
   return this.restartKey.isDown;
 };
 
-playState.exitGameInputIsActive = function() {
+playState.exitGameInputIsActive = function () {
   return this.exitKey.isDown;
 };
 
-playState.setGameKeys = function() {
-  this.leftKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.LEFT
-  );
-  this.rightKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.RIGHT
-  );
-  this.upKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.UP
-  );
-  this.shootKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.Z
-  );
-  this.exitKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.ESC
-  );
-  this.restartKey = this.game.input.keyboard.addKey(
-    Kiwi.Input.Keycodes.R
-  );
+playState.setGameKeys = function () {
+  this.leftKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.LEFT);
+  this.rightKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.RIGHT);
+  this.upKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
+  this.shootKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
+  this.exitKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
+  this.restartKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
 };
 
-playState.destroyMusics = function() {
+playState.destroyMusics = function () {
   this.musicMain.stop();
   this.musicMain.destroy();
   this.soundEffectOfBullet.stop();
@@ -757,40 +647,27 @@ playState.destroyMusics = function() {
   this.soundEffectOfCautionForSpeed.destroy();
 };
 
-playState.setMusics = function() {
-  this.musicMain = new Kiwi.Sound.Audio(
-    this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true
-  );
+playState.setMusics = function () {
+  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
   this.musicMain.play();
 
-  this.soundEffectOfBullet = new Kiwi.Sound.Audio(
-    this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false
-  );
-  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(
-    this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false
-  );
+  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
+  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
 
-  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(
-    this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false
-  );
+  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
 
-  this.soundEffectOfCircle = new Kiwi.Sound.Audio(
-    this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false
-  );
+  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
 
-  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(
-    this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false
-  );
+  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
 };
 
-
-playState.checkCollisionOfMyUnit = function(object) {
+playState.checkCollisionOfMyUnit = function (object) {
   if (!this.contains(this.myUnit) || this.isGameOver) {
     return;
   }
 
   var isOverlap = this.myUnit.physics.overlaps(object);
-  var isOverlapOfRhombus = isOverlap && object.name == "rhombus";
+  var isOverlapOfRhombus = isOverlap && object.name == 'rhombus';
 
   if (isOverlap && this.CURRENT_HITPOINT >= 1) {
     this.CURRENT_HITPOINT--;
@@ -807,22 +684,18 @@ playState.checkCollisionOfMyUnit = function(object) {
   }
 };
 
-playState.createMyUnit = function() {
-  this.myUnit = new Kiwi.GameObjects.Sprite(
-    this, this.textures.myUnit, this.game.stage.width / 2, this.game.stage.height / 2
-  );
+playState.createMyUnit = function () {
+  this.myUnit = new Kiwi.GameObjects.Sprite(this, this.textures.myUnit, this.game.stage.width / 2, this.game.stage.height / 2);
   this.addChild(this.myUnit);
 
   this.myUnit.rotation = -Math.PI * 0.5;
-  this.myUnit.physics = this.myUnit.components.add(
-    new Kiwi.Components.ArcadePhysics(this.myUnit, this.myUnit.box)
-  );
+  this.myUnit.physics = this.myUnit.components.add(new Kiwi.Components.ArcadePhysics(this.myUnit, this.myUnit.box));
   this.myUnit.physics.maxVelocity = this.MAX_SPEED;
   this.myUnit.physics.drag.x = this.DRAG;
   this.myUnit.physics.drag.y = this.DRAG;
 };
 
-playState.explosionOfMyUnit = function() {
+playState.explosionOfMyUnit = function () {
   var myUnitSplinterMembers = this.myUnitSplinterPool.members;
   var angleBase = parseInt(360 / this.NUMBER_OF_MYUNIT_SPLINTER);
   var myUnitSplinterAngle = 0;
@@ -830,8 +703,7 @@ playState.explosionOfMyUnit = function() {
 
   if (this.myUnitExplosion === undefined) {
     this.myUnitExplosion = true;
-  }
-  else {
+  } else {
     return;
   }
 
@@ -840,16 +712,12 @@ playState.explosionOfMyUnit = function() {
   this.myUnit.physics.velocity.x = 0;
   this.myUnit.physics.velocity.y = 0;
 
-  for(var i = 0; i < myUnitSplinterMembers.length; i++){
+  for (var i = 0; i < myUnitSplinterMembers.length; i++) {
     myUnitSplinterMembers[i].x = this.myUnit.x;
     myUnitSplinterMembers[i].y = this.myUnit.y;
 
-    myUnitSplinterMembers[i].physics.velocity.x = (
-      Math.cos(Helper.radian(myUnitSplinterAngle)) * 40
-    )
-    myUnitSplinterMembers[i].physics.velocity.y = (
-      Math.sin(Helper.radian(myUnitSplinterAngle)) * 40
-    );
+    myUnitSplinterMembers[i].physics.velocity.x = Math.cos(Helper.radian(myUnitSplinterAngle)) * 40;
+    myUnitSplinterMembers[i].physics.velocity.y = Math.sin(Helper.radian(myUnitSplinterAngle)) * 40;
 
     myUnitSplinterMembers[i].animation.play('explosion');
     myUnitSplinterAngle += angleBase;
@@ -858,23 +726,22 @@ playState.explosionOfMyUnit = function() {
   this.removeChild(this.myUnit);
   this.soundEffectOfMyUnitExplosion.play();
 
-  this.myUnitExplosionTimer = this.game.time.clock.setInterval(function() {
+  this.myUnitExplosionTimer = this.game.time.clock.setInterval(function () {
     if (explosionCounter < 2) {
       explosionCounter++;
-    }
-    else {
+    } else {
       this.gameOver();
     }
   }, 1000, this);
 };
 
-playState.updateGravity = function() {
+playState.updateGravity = function () {
   if (this.myUnitExplosion !== true) {
     this.myUnit.physics.acceleration.y += this.GRAVITY;
   }
 };
 
-playState.speedLimitOfUnit = function() {
+playState.speedLimitOfUnit = function () {
 
   if (this.hudVelocityBar.counter.current >= this.LIMIT_VELOCITY * 0.95) {
     this.soundEffectOfCautionForSpeed.play();
@@ -884,8 +751,7 @@ playState.speedLimitOfUnit = function() {
     if (!this.contains(this.slowDownCountText)) {
       this.addChild(this.slowDownCountText);
     }
-  }
-  else{
+  } else {
     this.soundEffectOfCautionForSpeed.stop();
     if (this.contains(this.slowDownText)) {
       this.removeChild(this.slowDownText);
@@ -896,7 +762,7 @@ playState.speedLimitOfUnit = function() {
   }
 };
 
-playState.updateMyUnit = function() {
+playState.updateMyUnit = function () {
   if (this.isGameOver) {
     return;
   }
@@ -914,30 +780,20 @@ playState.updateMyUnit = function() {
     this.myUnit.y = this.game.stage.height;
   }
 
-  if (this.leftInputIsActive() &&
-      this.myUnitExplosion === undefined) {
+  if (this.leftInputIsActive() && this.myUnitExplosion === undefined) {
     this.myUnit.physics.angularVelocity = -this.ROTATION_SPEED;
-  }
-  else if (this.rightInputIsActive() &&
-           this.myUnitExplosion === undefined) {
+  } else if (this.rightInputIsActive() && this.myUnitExplosion === undefined) {
     this.myUnit.physics.angularVelocity = this.ROTATION_SPEED;
-  }
-  else {
+  } else {
     this.myUnit.physics.angularVelocity = 0;
   }
 
-  if (this.upInputIsActive() &&
-      this.myUnitExplosion === undefined) {
-    this.myUnit.physics.acceleration.x = (
-      Math.cos(this.myUnit.rotation) * this.ACCELERATION
-    );
-    this.myUnit.physics.acceleration.y = (
-      Math.sin(this.myUnit.rotation) * this.ACCELERATION
-    );
+  if (this.upInputIsActive() && this.myUnitExplosion === undefined) {
+    this.myUnit.physics.acceleration.x = Math.cos(this.myUnit.rotation) * this.ACCELERATION;
+    this.myUnit.physics.acceleration.y = Math.sin(this.myUnit.rotation) * this.ACCELERATION;
     // Change sprite 'Engine on'.
     this.myUnit.cellIndex = 1;
-  }
-  else {
+  } else {
     this.myUnit.physics.acceleration.setTo(0, 0);
 
     // Change sprite 'Engine off'.
@@ -945,20 +801,17 @@ playState.updateMyUnit = function() {
   }
 };
 
-playState.overTheLimitVelocityCount = function() {
+playState.overTheLimitVelocityCount = function () {
   if (this.overTheLimitVelocityCounter === undefined) {
     this.overTheLimitVelocityCounter = 0;
   }
 
   if (this.hudVelocityBar.counter.current >= this.LIMIT_VELOCITY) {
     if (this.contains(this.slowDownCountText)) {
-      this.slowDownCountText.text = (
-        this.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
-      );
+      this.slowDownCountText.text = this.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
     }
     this.overTheLimitVelocityCounter++;
-  }
-  else {
+  } else {
     this.overTheLimitVelocityCounter = 0;
     this.slowDownCountText.text = this.LIMIT_VELOCITY_MAX_COUNT;
   }
@@ -968,29 +821,25 @@ playState.overTheLimitVelocityCount = function() {
   }
 };
 
-playState.explosionRhombus = function(rhombus) {
+playState.explosionRhombus = function (rhombus) {
   var rhombusSplinterMembers = this.rhombusSplinterPool.members;
   var angleBase = parseInt(360 / this.NUMBER_OF_RHOMBUS_SPLINTER);
 
   var rhombusSplinterAngle = 0;
   var explosionCounter = 0;
 
-  for(var i = 0; i <rhombusSplinterMembers.length; i++) {
+  for (var i = 0; i < rhombusSplinterMembers.length; i++) {
     rhombusSplinterMembers[i].x = rhombus.x;
     rhombusSplinterMembers[i].y = rhombus.y;
 
-    rhombusSplinterMembers[i].physics.velocity.x = (
-      Math.cos(Helper.radian(rhombusSplinterAngle)) * 30
-    );
-    rhombusSplinterMembers[i].physics.velocity.y = (
-      Math.sin(Helper.radian(rhombusSplinterAngle)) * 30
-    );
+    rhombusSplinterMembers[i].physics.velocity.x = Math.cos(Helper.radian(rhombusSplinterAngle)) * 30;
+    rhombusSplinterMembers[i].physics.velocity.y = Math.sin(Helper.radian(rhombusSplinterAngle)) * 30;
 
     rhombusSplinterAngle += angleBase;
   }
 };
 
-playState.spawnSpriteOfRhombus = function() {
+playState.spawnSpriteOfRhombus = function () {
   if (this.isSpawnSpriteOfRhombusSplinter === undefined) {
     this.isSpawnSpriteOfRhombusSplinter = false;
   }
@@ -1001,126 +850,82 @@ playState.spawnSpriteOfRhombus = function() {
 
   if (this.isSpawnSpinterOfRhombusSplinter) {
     var self = this;
-    Helper.strewnSprite(
-      Helper.getMember(this.rhombusPool.members),
-      { y: this.game.stage.height / 2 - 32 },
-      { y: 1 },
-      function(sprite) {
-        var spriteBottomLeftPoint = (sprite.y + sprite.height);
-        var standingPoint = (self.game.stage.height / 2 - sprite.height);
-        var maxScale = 5;
-        var scaleBase = 0.05;
+    Helper.strewnSprite(Helper.getMember(this.rhombusPool.members), { y: this.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
+      var spriteBottomLeftPoint = sprite.y + sprite.height;
+      var standingPoint = self.game.stage.height / 2 - sprite.height;
+      var maxScale = 5;
+      var scaleBase = 0.05;
 
-        if (spriteBottomLeftPoint >= standingPoint) {
-          sprite.physics.acceleration.y = 0;
-          sprite.physics.velocity.y = 0;
-          if (maxScale > sprite.scaleX &&
-              maxScale > sprite.scaleY) {
-            sprite.scaleX += scaleBase;
-            sprite.scaleY += scaleBase;
-          }
-          else {
-            self.explosionRhombus(sprite);
-            sprite.scaleX = 1;
-            sprite.scaleY = 1;
-            Helper.revive(sprite);
-            self.isSpawnSpinterOfRhombusSplinter = false;
-          }
+      if (spriteBottomLeftPoint >= standingPoint) {
+        sprite.physics.acceleration.y = 0;
+        sprite.physics.velocity.y = 0;
+        if (maxScale > sprite.scaleX && maxScale > sprite.scaleY) {
+          sprite.scaleX += scaleBase;
+          sprite.scaleY += scaleBase;
+        } else {
+          self.explosionRhombus(sprite);
+          sprite.scaleX = 1;
+          sprite.scaleY = 1;
+          Helper.revive(sprite);
+          self.isSpawnSpinterOfRhombusSplinter = false;
         }
-      },
-      { revive: false }
-    );
+      }
+    }, { revive: false });
   }
-
 };
 
-playState.spawnSpriteOfStar = function() {
-  Helper.strewnSprite(
-    Helper.getMember(this.starPool.members),
-    { y: this.game.stage.height },
-    { y: 3 }
-  );
+playState.spawnSpriteOfStar = function () {
+  Helper.strewnSprite(Helper.getMember(this.starPool.members), { y: this.game.stage.height }, { y: 3 });
 };
 
-
-playState.createExitGameText = function() {
-  this.exitGameText = new Kiwi.GameObjects.TextField(
-    this, "QUIT: ESC", this.game.stage.width / 2, 380, "#ffffff", 20, "bold", "monospace"
-  );
+playState.createExitGameText = function () {
+  this.exitGameText = new Kiwi.GameObjects.TextField(this, 'QUIT: ESC', this.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace');
   this.exitGameText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createGameOverText = function() {
-  this.gameOverText = new Kiwi.GameObjects.TextField(
-    this, "GAME OVER", this.game.stage.width / 2, 200, "#ffffff", 64, "bold", "monospace"
-  );
+playState.createGameOverText = function () {
+  this.gameOverText = new Kiwi.GameObjects.TextField(this, 'GAME OVER', this.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace');
   this.gameOverText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createRestartText = function() {
-  this.restartText = new Kiwi.GameObjects.TextField(
-    this, "RESTART: R", this.game.stage.width / 2, 350, "#ffffff", 20, "bold", "monospace"
-  );
+playState.createRestartText = function () {
+  this.restartText = new Kiwi.GameObjects.TextField(this, 'RESTART: R', this.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
   this.restartText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createScoreText = function(score) {
-  this.scoreText = new Kiwi.GameObjects.TextField(
-    this, "SCORE: " + score, this.game.stage.width / 2, 280, "#ffffff", 36, "bold", "monospace"
-  );
+playState.createScoreText = function (score) {
+  this.scoreText = new Kiwi.GameObjects.TextField(this, 'SCORE: ' + score, this.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace');
   this.scoreText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createSlowDownCountText = function() {
-  this.slowDownCountText = new Kiwi.GameObjects.TextField(
-    this, this.LIMIT_VELOCITY_MAX_COUNT, this.game.stage.width / 2, 250, "#ffffff", 48, "bold", "monoscape"
-  );
+playState.createSlowDownCountText = function () {
+  this.slowDownCountText = new Kiwi.GameObjects.TextField(this, this.LIMIT_VELOCITY_MAX_COUNT, this.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
   this.slowDownCountText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createSlowDownText = function() {
-  this.slowDownText = new Kiwi.GameObjects.TextField(
-    this, "SLOW DOWN !!!", this.game.stage.width / 2, 200, "#ffffff", 48, "bold", "monospace"
-  );
+playState.createSlowDownText = function () {
+  this.slowDownText = new Kiwi.GameObjects.TextField(this, 'SLOW DOWN !!!', this.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
   this.slowDownText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
-playState.createTimers = function() {
+playState.createTimers = function () {
 
-  this.starTimer = this.game.time.clock.setInterval(
-    this.spawnSpriteOfStar, 100, this
-  );
+  this.starTimer = this.game.time.clock.setInterval(this.spawnSpriteOfStar, 100, this);
 
-  this.cubeTimer = this.game.time.clock.setInterval(
-    this.spawnSpriteOfCube, 200, this
-  );
+  this.cubeTimer = this.game.time.clock.setInterval(this.spawnSpriteOfCube, 200, this);
 
-  this.cylinderTimer = this.game.time.clock.setInterval(
-    this.spawnSpriteOfCylinder, 100, this
-  );
+  this.cylinderTimer = this.game.time.clock.setInterval(this.spawnSpriteOfCylinder, 100, this);
 
-  this.circleTimer = this.game.time.clock.setInterval(
-    this.spawnSpriteOfCircle, 500, this
-  );
+  this.circleTimer = this.game.time.clock.setInterval(this.spawnSpriteOfCircle, 500, this);
 
-  this.rhombusTimer = this.game.time.clock.setInterval(
-    this.spawnSpriteOfRhombus, 100, this
-  );
+  this.rhombusTimer = this.game.time.clock.setInterval(this.spawnSpriteOfRhombus, 100, this);
 
-  this.coutionForSpeedSoundEffectTimer = (
-    this.game.time.clock.setInterval(
-      this.speedLimitOfUnit, 500, this
-    )
-  );
+  this.coutionForSpeedSoundEffectTimer = this.game.time.clock.setInterval(this.speedLimitOfUnit, 500, this);
 
-  this.overTheLimitVelocityCountTimer = (
-    this.game.time.clock.setInterval(
-      this.overTheLimitVelocityCount, 1000, this
-    )
-  );
+  this.overTheLimitVelocityCountTimer = this.game.time.clock.setInterval(this.overTheLimitVelocityCount, 1000, this);
 };
 
-playState.destroyTimers = function() {
+playState.destroyTimers = function () {
   this.game.time.clock.removeTimer(this.starTimer);
   this.game.time.clock.removeTimer(this.cubeTimer);
   this.game.time.clock.removeTimer(this.cylinderTimer);
@@ -1130,9 +935,7 @@ playState.destroyTimers = function() {
   this.game.time.clock.removeTimer(this.overTheLimitVelocityCount);
 };
 
-var game = new Kiwi.Game(
-  gameContainerID, nameOfGame, null, gameOptions
-);
+var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);
 game.states.addState(titleState);
 game.states.addState(playState);
 
