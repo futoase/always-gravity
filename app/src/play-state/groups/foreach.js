@@ -9,11 +9,21 @@ playState.forEachOfPool = function() {
   this.circlePool.forEach(this, function(circle) {
     Helper.updateSpriteRotation(circle, 30);
   });
-  this.circlePool.forEach(this, this.checkCollisionOfMyUnit);
   this.bulletPool.forEach(this, Helper.checkSpritePosition);
   this.bulletPool.forEach(this, this.checkCollision);
   this.explosionPool.forEach(this, this.destroyFinishCellIndexOfExplosion);
-  this.rhombusPool.forEach(this, this.checkCollisionOfMyUnit);
   this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
-  this.rhombusSplinterPool.forEach(this, this.checkCollisionOfMyUnit);
+
+  let myUnit = MyUnit.instance;
+  myUnit.context = this;
+
+  this.circlePool.members.map((member) => {
+    myUnit.overlapOnOther(member);
+  });
+  this.rhombusPool.members.map((member) => {
+    myUnit.overlapOnOther(member);
+  });
+  this.rhombusSplinterPool.members.map((member) => {
+    myUnit.overlapOnOther(member);
+  });
 }

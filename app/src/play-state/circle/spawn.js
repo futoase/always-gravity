@@ -6,8 +6,11 @@ playState.spawnSpriteOfCircle = function() {
     { y: 2 },
     function (sprite) {
       var tween = self.game.tweens.create(sprite);
+      let myUnit = MyUnit.instance;
+      myUnit.context = self;
+
       tween.to(
-        { x: self.myUnit.x },
+        { x: myUnit.sprite.x },
         1000,
         Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true
       );

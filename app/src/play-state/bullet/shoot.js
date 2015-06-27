@@ -17,10 +17,13 @@ playState.shootBullet = function() {
 
   bullet.alive = true;
 
-  bullet.x = this.myUnit.x + this.myUnit.height * 0.5;
-  bullet.y = this.myUnit.y + this.myUnit.width * 0.5;
+  let myUnit = MyUnit.instance;
+  myUnit.context = this;
 
-  bullet.rotation = this.myUnit.rotation;
+  bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
+  bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
+
+  bullet.rotation = myUnit.sprite.rotation;
 
   bullet.physics.velocity.x = (
     Math.cos(bullet.rotation) * this.BULLET_SPEED

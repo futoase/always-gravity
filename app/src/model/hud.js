@@ -102,11 +102,14 @@ class HUD {
 
   update() {
     const context = this.context;
+    let myUnit = MyUnit.instance;
+    myUnit.context = context;
+
     let currentVelocityX = Math.abs(
-      context.myUnit.physics.velocity.x
+      myUnit.sprite.physics.velocity.x
     );
     let currentVelocityY = Math.abs(
-      context.myUnit.physics.velocity.y
+      myUnit.sprite.physics.velocity.y
     );
 
     this.velocityBar = (

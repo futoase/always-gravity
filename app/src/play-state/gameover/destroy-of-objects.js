@@ -3,5 +3,9 @@ playState.destroyObjects = function() {
   this.destroyMusics();
   this.destroyHUD();
   this.destroyTimers();
-  this.myUnit.destroy();
+
+  let myUnit = MyUnit.instance;
+  myUnit.context = this;
+
+  myUnit.sprite.destroy();
 };

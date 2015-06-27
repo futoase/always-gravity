@@ -1,11 +1,12 @@
 playState.update = function() {
   Kiwi.State.prototype.update.call(this);
+  let myUnit = MyUnit.instance;
+  myUnit.context = this;
 
   this.updateMyUnit();
-  this.updateGravity();
   this.updateHUD();
 
-  if (this.contains(this.myUnit) && this.shootInputIsActive()) {
+  if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
     this.shootBullet();
   }
 

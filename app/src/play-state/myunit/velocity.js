@@ -1,5 +1,7 @@
 playState.overTheLimitVelocityCount = function() {
+  const myUnit = MyUnit.instance;
   let hud = HUD.instance;
+  myUnit.context = this;
   hud.context = this;
 
   if (this.overTheLimitVelocityCounter === undefined) {
@@ -20,6 +22,6 @@ playState.overTheLimitVelocityCount = function() {
   }
 
   if (this.overTheLimitVelocityCounter > this.LIMIT_VELOCITY_MAX_COUNT) {
-    this.explosionOfMyUnit();
+    myUnit.explosion();
   }
 };

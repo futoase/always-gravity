@@ -153,8 +153,11 @@ var HUD = (function () {
     key: 'update',
     value: function update() {
       var context = this.context;
-      var currentVelocityX = Math.abs(context.myUnit.physics.velocity.x);
-      var currentVelocityY = Math.abs(context.myUnit.physics.velocity.y);
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      var currentVelocityX = Math.abs(myUnit.sprite.physics.velocity.x);
+      var currentVelocityY = Math.abs(myUnit.sprite.physics.velocity.y);
 
       this.velocityBar = currentVelocityX + currentVelocityY;
 
@@ -204,6 +207,265 @@ var HUD = (function () {
   }]);
 
   return HUD;
+})();
+
+var myUnitSingleton = Symbol();
+var myUnitSingletonEnforcer = Symbol();
+
+var MyUnit = (function () {
+  function MyUnit(enforcer) {
+    _classCallCheck(this, MyUnit);
+
+    if (enforcer !== myUnitSingletonEnforcer) {
+      throw 'Cannot construct singleton!';
+    }
+  }
+
+  _createClass(MyUnit, [{
+    key: 'create',
+    value: function create() {
+      var context = this.context;
+      var myUnit = undefined;
+
+      myUnit = new Kiwi.GameObjects.Sprite(context, context.textures.myUnit, 400, 300);
+
+      myUnit.rotation = -Math.PI * 0.5;
+      myUnit.physics = myUnit.components.add(new Kiwi.Components.ArcadePhysics(myUnit, myUnit.box));
+      myUnit.physics.maxVelocity = context.MAX_SPEED;
+      myUnit.physics.drag.x = context.DRAG;
+      myUnit.physics.drag.y = context.DRAG;
+
+      this.sprite = myUnit;
+
+      return myUnit;
+    }
+  }, {
+    key: 'overlapOnOther',
+    value: function overlapOnOther(object) {
+      var context = this.context;
+      var myUnit = this.sprite;
+
+      var hud = HUD.instance;
+
+      hud.context = context;
+
+      if (!context.contains(myUnit) || context.isGameOver) {
+        return;
+      }
+
+      var isOverlap = myUnit.physics.overlaps(object);
+      var isOverlapOfRhombus = isOverlap && object.name == 'rhombus';
+
+      if (isOverlap && context.CURRENT_HITPOINT >= 1) {
+        Helper.revive(object);
+        context.CURRENT_HITPOINT--;
+        hud.hitPointBar.counter.current--;
+        context.spawnExplosion(myUnit.x, myUnit.y);
+        context.soundEffectOfMyUnitExplosion.play();
+      }
+
+      if (isOverlapOfRhombus || context.CURRENT_HITPOINT < 1) {
+        context.CURRENT_HITPOINT = 0;
+        hud.hitPointBar.counter.current = 0;
+        this.explosion();
+      }
+    }
+  }, {
+    key: 'explosion',
+    value: function explosion() {
+      var context = this.context;
+
+      if (context.myUnitExplosion === undefined) {
+        context.myUnitExplosion = true;
+      } else {
+        return;
+      }
+
+      this._prop();
+      this._createMyUnitSplinter();
+      this._remove();
+      this._explosionSoundEffect();
+      this._startCountUpOfExplosion();
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      var context = this.context;
+
+      if (context.isGameOver) {
+        return;
+      }
+
+      this._watchOfStatusForKeys();
+      this._checkPosition();
+      this._updateGravity();
+    }
+  }, {
+    key: '_watchOfStatusForKeys',
+    value: function _watchOfStatusForKeys() {
+      this._watchOfStatusForRotationKeys();
+      this._watchOfStatusForVelocityKey();
+    }
+  }, {
+    key: '_watchOfStatusForRotationKeys',
+    value: function _watchOfStatusForRotationKeys() {
+      var context = this.context;
+      var myUnit = this.sprite;
+
+      if (context.myUnitExplosion !== undefined) {
+        return;
+      }
+
+      if (context.leftInputIsActive()) {
+        myUnit.physics.angularVelocity = -context.ROTATION_SPEED;
+      } else if (context.rightInputIsActive()) {
+        myUnit.physics.angularVelocity = context.ROTATION_SPEED;
+      } else {
+        myUnit.physics.angularVelocity = 0;
+      }
+    }
+  }, {
+    key: '_watchOfStatusForVelocityKey',
+    value: function _watchOfStatusForVelocityKey() {
+      var context = this.context;
+      var myUnit = this.sprite;
+
+      if (context.myUnitExplosion !== undefined) {
+        return;
+      }
+
+      if (context.upInputIsActive()) {
+        myUnit.physics.acceleration.x = Math.cos(myUnit.rotation) * context.ACCELERATION;
+        myUnit.physics.acceleration.y = Math.sin(myUnit.rotation) * context.ACCELERATION;
+        // Change sprite 'Engine on'.
+        myUnit.cellIndex = 1;
+      } else {
+        myUnit.physics.acceleration.setTo(0, 0);
+
+        // Change sprite 'Engine off'.
+        myUnit.cellIndex = 0;
+      }
+    }
+  }, {
+    key: '_checkPosition',
+    value: function _checkPosition() {
+      var context = this.context;
+      var stageWidth = context.game.stage.width;
+      var stageHeight = context.game.stage.height;
+      var myUnit = this.sprite;
+
+      if (myUnit.x > stageWidth) {
+        myUnit.x = 0;
+      }
+      if (myUnit.x < 0) {
+        myUnit.x = stageWidth;
+      }
+      if (myUnit.y > stageHeight) {
+        myUnit.y = 0;
+      }
+      if (myUnit.y < 0) {
+        myUnit.y = stageHeight;
+      }
+    }
+  }, {
+    key: '_updateGravity',
+    value: function _updateGravity() {
+      var context = this.context;
+      var myUnit = this.sprite;
+
+      if (context.myUnitExplosion !== true) {
+        myUnit.physics.acceleration.y += context.GRAVITY;
+      }
+    }
+  }, {
+    key: '_prop',
+    value: function _prop() {
+      var myUnit = this.sprite;
+
+      myUnit.physics.acceleration.x = 0;
+      myUnit.physics.acceleration.y = 0;
+      myUnit.physics.velocity.x = 0;
+      myUnit.physics.velocity.y = 0;
+    }
+  }, {
+    key: '_createMyUnitSplinter',
+    value: function _createMyUnitSplinter() {
+      var context = this.context;
+      var myUnit = this.sprite;
+      var myUnitSplinterMembers = context.myUnitSplinterPool.members;
+      var angleBase = parseInt(360 / context.NUMBER_OF_MYUNIT_SPLINTER);
+      var myUnitSplinterAngle = 0;
+
+      myUnitSplinterMembers.forEach(function (splinterMember) {
+        splinterMember.x = myUnit.x;
+        splinterMember.y = myUnit.y;
+        splinterMember.physics.velocity.x = Math.cos(Helper.radian(myUnitSplinterAngle)) * 40;
+        splinterMember.physics.velocity.y = Math.sin(Helper.radian(myUnitSplinterAngle)) * 40;
+
+        splinterMember.animation.play('explosion');
+        myUnitSplinterAngle += angleBase;
+      });
+    }
+  }, {
+    key: '_remove',
+    value: function _remove() {
+      var context = this.context;
+      var myUnit = this.sprite;
+
+      context.removeChild(myUnit);
+    }
+  }, {
+    key: '_explosionSoundEffect',
+    value: function _explosionSoundEffect() {
+      var context = this.context;
+
+      context.soundEffectOfMyUnitExplosion.play();
+    }
+  }, {
+    key: '_startCountUpOfExplosion',
+    value: function _startCountUpOfExplosion() {
+      var _this = this;
+
+      var context = this.context;
+
+      context.game.time.clock.setInterval(function () {
+        if (_this.exposionCounter < 2) {
+          _this.explosionCounter += 1;
+        } else {
+          context.gameOver();
+        }
+      }, 1000, context);
+    }
+  }, {
+    key: 'sprite',
+    get: function get() {
+      return this._sprite;
+    },
+    set: function set(value) {
+      this._sprite = value;
+    }
+  }, {
+    key: 'explosionCounter',
+    get: function get() {
+      if (this._explosionCounter === undefined) {
+        this._explosionCounter = 0;
+      }
+      return this._explosionCounter;
+    },
+    set: function set(value) {
+      this._explosionCounter = value;
+    }
+  }], [{
+    key: 'instance',
+    get: function get() {
+      if (!this[myUnitSingleton]) {
+        this[myUnitSingleton] = new MyUnit(myUnitSingletonEnforcer);
+      }
+      return this[myUnitSingleton];
+    }
+  }]);
+
+  return MyUnit;
 })();
 
 var timerSingleton = Symbol();
@@ -461,12 +723,13 @@ playState.preload = function () {
 
 playState.update = function () {
   Kiwi.State.prototype.update.call(this);
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
 
   this.updateMyUnit();
-  this.updateGravity();
   this.updateHUD();
 
-  if (this.contains(this.myUnit) && this.shootInputIsActive()) {
+  if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
     this.shootBullet();
   }
 
@@ -551,10 +814,13 @@ playState.shootBullet = function () {
 
   bullet.alive = true;
 
-  bullet.x = this.myUnit.x + this.myUnit.height * 0.5;
-  bullet.y = this.myUnit.y + this.myUnit.width * 0.5;
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
 
-  bullet.rotation = this.myUnit.rotation;
+  bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
+  bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
+
+  bullet.rotation = myUnit.sprite.rotation;
 
   bullet.physics.velocity.x = Math.cos(bullet.rotation) * this.BULLET_SPEED;
   bullet.physics.velocity.y = Math.sin(bullet.rotation) * this.BULLET_SPEED;
@@ -567,6 +833,18 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.stop();
   this.soundEffectOfExplosion.volume = volume;
   this.soundEffectOfExplosion.play();
+};
+
+playState.spawnSpriteOfCircle = function () {
+  var self = this;
+  Helper.strewnSprite(Helper.getMember(this.circlePool.members), { y: this.game.stage.height }, { y: 2 }, function (sprite) {
+    var tween = self.game.tweens.create(sprite);
+    var myUnit = MyUnit.instance;
+    myUnit.context = self;
+
+    tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
+    tween.start();
+  });
 };
 
 playState.spawnSpriteOfCube = function () {
@@ -594,6 +872,55 @@ playState.spawnExplosion = function (x, y) {
   explosion.y = y - explosion.height * 0.5;
   explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
   explosion.animation.play('explosion');
+};
+
+playState.destroyObjects = function () {
+  this.destroyGroups();
+  this.destroyMusics();
+  this.destroyHUD();
+  this.destroyTimers();
+
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
+
+  myUnit.sprite.destroy();
+};
+
+playState.gameOver = function () {
+  if (this.isGameOver) {
+    return;
+  }
+
+  this.destroyObjects();
+
+  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
+  this.musicGameOver.play();
+
+  this.createGameOverText();
+  this.addChild(this.gameOverText);
+
+  this.createScoreText(this.gameScoreCounter);
+  this.addChild(this.scoreText);
+
+  this.createRestartText();
+  this.addChild(this.restartText);
+
+  this.createExitGameText();
+  this.addChild(this.exitGameText);
+
+  if (this.isGameOver === undefined) {
+    this.isGameOver = true;
+  }
+};
+
+playState.whenGameOverInputKeys = function () {
+  if (this.exitGameInputIsActive()) {
+    ipc.sendSync('quit');
+  }
+
+  if (this.restartInputIsActive()) {
+    window.location.reload(true);
+  }
 };
 
 playState.createBulletAndAppendGroup = function () {
@@ -712,13 +1039,23 @@ playState.forEachOfPool = function () {
   this.circlePool.forEach(this, function (circle) {
     Helper.updateSpriteRotation(circle, 30);
   });
-  this.circlePool.forEach(this, this.checkCollisionOfMyUnit);
   this.bulletPool.forEach(this, Helper.checkSpritePosition);
   this.bulletPool.forEach(this, this.checkCollision);
   this.explosionPool.forEach(this, this.destroyFinishCellIndexOfExplosion);
-  this.rhombusPool.forEach(this, this.checkCollisionOfMyUnit);
   this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
-  this.rhombusSplinterPool.forEach(this, this.checkCollisionOfMyUnit);
+
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
+
+  this.circlePool.members.map(function (member) {
+    myUnit.overlapOnOther(member);
+  });
+  this.rhombusPool.members.map(function (member) {
+    myUnit.overlapOnOther(member);
+  });
+  this.rhombusSplinterPool.members.map(function (member) {
+    myUnit.overlapOnOther(member);
+  });
 };
 
 playState.createMyUnitSplinterAndAppendGroup = function () {
@@ -847,87 +1184,18 @@ playState.setMusics = function () {
   this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
 };
 
-playState.checkCollisionOfMyUnit = function (object) {
-  var hud = HUD.instance;
-  hud.context = this;
-
-  if (!this.contains(this.myUnit) || this.isGameOver) {
-    return;
-  }
-
-  var isOverlap = this.myUnit.physics.overlaps(object);
-  var isOverlapOfRhombus = isOverlap && object.name == 'rhombus';
-
-  if (isOverlap && this.CURRENT_HITPOINT >= 1) {
-    this.CURRENT_HITPOINT--;
-    hud.hitPointBar.counter.current--;
-    this.spawnExplosion(this.myUnit.x, this.myUnit.y);
-    this.soundEffectOfMyUnitExplosion.play();
-    Helper.revive(object);
-  }
-
-  if (isOverlapOfRhombus || this.CURRENT_HITPOINT < 1) {
-    this.CURRENT_HITPOINT = 0;
-    hud.hitPointBar.counter.current = 0;
-    this.explosionOfMyUnit();
-  }
-};
-
 playState.createMyUnit = function () {
-  this.myUnit = new Kiwi.GameObjects.Sprite(this, this.textures.myUnit, this.game.stage.width / 2, this.game.stage.height / 2);
-  this.addChild(this.myUnit);
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
 
-  this.myUnit.rotation = -Math.PI * 0.5;
-  this.myUnit.physics = this.myUnit.components.add(new Kiwi.Components.ArcadePhysics(this.myUnit, this.myUnit.box));
-  this.myUnit.physics.maxVelocity = this.MAX_SPEED;
-  this.myUnit.physics.drag.x = this.DRAG;
-  this.myUnit.physics.drag.y = this.DRAG;
+  this.addChild(myUnit.create());
 };
 
 playState.explosionOfMyUnit = function () {
-  var myUnitSplinterMembers = this.myUnitSplinterPool.members;
-  var angleBase = parseInt(360 / this.NUMBER_OF_MYUNIT_SPLINTER);
-  var myUnitSplinterAngle = 0;
-  var explosionCounter = 0;
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
 
-  if (this.myUnitExplosion === undefined) {
-    this.myUnitExplosion = true;
-  } else {
-    return;
-  }
-
-  this.myUnit.physics.acceleration.x = 0;
-  this.myUnit.physics.acceleration.y = 0;
-  this.myUnit.physics.velocity.x = 0;
-  this.myUnit.physics.velocity.y = 0;
-
-  for (var i = 0; i < myUnitSplinterMembers.length; i++) {
-    myUnitSplinterMembers[i].x = this.myUnit.x;
-    myUnitSplinterMembers[i].y = this.myUnit.y;
-
-    myUnitSplinterMembers[i].physics.velocity.x = Math.cos(Helper.radian(myUnitSplinterAngle)) * 40;
-    myUnitSplinterMembers[i].physics.velocity.y = Math.sin(Helper.radian(myUnitSplinterAngle)) * 40;
-
-    myUnitSplinterMembers[i].animation.play('explosion');
-    myUnitSplinterAngle += angleBase;
-  }
-
-  this.removeChild(this.myUnit);
-  this.soundEffectOfMyUnitExplosion.play();
-
-  this.myUnitExplosionTimer = this.game.time.clock.setInterval(function () {
-    if (explosionCounter < 2) {
-      explosionCounter++;
-    } else {
-      this.gameOver();
-    }
-  }, 1000, this);
-};
-
-playState.updateGravity = function () {
-  if (this.myUnitExplosion !== true) {
-    this.myUnit.physics.acceleration.y += this.GRAVITY;
-  }
+  myUnit.explosion();
 };
 
 playState.speedLimitOfUnit = function () {
@@ -954,46 +1222,16 @@ playState.speedLimitOfUnit = function () {
 };
 
 playState.updateMyUnit = function () {
-  if (this.isGameOver) {
-    return;
-  }
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
 
-  if (this.myUnit.x > this.game.stage.width) {
-    this.myUnit.x = 0;
-  }
-  if (this.myUnit.x < 0) {
-    this.myUnit.x = this.game.stage.width;
-  }
-  if (this.myUnit.y > this.game.stage.height) {
-    this.myUnit.y = 0;
-  }
-  if (this.myUnit.y < 0) {
-    this.myUnit.y = this.game.stage.height;
-  }
-
-  if (this.leftInputIsActive() && this.myUnitExplosion === undefined) {
-    this.myUnit.physics.angularVelocity = -this.ROTATION_SPEED;
-  } else if (this.rightInputIsActive() && this.myUnitExplosion === undefined) {
-    this.myUnit.physics.angularVelocity = this.ROTATION_SPEED;
-  } else {
-    this.myUnit.physics.angularVelocity = 0;
-  }
-
-  if (this.upInputIsActive() && this.myUnitExplosion === undefined) {
-    this.myUnit.physics.acceleration.x = Math.cos(this.myUnit.rotation) * this.ACCELERATION;
-    this.myUnit.physics.acceleration.y = Math.sin(this.myUnit.rotation) * this.ACCELERATION;
-    // Change sprite 'Engine on'.
-    this.myUnit.cellIndex = 1;
-  } else {
-    this.myUnit.physics.acceleration.setTo(0, 0);
-
-    // Change sprite 'Engine off'.
-    this.myUnit.cellIndex = 0;
-  }
+  myUnit.update();
 };
 
 playState.overTheLimitVelocityCount = function () {
+  var myUnit = MyUnit.instance;
   var hud = HUD.instance;
+  myUnit.context = this;
   hud.context = this;
 
   if (this.overTheLimitVelocityCounter === undefined) {
@@ -1011,7 +1249,7 @@ playState.overTheLimitVelocityCount = function () {
   }
 
   if (this.overTheLimitVelocityCounter > this.LIMIT_VELOCITY_MAX_COUNT) {
-    this.explosionOfMyUnit();
+    myUnit.explosion();
   }
 };
 
@@ -1114,60 +1352,6 @@ playState.destroyTimers = function () {
   timer.context = this;
 
   timer.removeAllTimer();
-};
-
-playState.destroyObjects = function () {
-  this.destroyGroups();
-  this.destroyMusics();
-  this.destroyHUD();
-  this.destroyTimers();
-  this.myUnit.destroy();
-};
-
-playState.gameOver = function () {
-  if (this.isGameOver) {
-    return;
-  }
-
-  this.destroyObjects();
-
-  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
-  this.musicGameOver.play();
-
-  this.createGameOverText();
-  this.addChild(this.gameOverText);
-
-  this.createScoreText(this.gameScoreCounter);
-  this.addChild(this.scoreText);
-
-  this.createRestartText();
-  this.addChild(this.restartText);
-
-  this.createExitGameText();
-  this.addChild(this.exitGameText);
-
-  if (this.isGameOver === undefined) {
-    this.isGameOver = true;
-  }
-};
-
-playState.whenGameOverInputKeys = function () {
-  if (this.exitGameInputIsActive()) {
-    ipc.sendSync('quit');
-  }
-
-  if (this.restartInputIsActive()) {
-    window.location.reload(true);
-  }
-};
-
-playState.spawnSpriteOfCircle = function () {
-  var self = this;
-  Helper.strewnSprite(Helper.getMember(this.circlePool.members), { y: this.game.stage.height }, { y: 2 }, function (sprite) {
-    var tween = self.game.tweens.create(sprite);
-    tween.to({ x: self.myUnit.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
-    tween.start();
-  });
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);
