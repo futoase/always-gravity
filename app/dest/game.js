@@ -548,8 +548,12 @@ var Timer = (function () {
     key: 'createCoutionForSpeedSoundEffectTimer',
     value: function createCoutionForSpeedSoundEffectTimer() {
       var context = this.context;
+      var timerVelocity = TimerVelocity.instance;
+      timerVelocity.context = context;
 
-      this.coutionForSpeedSoundEffectTimer = this.setInterval(context.speedLimitOfUnit, 500);
+      this.coutionForSpeedSoundEffectTimer = this.setInterval(function () {
+        timerVelocity.speedLimit();
+      }, 500);
     }
   }, {
     key: 'createOverTheLimitVelocityCountTimer',
@@ -618,6 +622,32 @@ var TimerVelocity = (function () {
 
       if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
         myUnit.explosion();
+      }
+    }
+  }, {
+    key: 'speedLimit',
+    value: function speedLimit() {
+      var context = this.context;
+      var hud = HUD.instance;
+
+      hud.context = context;
+
+      if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
+        context.soundEffectOfCautionForSpeed.play();
+        if (!context.contains(context.slowDownText)) {
+          context.addChild(context.slowDownText);
+        }
+        if (!context.contains(context.slowDownCountText)) {
+          context.addChild(context.slowDownCountText);
+        }
+      } else {
+        context.soundEffectOfCautionForSpeed.stop();
+        if (context.contains(context.slowDownText)) {
+          context.removeChild(context.slowDownText);
+        }
+        if (context.contains(context.slowDownCountText)) {
+          context.removeChild(context.slowDownCountText);
+        }
       }
     }
   }, {
@@ -1232,31 +1262,6 @@ playState.setGameKeys = function () {
   this.restartKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
 };
 
-playState.destroyMusics = function () {
-  this.musicMain.stop();
-  this.musicMain.destroy();
-  this.soundEffectOfBullet.stop();
-  this.soundEffectOfBullet.destroy();
-  this.soundEffectOfExplosion.stop();
-  this.soundEffectOfExplosion.destroy();
-  this.soundEffectOfCautionForSpeed.stop();
-  this.soundEffectOfCautionForSpeed.destroy();
-};
-
-playState.setMusics = function () {
-  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
-  this.musicMain.play();
-
-  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
-  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
-
-  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
-
-  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
-
-  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
-};
-
 playState.createMyUnit = function () {
   var myUnit = MyUnit.instance;
   myUnit.context = this;
@@ -1400,6 +1405,31 @@ playState.destroyTimers = function () {
   timer.context = this;
 
   timer.removeAllTimer();
+};
+
+playState.destroyMusics = function () {
+  this.musicMain.stop();
+  this.musicMain.destroy();
+  this.soundEffectOfBullet.stop();
+  this.soundEffectOfBullet.destroy();
+  this.soundEffectOfExplosion.stop();
+  this.soundEffectOfExplosion.destroy();
+  this.soundEffectOfCautionForSpeed.stop();
+  this.soundEffectOfCautionForSpeed.destroy();
+};
+
+playState.setMusics = function () {
+  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
+  this.musicMain.play();
+
+  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
+  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
+
+  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
+
+  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
+
+  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);

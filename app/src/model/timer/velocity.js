@@ -61,4 +61,30 @@ class TimerVelocity {
       myUnit.explosion();
     }
   }
+
+  speedLimit() {
+    const context = this.context;
+    let hud = HUD.instance;
+
+    hud.context = context;
+
+    if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
+      context.soundEffectOfCautionForSpeed.play();
+      if (!context.contains(context.slowDownText)) {
+        context.addChild(context.slowDownText);
+      }
+      if (!context.contains(context.slowDownCountText)) {
+        context.addChild(context.slowDownCountText);
+      }
+    }
+    else{
+      context.soundEffectOfCautionForSpeed.stop();
+      if (context.contains(context.slowDownText)) {
+        context.removeChild(context.slowDownText);
+      }
+      if (context.contains(context.slowDownCountText)) {
+        context.removeChild(context.slowDownCountText);
+      }
+    }
+  }
 }

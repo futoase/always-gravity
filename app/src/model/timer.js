@@ -91,9 +91,13 @@ class Timer {
 
   createCoutionForSpeedSoundEffectTimer() {
     const context = this.context;
+    let timerVelocity = TimerVelocity.instance;
+    timerVelocity.context = context
 
     this.coutionForSpeedSoundEffectTimer = (
-      this.setInterval(context.speedLimitOfUnit, 500)
+      this.setInterval(() => {
+        timerVelocity.speedLimit();
+      }, 500)
     );
   }
 
