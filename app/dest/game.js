@@ -555,8 +555,12 @@ var Timer = (function () {
     key: 'createOverTheLimitVelocityCountTimer',
     value: function createOverTheLimitVelocityCountTimer() {
       var context = this.context;
+      var timerVelocity = TimerVelocity.instance;
+      timerVelocity.context = context;
 
-      this.overTheLimitVelocityCountTimer = this.setInterval(context.overTheLimitVelocityCount, 1000);
+      this.overTheLimitVelocityCountTimer = this.setInterval(function () {
+        timerVelocity.overTheLimitCount();
+      }, 1000);
     }
   }, {
     key: 'context',
@@ -578,6 +582,101 @@ var Timer = (function () {
 
   return Timer;
 })();
+
+var timerVelocitySingleton = Symbol();
+var timerVelocitySingletonEnforcer = Symbol();
+
+var TimerVelocity = (function () {
+  function TimerVelocity(enforcer) {
+    _classCallCheck(this, TimerVelocity);
+
+    if (enforcer !== timerVelocitySingletonEnforcer) {
+      throw 'Cannot construct singleton!';
+    }
+  }
+
+  _createClass(TimerVelocity, [{
+    key: 'overTheLimitCount',
+    value: function overTheLimitCount() {
+      var context = this.context;
+
+      var myUnit = MyUnit.instance;
+      var hud = HUD.instance;
+
+      myUnit.context = context;
+      hud.context = context;
+
+      if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY) {
+        if (context.contains(context.slowDownCountText)) {
+          context.slowDownCountText.text = context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
+        }
+        this.overTheLimitVelocityCounter += 1;
+      } else {
+        this.overTheLimitVelocityCounter = 0;
+        context.slowDownCountText.text = context.LIMIT_VELOCITY_MAX_COUNT;
+      }
+
+      if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
+        myUnit.explosion();
+      }
+    }
+  }, {
+    key: 'context',
+    get: function get() {
+      return this._context;
+    },
+    set: function set(value) {
+      this._context = value;
+    }
+  }, {
+    key: 'overTheVelocityCounter',
+    get: function get() {
+      if (this._overTheVelocityCounter === undefined) {
+        this._overTheVelocityCounter = 0;
+      }
+      return this._overTheVelocityCounter;
+    },
+    set: function set(value) {
+      this._overTheVelocityCounter = value;
+    }
+  }], [{
+    key: 'instance',
+    get: function get() {
+      if (!this[timerVelocitySingleton]) {
+        this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);
+      }
+      return this[timerVelocitySingleton];
+    }
+  }]);
+
+  return TimerVelocity;
+})();
+
+titleState.create = function () {
+  Kiwi.State.prototype.create.call(this);
+
+  this.game.stage.color = titleStageColor;
+
+  this.setGameKeys();
+  this.createTitleText();
+};
+
+titleState.preload = function () {
+  Kiwi.State.prototype.preload.call(this);
+};
+
+titleState.update = function () {
+  Kiwi.State.prototype.update.call(this);
+
+  if (this.startInputIsActive()) {
+    this.destroyTitleText();
+    this.game.states.switchState('Play');
+  }
+
+  if (this.exitInputIsActive()) {
+    ipc.sendSync('quit');
+  }
+};
 
 titleState.startInputIsActive = function () {
   return this.startKey.isDown;
@@ -617,32 +716,6 @@ titleState.destroyTitleText = function () {
   this.removeChild(this.subTitleText);
   this.removeChild(this.startText);
   this.removeChild(this.quitText);
-};
-
-titleState.create = function () {
-  Kiwi.State.prototype.create.call(this);
-
-  this.game.stage.color = titleStageColor;
-
-  this.setGameKeys();
-  this.createTitleText();
-};
-
-titleState.preload = function () {
-  Kiwi.State.prototype.preload.call(this);
-};
-
-titleState.update = function () {
-  Kiwi.State.prototype.update.call(this);
-
-  if (this.startInputIsActive()) {
-    this.destroyTitleText();
-    this.game.states.switchState('Play');
-  }
-
-  if (this.exitInputIsActive()) {
-    ipc.sendSync('quit');
-  }
 };
 
 playState.setConfig = function () {

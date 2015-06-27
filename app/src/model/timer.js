@@ -99,9 +99,13 @@ class Timer {
 
   createOverTheLimitVelocityCountTimer() {
     const context = this.context;
+    let timerVelocity = TimerVelocity.instance;
+    timerVelocity.context = context;
 
     this.overTheLimitVelocityCountTimer = (
-      this.setInterval(context.overTheLimitVelocityCount, 1000)
+      this.setInterval(() => {
+        timerVelocity.overTheLimitCount()
+      }, 1000)
     );
   }
 }
