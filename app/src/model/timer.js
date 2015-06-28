@@ -79,8 +79,12 @@ class Timer {
 
   createCircleTimer() {
     const context = this.context;
+    let spawnObjects = TimerSpawnObjects.instance;
+    spawnObjects.context = context;
 
-    this.circleTimer = this.setInterval(context.spawnSpriteOfCircle, 500);
+    this.circleTimer = this.setInterval(() => {
+      spawnObjects.circle();
+    }, 500);
   }
 
   createRhombusTimer() {

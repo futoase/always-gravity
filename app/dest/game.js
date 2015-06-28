@@ -534,8 +534,12 @@ var Timer = (function () {
     key: 'createCircleTimer',
     value: function createCircleTimer() {
       var context = this.context;
+      var spawnObjects = TimerSpawnObjects.instance;
+      spawnObjects.context = context;
 
-      this.circleTimer = this.setInterval(context.spawnSpriteOfCircle, 500);
+      this.circleTimer = this.setInterval(function () {
+        spawnObjects.circle();
+      }, 500);
     }
   }, {
     key: 'createRhombusTimer',
@@ -585,6 +589,60 @@ var Timer = (function () {
   }]);
 
   return Timer;
+})();
+
+var timerSpawnObjectsSingleton = Symbol();
+var timerSpawnObjectsSingletonEnforcer = Symbol();
+
+var TimerSpawnObjects = (function () {
+  function TimerSpawnObjects(enforcer) {
+    _classCallCheck(this, TimerSpawnObjects);
+
+    if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
+      throw 'Cannot construct singleton!';
+    }
+  }
+
+  _createClass(TimerSpawnObjects, [{
+    key: 'circle',
+    value: function circle() {
+      var _this2 = this;
+
+      var context = this.context;
+
+      Helper.strewnSprite(Helper.getMember(context.circlePool.members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
+        _this2._tweenOfCircle(context, sprite);
+      });
+    }
+  }, {
+    key: '_tweenOfCircle',
+    value: function _tweenOfCircle(context, sprite) {
+      var tween = context.game.tweens.create(sprite);
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
+      tween.start();
+    }
+  }, {
+    key: 'context',
+    get: function get() {
+      return this._context;
+    },
+    set: function set(value) {
+      this._context = value;
+    }
+  }], [{
+    key: 'instance',
+    get: function get() {
+      if (!this[timerSpawnObjectsSingleton]) {
+        this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
+      }
+      return this[timerSpawnObjectsSingleton];
+    }
+  }]);
+
+  return TimerSpawnObjects;
 })();
 
 var timerVelocitySingleton = Symbol();
@@ -938,18 +996,6 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.play();
 };
 
-playState.spawnSpriteOfCircle = function () {
-  var self = this;
-  Helper.strewnSprite(Helper.getMember(this.circlePool.members), { y: this.game.stage.height }, { y: 2 }, function (sprite) {
-    var tween = self.game.tweens.create(sprite);
-    var myUnit = MyUnit.instance;
-    myUnit.context = self;
-
-    tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
-    tween.start();
-  });
-};
-
 playState.spawnSpriteOfCube = function () {
   Helper.strewnSprite(Helper.getMember(this.cubePool.members), { y: this.game.stage.height }, { y: 5 });
 };
@@ -1262,6 +1308,31 @@ playState.setGameKeys = function () {
   this.restartKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
 };
 
+playState.destroyMusics = function () {
+  this.musicMain.stop();
+  this.musicMain.destroy();
+  this.soundEffectOfBullet.stop();
+  this.soundEffectOfBullet.destroy();
+  this.soundEffectOfExplosion.stop();
+  this.soundEffectOfExplosion.destroy();
+  this.soundEffectOfCautionForSpeed.stop();
+  this.soundEffectOfCautionForSpeed.destroy();
+};
+
+playState.setMusics = function () {
+  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
+  this.musicMain.play();
+
+  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
+  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
+
+  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
+
+  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
+
+  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
+};
+
 playState.createMyUnit = function () {
   var myUnit = MyUnit.instance;
   myUnit.context = this;
@@ -1405,31 +1476,6 @@ playState.destroyTimers = function () {
   timer.context = this;
 
   timer.removeAllTimer();
-};
-
-playState.destroyMusics = function () {
-  this.musicMain.stop();
-  this.musicMain.destroy();
-  this.soundEffectOfBullet.stop();
-  this.soundEffectOfBullet.destroy();
-  this.soundEffectOfExplosion.stop();
-  this.soundEffectOfExplosion.destroy();
-  this.soundEffectOfCautionForSpeed.stop();
-  this.soundEffectOfCautionForSpeed.destroy();
-};
-
-playState.setMusics = function () {
-  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
-  this.musicMain.play();
-
-  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
-  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
-
-  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
-
-  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
-
-  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);
