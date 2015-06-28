@@ -531,8 +531,12 @@ var Timer = (function () {
     key: 'createCylinderTimer',
     value: function createCylinderTimer() {
       var context = this.context;
+      var spawnObjects = TimerSpawnObjects.instance;
+      spawnObjects.context = context;
 
-      this.cylinderTimer = this.setInterval(context.spawnSpriteOfCylinder, 100);
+      this.cylinderTimer = this.setInterval(function () {
+        spawnObjects.cylinder();
+      }, 100);
     }
   }, {
     key: 'createCircleTimer',
@@ -624,6 +628,13 @@ var TimerSpawnObjects = (function () {
       var context = this.context;
 
       Helper.strewnSprite(Helper.getMember(context.cubePool.members), { y: context.game.stage.height }, { y: 5 });
+    }
+  }, {
+    key: 'cylinder',
+    value: function cylinder() {
+      var context = this.context;
+
+      Helper.strewnSprite(Helper.getMember(context.cylinderPool.members), { y: context.game.stage.height }, { y: 10 });
     }
   }, {
     key: '_tweenOfCircle',
