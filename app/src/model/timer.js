@@ -61,8 +61,12 @@ class Timer {
 
   createStarTimer() {
     const context = this.context;
+    let spawnObjects = TimerSpawnObjects.instance;
+    spawnObjects.context = context;
 
-    this.starTimer = this.setInterval(context.spawnSpriteOfStar, 100);
+    this.starTimer = this.setInterval(() => {
+      spawnObjects.star();
+    }, 100);
   }
 
   createCubeTimer() {
@@ -97,8 +101,12 @@ class Timer {
 
   createRhombusTimer() {
     const context = this.context;
+    let spawnObjects = TimerSpawnObjects.instance;
+    spawnObjects.context = context
 
-    this.rhombusTimer = this.setInterval(context.spawnSpriteOfRhombus, 100);
+    this.rhombusTimer = this.setInterval(() => {
+      spawnObjects.rhombus();
+    }, 100);
   }
 
   createCoutionForSpeedSoundEffectTimer() {

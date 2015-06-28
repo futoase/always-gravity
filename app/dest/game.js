@@ -513,8 +513,12 @@ var Timer = (function () {
     key: 'createStarTimer',
     value: function createStarTimer() {
       var context = this.context;
+      var spawnObjects = TimerSpawnObjects.instance;
+      spawnObjects.context = context;
 
-      this.starTimer = this.setInterval(context.spawnSpriteOfStar, 100);
+      this.starTimer = this.setInterval(function () {
+        spawnObjects.star();
+      }, 100);
     }
   }, {
     key: 'createCubeTimer',
@@ -553,8 +557,12 @@ var Timer = (function () {
     key: 'createRhombusTimer',
     value: function createRhombusTimer() {
       var context = this.context;
+      var spawnObjects = TimerSpawnObjects.instance;
+      spawnObjects.context = context;
 
-      this.rhombusTimer = this.setInterval(context.spawnSpriteOfRhombus, 100);
+      this.rhombusTimer = this.setInterval(function () {
+        spawnObjects.rhombus();
+      }, 100);
     }
   }, {
     key: 'createCoutionForSpeedSoundEffectTimer',
@@ -635,6 +643,81 @@ var TimerSpawnObjects = (function () {
       var context = this.context;
 
       Helper.strewnSprite(Helper.getMember(context.cylinderPool.members), { y: context.game.stage.height }, { y: 10 });
+    }
+  }, {
+    key: 'star',
+    value: function star() {
+      var context = this.context;
+
+      Helper.strewnSprite(Helper.getMember(context.starPool.members), { y: context.game.stage.height }, { y: 3 });
+    }
+  }, {
+    key: 'rhombus',
+    value: function rhombus() {
+      var _this3 = this;
+
+      var context = this.context;
+
+      if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
+        context.isSpawnSpriteOfRhombusSplinter = false;
+      }
+
+      if (parseInt(Math.random() * 100) === 0) {
+        context.isSpawnSpriteOfRhombusSplinter = true;
+      }
+
+      if (context.isSpawnSpriteOfRhombusSplinter) {
+        Helper.strewnSprite(Helper.getMember(context.rhombusPool.members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
+          _this3._scaleUpRhombus(context, sprite);
+        }, { revive: false });
+      }
+    }
+  }, {
+    key: '_scaleUpRhombus',
+    value: function _scaleUpRhombus(context, sprite) {
+      var spriteBottomLeftPoint = sprite.y + sprite.height;
+      var standingPoint = context.game.stage.height / 2 - sprite.height;
+      var maxScale = 5;
+      var scaleBase = 0.05;
+
+      if (spriteBottomLeftPoint >= standingPoint) {
+        sprite.physics.acceleration.y = 0;
+        sprite.physics.velocity.y = 0;
+
+        if (maxScale > sprite.scaleX && maxScale > sprite.scaleY) {
+          sprite.scaleX += scaleBase;
+          sprite.scaleY += scaleBase;
+        } else {
+          this._explosionRhombus(context, sprite);
+          this._scaleDownRhombus(context, sprite);
+        }
+      }
+    }
+  }, {
+    key: '_explosionRhombus',
+    value: function _explosionRhombus(context, sprite) {
+      var rhombusSplinterMembers = context.rhombusSplinterPool.members;
+      var angleBase = parseInt(360 / context.NUMBER_OF_RHOMBUS_SPLINTER);
+      var rhombusSplinterAngle = 0;
+      var explosionCounter = 0;
+
+      rhombusSplinterMembers.forEach(function (member) {
+        member.x = sprite.x;
+        member.y = sprite.y;
+
+        member.physics.velocity.x = Math.cos(Helper.radian(rhombusSplinterAngle)) * 30;
+        member.physics.velocity.y = Math.sin(Helper.radian(rhombusSplinterAngle)) * 30;
+
+        rhombusSplinterAngle += angleBase;
+      });
+    }
+  }, {
+    key: '_scaleDownRhombus',
+    value: function _scaleDownRhombus(context, sprite) {
+      sprite.scaleX = 1;
+      sprite.scaleY = 1;
+      Helper.revive(sprite);
+      context.isSpawnSpinterOfRhombusSplinter = false;
     }
   }, {
     key: '_tweenOfCircle',
@@ -1018,10 +1101,6 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.play();
 };
 
-playState.spawnSpriteOfCylinder = function () {
-  Helper.strewnSprite(Helper.getMember(this.cylinderPool.members), { y: this.game.stage.height }, { y: 10 });
-};
-
 playState.destroyFinishCellIndexOfExplosion = function () {
   var explosionMembers = this.explosionPool.members;
 
@@ -1393,63 +1472,6 @@ playState.updateMyUnit = function () {
   myUnit.context = this;
 
   myUnit.update();
-};
-
-playState.explosionRhombus = function (rhombus) {
-  var rhombusSplinterMembers = this.rhombusSplinterPool.members;
-  var angleBase = parseInt(360 / this.NUMBER_OF_RHOMBUS_SPLINTER);
-
-  var rhombusSplinterAngle = 0;
-  var explosionCounter = 0;
-
-  for (var i = 0; i < rhombusSplinterMembers.length; i++) {
-    rhombusSplinterMembers[i].x = rhombus.x;
-    rhombusSplinterMembers[i].y = rhombus.y;
-
-    rhombusSplinterMembers[i].physics.velocity.x = Math.cos(Helper.radian(rhombusSplinterAngle)) * 30;
-    rhombusSplinterMembers[i].physics.velocity.y = Math.sin(Helper.radian(rhombusSplinterAngle)) * 30;
-
-    rhombusSplinterAngle += angleBase;
-  }
-};
-
-playState.spawnSpriteOfRhombus = function () {
-  if (this.isSpawnSpriteOfRhombusSplinter === undefined) {
-    this.isSpawnSpriteOfRhombusSplinter = false;
-  }
-
-  if (parseInt(Math.random() * 100) === 0) {
-    this.isSpawnSpinterOfRhombusSplinter = true;
-  }
-
-  if (this.isSpawnSpinterOfRhombusSplinter) {
-    var self = this;
-    Helper.strewnSprite(Helper.getMember(this.rhombusPool.members), { y: this.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
-      var spriteBottomLeftPoint = sprite.y + sprite.height;
-      var standingPoint = self.game.stage.height / 2 - sprite.height;
-      var maxScale = 5;
-      var scaleBase = 0.05;
-
-      if (spriteBottomLeftPoint >= standingPoint) {
-        sprite.physics.acceleration.y = 0;
-        sprite.physics.velocity.y = 0;
-        if (maxScale > sprite.scaleX && maxScale > sprite.scaleY) {
-          sprite.scaleX += scaleBase;
-          sprite.scaleY += scaleBase;
-        } else {
-          self.explosionRhombus(sprite);
-          sprite.scaleX = 1;
-          sprite.scaleY = 1;
-          Helper.revive(sprite);
-          self.isSpawnSpinterOfRhombusSplinter = false;
-        }
-      }
-    }, { revive: false });
-  }
-};
-
-playState.spawnSpriteOfStar = function () {
-  Helper.strewnSprite(Helper.getMember(this.starPool.members), { y: this.game.stage.height }, { y: 3 });
 };
 
 playState.createExitGameText = function () {
