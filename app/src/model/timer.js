@@ -67,8 +67,12 @@ class Timer {
 
   createCubeTimer() {
     const context = this.context;
+    let spawnObjects = TimerSpawnObjects.instance;
+    spawnObjects.context = context;
 
-    this.cubeTimer = this.setInterval(context.spawnSpriteOfCube, 200);
+    this.cubeTimer = this.setInterval(() => {
+      spawnObjects.cube();
+    }, 200);
   }
 
   createCylinderTimer() {

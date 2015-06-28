@@ -520,8 +520,12 @@ var Timer = (function () {
     key: 'createCubeTimer',
     value: function createCubeTimer() {
       var context = this.context;
+      var spawnObjects = TimerSpawnObjects.instance;
+      spawnObjects.context = context;
 
-      this.cubeTimer = this.setInterval(context.spawnSpriteOfCube, 200);
+      this.cubeTimer = this.setInterval(function () {
+        spawnObjects.cube();
+      }, 200);
     }
   }, {
     key: 'createCylinderTimer',
@@ -613,6 +617,13 @@ var TimerSpawnObjects = (function () {
       Helper.strewnSprite(Helper.getMember(context.circlePool.members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
         _this2._tweenOfCircle(context, sprite);
       });
+    }
+  }, {
+    key: 'cube',
+    value: function cube() {
+      var context = this.context;
+
+      Helper.strewnSprite(Helper.getMember(context.cubePool.members), { y: context.game.stage.height }, { y: 5 });
     }
   }, {
     key: '_tweenOfCircle',
@@ -994,10 +1005,6 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.stop();
   this.soundEffectOfExplosion.volume = volume;
   this.soundEffectOfExplosion.play();
-};
-
-playState.spawnSpriteOfCube = function () {
-  Helper.strewnSprite(Helper.getMember(this.cubePool.members), { y: this.game.stage.height }, { y: 5 });
 };
 
 playState.spawnSpriteOfCylinder = function () {

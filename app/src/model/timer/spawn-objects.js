@@ -36,6 +36,16 @@ class TimerSpawnObjects {
     );
   }
 
+  cube() {
+    const context = this.context;
+
+    Helper.strewnSprite(
+      Helper.getMember(context.cubePool.members),
+      { y: context.game.stage.height },
+      { y: 5 }
+    );
+  }
+
   _tweenOfCircle(context, sprite) {
     let tween = context.game.tweens.create(sprite);
     let myUnit = MyUnit.instance;
