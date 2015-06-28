@@ -87,6 +87,36 @@ var stageColor = '010101';
 var titleState = new Kiwi.State('Title');
 var playState = new Kiwi.State('Play');
 
+var Explosion = (function () {
+  function Explosion() {
+    _classCallCheck(this, Explosion);
+  }
+
+  _createClass(Explosion, null, [{
+    key: 'generate',
+    value: function generate(context, baseX, baseY) {
+      var explosion = new Kiwi.GameObjects.Sprite(context, context.textures.explosion, baseX, baseY);
+
+      explosion.x = parseInt(baseX - explosion.width * 0.5);
+      explosion.y = parseInt(baseY - explosion.height * 0.5);
+
+      explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
+      explosion.animation.play('explosion');
+
+      return explosion;
+    }
+  }, {
+    key: 'isLastOfCellIndex',
+    value: function isLastOfCellIndex(sprite) {
+      if (sprite.cellIndex >= 3) {
+        sprite.destroy();
+      }
+    }
+  }]);
+
+  return Explosion;
+})();
+
 var hudSingleton = Symbol();
 var hudSingletonEnforcer = Symbol();
 
@@ -260,7 +290,7 @@ var MyUnit = (function () {
         Helper.revive(object);
         context.CURRENT_HITPOINT--;
         hud.hitPointBar.counter.current--;
-        context.spawnExplosion(myUnit.x, myUnit.y);
+        context.explosionPool.addChild(Explosion.generate(context, myUnit.x, myUnit.y));
         context.soundEffectOfMyUnitExplosion.play();
       }
 
@@ -1054,7 +1084,7 @@ playState.overlapOnObject = function (bullet, object, option) {
     soundEffectVolume = 1.0;
   }
 
-  this.spawnExplosion(bullet.x, bullet.y);
+  this.explosionPool.addChild(Explosion.generate(this, bullet.x, bullet.y));
   this.deadBullet(bullet);
   Helper.revive(object);
   this.playSoundEffectOfExplosion(soundEffectVolume);
@@ -1109,15 +1139,6 @@ playState.destroyFinishCellIndexOfExplosion = function () {
       explosionMembers[i].destroy();
     }
   }
-};
-
-playState.spawnExplosion = function (x, y) {
-  var explosion = new Kiwi.GameObjects.Sprite(this, this.textures.explosion, x, y);
-  this.explosionPool.addChild(explosion);
-  explosion.x = x - explosion.width * 0.5;
-  explosion.y = y - explosion.height * 0.5;
-  explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
-  explosion.animation.play('explosion');
 };
 
 playState.destroyObjects = function () {
@@ -1287,7 +1308,11 @@ playState.forEachOfPool = function () {
   });
   this.bulletPool.forEach(this, Helper.checkSpritePosition);
   this.bulletPool.forEach(this, this.checkCollision);
-  this.explosionPool.forEach(this, this.destroyFinishCellIndexOfExplosion);
+
+  this.explosionPool.members.map(function (member) {
+    Explosion.isLastOfCellIndex(member);
+  });
+
   this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
 
   var myUnit = MyUnit.instance;

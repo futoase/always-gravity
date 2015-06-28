@@ -11,7 +11,11 @@ playState.forEachOfPool = function() {
   });
   this.bulletPool.forEach(this, Helper.checkSpritePosition);
   this.bulletPool.forEach(this, this.checkCollision);
-  this.explosionPool.forEach(this, this.destroyFinishCellIndexOfExplosion);
+
+  this.explosionPool.members.map((member) => {
+    Explosion.isLastOfCellIndex(member)
+  });
+
   this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
 
   let myUnit = MyUnit.instance;

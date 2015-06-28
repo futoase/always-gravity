@@ -74,7 +74,9 @@ class MyUnit {
       Helper.revive(object);
       context.CURRENT_HITPOINT--;
       hud.hitPointBar.counter.current--;
-      context.spawnExplosion(myUnit.x, myUnit.y);
+      context.explosionPool.addChild(
+        Explosion.generate(context, myUnit.x, myUnit.y)
+      );
       context.soundEffectOfMyUnitExplosion.play();
     }
 
