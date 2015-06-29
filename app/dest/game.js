@@ -87,6 +87,192 @@ var stageColor = '010101';
 var titleState = new Kiwi.State('Title');
 var playState = new Kiwi.State('Play');
 
+var BulletGenerator = (function () {
+  function BulletGenerator() {
+    _classCallCheck(this, BulletGenerator);
+  }
+
+  _createClass(BulletGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, -100, -100);
+      bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
+      bullet.anchorPointX = bullet.width * 0.5;
+      bullet.anchorPointY = bullet.height * 0.5;
+      bullet.physics = bullet.components.add(new Kiwi.Components.ArcadePhysics(bullet, bullet.box));
+      bullet.alive = false;
+      bullet.index = index;
+
+      return bullet;
+    }
+  }]);
+
+  return BulletGenerator;
+})();
+
+var CircleGenerator = (function () {
+  function CircleGenerator() {
+    _classCallCheck(this, CircleGenerator);
+  }
+
+  _createClass(CircleGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var circle = new Kiwi.GameObjects.Sprite(context, context.textures.circle, -100, -100);
+      circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
+      circle.anchorPointX = circle.width * 0.5;
+      circle.anchorPointY = circle.height * 0.5;
+      circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
+      circle.x = parseInt(Math.random() * 800);
+      circle.index = index;
+      circle.score = 500;
+
+      return circle;
+    }
+  }]);
+
+  return CircleGenerator;
+})();
+
+var CubeGenerator = (function () {
+  function CubeGenerator() {
+    _classCallCheck(this, CubeGenerator);
+  }
+
+  _createClass(CubeGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var cube = new Kiwi.GameObjects.Sprite(context, context.textures.cube, -100, -100);
+      cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);
+      cube.anchorPointX = cube.width * 0.5;
+      cube.anchorPointY = cube.height * 0.5;
+      cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
+      cube.x = parseInt(Math.random() * 800);
+      cube.index = index;
+      cube.score = 100;
+
+      return cube;
+    }
+  }]);
+
+  return CubeGenerator;
+})();
+
+var CylinderGenerator = (function () {
+  function CylinderGenerator() {
+    _classCallCheck(this, CylinderGenerator);
+  }
+
+  _createClass(CylinderGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var cylinder = new Kiwi.GameObjects.Sprite(context, context.textures.cylinder, -100, -100);
+      cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
+      cylinder.animation.play('cycle');
+      cylinder.hitbox = new Kiwi.Geom.Rectangle(0, 10, 30, 110);
+      cylinder.anchorPointX = cylinder.x * 0.5;
+      cylinder.anchorPointY = cylinder.y * 0.5;
+      cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
+      cylinder.x = parseInt(Math.random() * 800);
+      cylinder.y = -cylinder.height;
+      cylinder.index = index;
+      cylinder.score = 200;
+
+      return cylinder;
+    }
+  }]);
+
+  return CylinderGenerator;
+})();
+
+var MyUnitSplinterGenerator = (function () {
+  function MyUnitSplinterGenerator() {
+    _classCallCheck(this, MyUnitSplinterGenerator);
+  }
+
+  _createClass(MyUnitSplinterGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var myUnitSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.myUnitSplinter, -100, -100);
+      myUnitSplinter.animation.add('explosion', [0, 1, 2, 3, 4, 5], 0.05, true);
+      myUnitSplinter.physics = myUnitSplinter.components.add(new Kiwi.Components.ArcadePhysics(myUnitSplinter, myUnitSplinter.box));
+      myUnitSplinter.index = index;
+
+      return myUnitSplinter;
+    }
+  }]);
+
+  return MyUnitSplinterGenerator;
+})();
+
+var RhombusSplinterGenerator = (function () {
+  function RhombusSplinterGenerator() {
+    _classCallCheck(this, RhombusSplinterGenerator);
+  }
+
+  _createClass(RhombusSplinterGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var rhombusSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
+      rhombusSplinter.physics = rhombusSplinter.components.add(new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox));
+      rhombusSplinter.index = index;
+
+      return rhombusSplinter;
+    }
+  }]);
+
+  return RhombusSplinterGenerator;
+})();
+
+var RhombusGenerator = (function () {
+  function RhombusGenerator() {
+    _classCallCheck(this, RhombusGenerator);
+  }
+
+  _createClass(RhombusGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var rhombus = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
+      rhombus.physics = rhombus.components.add(new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box));
+      rhombus.x = context.game.stage.width / 2 - rhombus.width;
+      rhombus.y = -rhombus.height;
+      rhombus.index = index;
+
+      return rhombus;
+    }
+  }]);
+
+  return RhombusGenerator;
+})();
+
+var StarGenerator = (function () {
+  function StarGenerator() {
+    _classCallCheck(this, StarGenerator);
+  }
+
+  _createClass(StarGenerator, null, [{
+    key: 'create',
+    value: function create(context, index) {
+      var star = new Kiwi.GameObjects.Sprite(context, context.textures.star, -100, -100);
+      star.anchorPointX = star.width * 0.5;
+      star.anchorPointY = star.height * 0.5;
+      star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
+      star.physics.acceleration.y = 1;
+      star.x = parseInt(Math.random() * 800);
+      if (index < parseInt(context.NUMBER_OF_STAR / 3)) {
+        star.y = parseInt(Math.random() * 600);
+      } else {
+        star.y = -1 * parseInt(Math.random() * 200);
+      }
+      star.index = index;
+
+      return star;
+    }
+  }]);
+
+  return StarGenerator;
+})();
+
 var Explosion = (function () {
   function Explosion() {
     _classCallCheck(this, Explosion);
@@ -1131,16 +1317,6 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.play();
 };
 
-playState.destroyFinishCellIndexOfExplosion = function () {
-  var explosionMembers = this.explosionPool.members;
-
-  for (var i = 0; i < explosionMembers.length; i++) {
-    if (explosionMembers[i].cellIndex >= 3) {
-      explosionMembers[i].destroy();
-    }
-  }
-};
-
 playState.destroyObjects = function () {
   this.destroyGroups();
   this.destroyMusics();
@@ -1192,28 +1368,13 @@ playState.whenGameOverInputKeys = function () {
 
 playState.createBulletAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_BULLET; i++) {
-    var bullet = new Kiwi.GameObjects.Sprite(this, this.textures.bullet, -100, -100);
-    bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
-    this.bulletPool.addChild(bullet);
-    bullet.anchorPointX = bullet.width * 0.5;
-    bullet.anchorPointY = bullet.height * 0.5;
-    bullet.physics = bullet.components.add(new Kiwi.Components.ArcadePhysics(bullet, bullet.box));
-    bullet.alive = false;
-    bullet.index = i;
+    this.bulletPool.addChild(BulletGenerator.create(this, i));
   }
 };
 
 playState.createCircleAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_CIRCLE; i++) {
-    var circle = new Kiwi.GameObjects.Sprite(this, this.textures.circle, -100, -100);
-    circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
-    this.circlePool.addChild(circle);
-    circle.anchorPointX = circle.width * 0.5;
-    circle.anchorPointY = circle.height * 0.5;
-    circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
-    circle.x = parseInt(Math.random() * 800);
-    circle.index = i;
-    circle.score = 500;
+    this.circlePool.addChild(CircleGenerator.create(this, i));
   }
 };
 
@@ -1256,32 +1417,13 @@ playState.createGroups = function () {
 
 playState.createCubeAndApppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_CUBE; i++) {
-    var cube = new Kiwi.GameObjects.Sprite(this, this.textures.cube, -100, -100);
-    cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);
-    this.cubePool.addChild(cube);
-    cube.anchorPointX = cube.width * 0.5;
-    cube.anchorPointY = cube.height * 0.5;
-    cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
-    cube.x = parseInt(Math.random() * 800);
-    cube.index = i;
-    cube.score = 100;
+    this.cubePool.addChild(CubeGenerator.create(this, i));
   }
 };
 
 playState.createCylinderAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_CYLINDER; i++) {
-    var cylinder = new Kiwi.GameObjects.Sprite(this, this.textures.cylinder, -100, -100);
-    cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
-    cylinder.animation.play('cycle');
-    cylinder.hitbox = new Kiwi.Geom.Rectangle(0, 10, 30, 110);
-    this.cylinderPool.addChild(cylinder);
-    cylinder.anchorPointX = cylinder.x * 0.5;
-    cylinder.anchorPointY = cylinder.y * 0.5;
-    cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
-    cylinder.x = parseInt(Math.random() * 800);
-    cylinder.y = -cylinder.height;
-    cylinder.index = i;
-    cylinder.score = 200;
+    this.cylinderPool.addChild(CylinderGenerator.create(this, i));
   }
 };
 
@@ -1331,50 +1473,25 @@ playState.forEachOfPool = function () {
 
 playState.createMyUnitSplinterAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_MYUNIT_SPLINTER; i++) {
-    var myUnitSplinter = new Kiwi.GameObjects.Sprite(this, this.textures.myUnitSplinter, -100, -100);
-
-    this.myUnitSplinterPool.addChild(myUnitSplinter);
-    myUnitSplinter.animation.add('explosion', [0, 1, 2, 3, 4, 5], 0.05, true);
-    myUnitSplinter.physics = myUnitSplinter.components.add(new Kiwi.Components.ArcadePhysics(myUnitSplinter, myUnitSplinter.box));
-    myUnitSplinter.index = i;
+    this.myUnitSplinterPool.addChild(MyUnitSplinterGenerator.create(this, i));
   }
 };
 
 playState.createRhombusSplinterAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
-    var rhombusSplinter = new Kiwi.GameObjects.Sprite(this, this.textures.rhombus, -100, -100);
-    this.rhombusSplinterPool.addChild(rhombusSplinter);
-    rhombusSplinter.physics = rhombusSplinter.components.add(new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox));
-    rhombusSplinter.index = i;
+    this.rhombusSplinterPool.addChild(RhombusSplinterGenerator.create(this, i));
   }
 };
 
 playState.createRhombusAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_RHOMBUS; i++) {
-    var rhombus = new Kiwi.GameObjects.Sprite(this, this.textures.rhombus, -100, -100);
-    this.rhombusPool.addChild(rhombus);
-    rhombus.physics = rhombus.components.add(new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box));
-    rhombus.x = this.game.stage.width / 2 - rhombus.width;
-    rhombus.y = -rhombus.height;
-    rhombus.index = i;
+    this.rhombusPool.addChild(RhombusGenerator.create(this, i));
   }
 };
 
 playState.createStarAndAppendGroup = function () {
   for (var i = 0; i < this.NUMBER_OF_STAR; i++) {
-    var star = new Kiwi.GameObjects.Sprite(this, this.textures.star, -100, -100);
-    this.starPool.addChild(star);
-    star.anchorPointX = star.width * 0.5;
-    star.anchorPointY = star.height * 0.5;
-    star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
-    star.physics.acceleration.y = 1;
-    star.x = parseInt(Math.random() * 800);
-    if (i < parseInt(this.NUMBER_OF_STAR / 3)) {
-      star.y = parseInt(Math.random() * 600);
-    } else {
-      star.y = -1 * parseInt(Math.random() * 200);
-    }
-    star.index = i;
+    this.starPool.addChild(StarGenerator.create(this, i));
   }
 };
 

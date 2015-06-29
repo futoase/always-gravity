@@ -8,6 +8,7 @@ gulp.task('concat', function(cb){
     './app/src/base/helper.js',
     './app/src/base/config.js',
     './app/src/base/state.js',
+    './app/src/lib/**/*.js',
     './app/src/model/**/*.js',
     './app/src/title-state/**/*.js',
     './app/src/play-state/**/*.js',
