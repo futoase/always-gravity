@@ -303,6 +303,157 @@ var Explosion = (function () {
   return Explosion;
 })();
 
+var groupSingleton = Symbol();
+var groupSingletonEnforcer = Symbol();
+
+var Group = (function () {
+  function Group(enforcer) {
+    _classCallCheck(this, Group);
+
+    if (enforcer !== groupSingletonEnforcer) {
+      throw 'Cannot constructor singleton!';
+    }
+  }
+
+  _createClass(Group, [{
+    key: 'star',
+    value: function star() {
+      var context = this.context;
+      context.starPool = new Kiwi.Group(context);
+      context.addChild(context.starPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_STAR; i++) {
+        context.starPool.addChild(StarGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'cube',
+    value: function cube() {
+      var context = this.context;
+      context.cubePool = new Kiwi.Group(context);
+      context.addChild(context.cubePool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_CUBE; i++) {
+        context.cubePool.addChild(CubeGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'circle',
+    value: function circle() {
+      var context = this.context;
+      context.circlePool = new Kiwi.Group(context);
+      context.addChild(context.circlePool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_CIRCLE; i++) {
+        context.circlePool.addChild(CircleGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'bullet',
+    value: function bullet() {
+      var context = this.context;
+      context.bulletPool = new Kiwi.Group(context);
+      context.addChild(context.bulletPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_BULLET; i++) {
+        context.bulletPool.addChild(BulletGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'cylinder',
+    value: function cylinder() {
+      var context = this.context;
+      context.cylinderPool = new Kiwi.Group(context);
+      context.addChild(context.cylinderPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_CYLINDER; i++) {
+        context.cylinderPool.addChild(CylinderGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'myUnitSplinter',
+    value: function myUnitSplinter() {
+      var context = this.context;
+      context.myUnitSplinterPool = new Kiwi.Group(context);
+      context.addChild(context.myUnitSplinterPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_MYUNIT_SPLINTER; i++) {
+        context.myUnitSplinterPool.addChild(MyUnitSplinterGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'rhombusSplinter',
+    value: function rhombusSplinter() {
+      var context = this.context;
+      context.rhombusSplinterPool = new Kiwi.Group(context);
+      context.addChild(context.rhombusSplinterPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
+        context.rhombusSplinterPool.addChild(RhombusSplinterGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'rhombus',
+    value: function rhombus() {
+      var context = this.context;
+      context.rhombusPool = new Kiwi.Group(context);
+      context.addChild(context.rhombusPool);
+
+      var i = undefined;
+      for (i = 0; i < context.NUMBER_OF_RHOMBUS; i++) {
+        context.rhombusPool.addChild(RhombusGenerator.create(context, i));
+      }
+    }
+  }, {
+    key: 'explosion',
+    value: function explosion() {
+      var context = this.context;
+      context.explosionPool = new Kiwi.Group(context);
+      context.addChild(context.explosionPool);
+    }
+  }, {
+    key: 'context',
+    get: function get() {
+      return this._context;
+    },
+    set: function set(value) {
+      this._context = value;
+    }
+  }], [{
+    key: 'initialize',
+    value: function initialize(context) {
+      var group = Group.instance;
+      group.context = context;
+      group.star();
+      group.cube();
+      group.circle();
+      group.bullet();
+      group.cylinder();
+      group.myUnitSplinter();
+      group.rhombusSplinter();
+      group.rhombus();
+      group.explosion();
+    }
+  }, {
+    key: 'instance',
+    get: function get() {
+      if (!this[groupSingleton]) {
+        this[groupSingleton] = new Group(groupSingletonEnforcer);
+      }
+      return this[groupSingleton];
+    }
+  }]);
+
+  return Group;
+})();
+
 var hudSingleton = Symbol();
 var hudSingletonEnforcer = Symbol();
 
@@ -1366,65 +1517,8 @@ playState.whenGameOverInputKeys = function () {
   }
 };
 
-playState.createBulletAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_BULLET; i++) {
-    this.bulletPool.addChild(BulletGenerator.create(this, i));
-  }
-};
-
-playState.createCircleAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_CIRCLE; i++) {
-    this.circlePool.addChild(CircleGenerator.create(this, i));
-  }
-};
-
 playState.createGroups = function () {
-  this.starPool = new Kiwi.Group(this);
-  this.addChild(this.starPool);
-  this.createStarAndAppendGroup();
-
-  this.cubePool = new Kiwi.Group(this);
-  this.addChild(this.cubePool);
-  this.createCubeAndApppendGroup();
-
-  this.circlePool = new Kiwi.Group(this);
-  this.addChild(this.circlePool);
-  this.createCircleAndAppendGroup();
-
-  this.cylinderPool = new Kiwi.Group(this);
-  this.addChild(this.cylinderPool);
-  this.createCylinderAndAppendGroup();
-
-  this.bulletPool = new Kiwi.Group(this);
-  this.addChild(this.bulletPool);
-  this.createBulletAndAppendGroup();
-
-  this.myUnitSplinterPool = new Kiwi.Group(this);
-  this.addChild(this.myUnitSplinterPool);
-  this.createMyUnitSplinterAndAppendGroup();
-
-  this.rhombusPool = new Kiwi.Group(this);
-  this.addChild(this.rhombusPool);
-  this.createRhombusAndAppendGroup();
-
-  this.rhombusSplinterPool = new Kiwi.Group(this);
-  this.addChild(this.rhombusSplinterPool);
-  this.createRhombusSplinterAndAppendGroup();
-
-  this.explosionPool = new Kiwi.Group(this);
-  this.addChild(this.explosionPool);
-};
-
-playState.createCubeAndApppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_CUBE; i++) {
-    this.cubePool.addChild(CubeGenerator.create(this, i));
-  }
-};
-
-playState.createCylinderAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_CYLINDER; i++) {
-    this.cylinderPool.addChild(CylinderGenerator.create(this, i));
-  }
+  Group.initialize(this);
 };
 
 playState.destroyGroups = function () {
@@ -1469,30 +1563,6 @@ playState.forEachOfPool = function () {
   this.rhombusSplinterPool.members.map(function (member) {
     myUnit.overlapOnOther(member);
   });
-};
-
-playState.createMyUnitSplinterAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_MYUNIT_SPLINTER; i++) {
-    this.myUnitSplinterPool.addChild(MyUnitSplinterGenerator.create(this, i));
-  }
-};
-
-playState.createRhombusSplinterAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
-    this.rhombusSplinterPool.addChild(RhombusSplinterGenerator.create(this, i));
-  }
-};
-
-playState.createRhombusAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_RHOMBUS; i++) {
-    this.rhombusPool.addChild(RhombusGenerator.create(this, i));
-  }
-};
-
-playState.createStarAndAppendGroup = function () {
-  for (var i = 0; i < this.NUMBER_OF_STAR; i++) {
-    this.starPool.addChild(StarGenerator.create(this, i));
-  }
 };
 
 playState.createHUD = function () {
