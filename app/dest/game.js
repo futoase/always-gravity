@@ -381,6 +381,9 @@ var GroupPool = (function () {
       return context.explosionPool;
     }
   }, {
+    key: 'removeChildrenForAll',
+    value: function removeChildrenForAll(context) {}
+  }, {
     key: 'forEachStar',
     value: function forEachStar(context) {
       var pool = GroupPool.star(context);
@@ -1544,6 +1547,55 @@ playState.update = function () {
   }
 };
 
+playState.destroyObjects = function () {
+  this.destroyGroups();
+  this.destroyMusics();
+  this.destroyHUD();
+  this.destroyTimers();
+
+  var myUnit = MyUnit.instance;
+  myUnit.context = this;
+
+  myUnit.sprite.destroy();
+};
+
+playState.gameOver = function () {
+  if (this.isGameOver) {
+    return;
+  }
+
+  this.destroyObjects();
+
+  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
+  this.musicGameOver.play();
+
+  this.createGameOverText();
+  this.addChild(this.gameOverText);
+
+  this.createScoreText(this.gameScoreCounter);
+  this.addChild(this.scoreText);
+
+  this.createRestartText();
+  this.addChild(this.restartText);
+
+  this.createExitGameText();
+  this.addChild(this.exitGameText);
+
+  if (this.isGameOver === undefined) {
+    this.isGameOver = true;
+  }
+};
+
+playState.whenGameOverInputKeys = function () {
+  if (this.exitGameInputIsActive()) {
+    ipc.sendSync('quit');
+  }
+
+  if (this.restartInputIsActive()) {
+    window.location.reload(true);
+  }
+};
+
 playState.checkCollision = function (bullet) {
   var cubeMembers = this.cubePool.members;
   var circleMembers = this.circlePool.members;
@@ -1639,55 +1691,6 @@ playState.playSoundEffectOfExplosion = function (volume) {
   this.soundEffectOfExplosion.play();
 };
 
-playState.destroyObjects = function () {
-  this.destroyGroups();
-  this.destroyMusics();
-  this.destroyHUD();
-  this.destroyTimers();
-
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  myUnit.sprite.destroy();
-};
-
-playState.gameOver = function () {
-  if (this.isGameOver) {
-    return;
-  }
-
-  this.destroyObjects();
-
-  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
-  this.musicGameOver.play();
-
-  this.createGameOverText();
-  this.addChild(this.gameOverText);
-
-  this.createScoreText(this.gameScoreCounter);
-  this.addChild(this.scoreText);
-
-  this.createRestartText();
-  this.addChild(this.restartText);
-
-  this.createExitGameText();
-  this.addChild(this.exitGameText);
-
-  if (this.isGameOver === undefined) {
-    this.isGameOver = true;
-  }
-};
-
-playState.whenGameOverInputKeys = function () {
-  if (this.exitGameInputIsActive()) {
-    ipc.sendSync('quit');
-  }
-
-  if (this.restartInputIsActive()) {
-    window.location.reload(true);
-  }
-};
-
 playState.createGroups = function () {
   Group.initialize(this);
 };
@@ -1711,25 +1714,6 @@ playState.forEachOfPool = function () {
   GroupPool.forEachExplosion(this);
   GroupPool.forEachRhombusSplinter(this);
   GroupPool.forEachRhombus(this);
-};
-
-playState.createHUD = function () {
-  var hud = HUD.instance;
-  hud.context = this;
-
-  this.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
-  this.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
-  this.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
-};
-
-playState.destroyHUD = function () {
-  this.game.huds.defaultHUD.removeAllWidgets();
-};
-
-playState.updateHUD = function () {
-  var hud = HUD.instance;
-  hud.context = this;
-  hud.update();
 };
 
 playState.leftInputIsActive = function () {
@@ -1853,6 +1837,25 @@ playState.destroyTimers = function () {
   timer.context = this;
 
   timer.removeAllTimer();
+};
+
+playState.createHUD = function () {
+  var hud = HUD.instance;
+  hud.context = this;
+
+  this.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
+  this.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
+  this.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
+};
+
+playState.destroyHUD = function () {
+  this.game.huds.defaultHUD.removeAllWidgets();
+};
+
+playState.updateHUD = function () {
+  var hud = HUD.instance;
+  hud.context = this;
+  hud.update();
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);

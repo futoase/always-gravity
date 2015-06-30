@@ -62,6 +62,24 @@ class GroupPool {
     return context.explosionPool;
   }
 
+  static removeChildrenForAll(context) {
+    let star = GroupPool.star(context);
+    let cube = GroupPool.cube(context);
+    let circle = GroupPool.circle(context);
+    let cylinder = GroupPool.cylinder(context);
+    let bullet = GroupPool.bullet(context);
+    let explosion = GroupPool.explosion(context);
+    let rhombus = GroupPool.rhombus(content);
+
+    star.removeChildren(0, star.members.length);
+    cube.removeChildren(0, cube.members.length);
+    circle.removeChildren(0, circle.members.length);
+    cylinder.removeChildren(0, cylinder.members.length);
+    bullet.removeChildren(0, bullet.members.length);
+    explosion.removeChildren(0, explosion.members.length);
+    rhombus.removeChildren(0, rhombus.members.length);
+  }
+
   static forEachStar(context) {
     let pool = GroupPool.star(context);
     pool.forEach(context, Helper.checkSpritePosition);
