@@ -303,6 +303,88 @@ var Explosion = (function () {
   return Explosion;
 })();
 
+var GroupPool = (function () {
+  function GroupPool() {
+    _classCallCheck(this, GroupPool);
+  }
+
+  _createClass(GroupPool, null, [{
+    key: 'star',
+    value: function star(context) {
+      if (context.starPool === undefined) {
+        context.starPool = new Kiwi.Group(context);
+      }
+      return context.starPool;
+    }
+  }, {
+    key: 'cube',
+    value: function cube(context) {
+      if (context.cubePool === undefined) {
+        context.cubePool = new Kiwi.Group(context);
+      }
+      return context.cubePool;
+    }
+  }, {
+    key: 'circle',
+    value: function circle(context) {
+      if (context.circlePool === undefined) {
+        context.circlePool = new Kiwi.Group(context);
+      }
+      return context.circlePool;
+    }
+  }, {
+    key: 'bullet',
+    value: function bullet(context) {
+      if (context.bulletPool === undefined) {
+        context.bulletPool = new Kiwi.Group(context);
+      }
+      return context.bulletPool;
+    }
+  }, {
+    key: 'cylinder',
+    value: function cylinder(context) {
+      if (context.cylinderPool === undefined) {
+        context.cylinderPool = new Kiwi.Group(context);
+      }
+      return context.cylinderPool;
+    }
+  }, {
+    key: 'myUnitSplinter',
+    value: function myUnitSplinter(context) {
+      if (context.myUnitSplinterPool === undefined) {
+        context.myUnitSplinterPool = new Kiwi.Group(context);
+      }
+      return context.myUnitSplinterPool;
+    }
+  }, {
+    key: 'rhombusSplinter',
+    value: function rhombusSplinter(context) {
+      if (context.rhombusSplinterPool === undefined) {
+        context.rhombusSplinterPool = new Kiwi.Group(context);
+      }
+      return context.rhombusSplinterPool;
+    }
+  }, {
+    key: 'rhombus',
+    value: function rhombus(context) {
+      if (context.rhombusPool === undefined) {
+        context.rhombusPool = new Kiwi.Group(context);
+      }
+      return context.rhombusPool;
+    }
+  }, {
+    key: 'explosion',
+    value: function explosion(context) {
+      if (context.explosionPool === undefined) {
+        context.explosionPool = new Kiwi.Group(context);
+      }
+      return context.explosionPool;
+    }
+  }]);
+
+  return GroupPool;
+})();
+
 var groupSingleton = Symbol();
 var groupSingletonEnforcer = Symbol();
 
@@ -319,104 +401,103 @@ var Group = (function () {
     key: 'star',
     value: function star() {
       var context = this.context;
-      context.starPool = new Kiwi.Group(context);
-      context.addChild(context.starPool);
+      var pool = GroupPool.star(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_STAR; i++) {
-        context.starPool.addChild(StarGenerator.create(context, i));
+        pool.addChild(StarGenerator.create(context, i));
       }
     }
   }, {
     key: 'cube',
     value: function cube() {
       var context = this.context;
-      context.cubePool = new Kiwi.Group(context);
-      context.addChild(context.cubePool);
+      var pool = GroupPool.cube(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_CUBE; i++) {
-        context.cubePool.addChild(CubeGenerator.create(context, i));
+        pool.addChild(CubeGenerator.create(context, i));
       }
     }
   }, {
     key: 'circle',
     value: function circle() {
       var context = this.context;
-      context.circlePool = new Kiwi.Group(context);
-      context.addChild(context.circlePool);
+      var pool = GroupPool.circle(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_CIRCLE; i++) {
-        context.circlePool.addChild(CircleGenerator.create(context, i));
+        pool.addChild(CircleGenerator.create(context, i));
       }
     }
   }, {
     key: 'bullet',
     value: function bullet() {
       var context = this.context;
-      context.bulletPool = new Kiwi.Group(context);
-      context.addChild(context.bulletPool);
+      var pool = GroupPool.bullet(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_BULLET; i++) {
-        context.bulletPool.addChild(BulletGenerator.create(context, i));
+        pool.addChild(BulletGenerator.create(context, i));
       }
     }
   }, {
     key: 'cylinder',
     value: function cylinder() {
       var context = this.context;
-      context.cylinderPool = new Kiwi.Group(context);
-      context.addChild(context.cylinderPool);
+      var pool = GroupPool.cylinder(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_CYLINDER; i++) {
-        context.cylinderPool.addChild(CylinderGenerator.create(context, i));
+        pool.addChild(CylinderGenerator.create(context, i));
       }
     }
   }, {
     key: 'myUnitSplinter',
     value: function myUnitSplinter() {
       var context = this.context;
-      context.myUnitSplinterPool = new Kiwi.Group(context);
-      context.addChild(context.myUnitSplinterPool);
+      var pool = GroupPool.myUnitSplinter(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_MYUNIT_SPLINTER; i++) {
-        context.myUnitSplinterPool.addChild(MyUnitSplinterGenerator.create(context, i));
+        pool.addChild(MyUnitSplinterGenerator.create(context, i));
       }
     }
   }, {
     key: 'rhombusSplinter',
     value: function rhombusSplinter() {
       var context = this.context;
-      context.rhombusSplinterPool = new Kiwi.Group(context);
-      context.addChild(context.rhombusSplinterPool);
+      var pool = GroupPool.rhombusSplinter(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
-        context.rhombusSplinterPool.addChild(RhombusSplinterGenerator.create(context, i));
+        pool.addChild(RhombusSplinterGenerator.create(context, i));
       }
     }
   }, {
     key: 'rhombus',
     value: function rhombus() {
       var context = this.context;
-      context.rhombusPool = new Kiwi.Group(context);
-      context.addChild(context.rhombusPool);
+      var pool = GroupPool.rhombus(context);
+      context.addChild(pool);
 
       var i = undefined;
       for (i = 0; i < context.NUMBER_OF_RHOMBUS; i++) {
-        context.rhombusPool.addChild(RhombusGenerator.create(context, i));
+        pool.addChild(RhombusGenerator.create(context, i));
       }
     }
   }, {
     key: 'explosion',
     value: function explosion() {
       var context = this.context;
-      context.explosionPool = new Kiwi.Group(context);
-      context.addChild(context.explosionPool);
+      context.addChild(GroupPool.explosion(context));
     }
   }, {
     key: 'context',
