@@ -380,6 +380,96 @@ var GroupPool = (function () {
       }
       return context.explosionPool;
     }
+  }, {
+    key: 'forEachStar',
+    value: function forEachStar(context) {
+      var pool = GroupPool.star(context);
+      pool.forEach(context, Helper.checkSpritePosition);
+    }
+  }, {
+    key: 'forEachCube',
+    value: function forEachCube(context) {
+      var pool = GroupPool.cube(context);
+      pool.forEach(context, function (cube) {
+        Helper.updateSpriteRotation(cube, 5);
+      });
+      pool.forEach(context, Helper.checkSpritePosition);
+    }
+  }, {
+    key: 'forEachCylinder',
+    value: function forEachCylinder(context) {
+      var pool = GroupPool.cylinder(context);
+      pool.forEach(context, Helper.checkSpritePosition);
+    }
+  }, {
+    key: 'forEachCircle',
+    value: function forEachCircle(context) {
+      var pool = GroupPool.circle(context);
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      pool.forEach(context, Helper.checkSpritePosition);
+      pool.forEach(context, function (circle) {
+        Helper.updateSpriteRotation(circle, 30);
+      });
+      pool.members.map(function (member) {
+        myUnit.overlapOnOther(member);
+      });
+    }
+  }, {
+    key: 'forEachCircle',
+    value: function forEachCircle(context) {
+      var pool = GroupPool.circle(context);
+      var myUnit = MyUnit.instance;
+
+      myUnit.context = context;
+
+      context.circlePool.forEach(context, Helper.checkSpritePosition);
+      context.circlePool.forEach(context, function (circle) {
+        Helper.updateSpriteRotation(circle, 30);
+      });
+      pool.members.map(function (member) {
+        myUnit.overlapOnOther(member);
+      });
+    }
+  }, {
+    key: 'forEachBullet',
+    value: function forEachBullet(context) {
+      var pool = GroupPool.bullet(context);
+      pool.forEach(context, Helper.checkSpritePosition);
+      pool.forEach(context, context.checkCollision);
+    }
+  }, {
+    key: 'forEachExplosion',
+    value: function forEachExplosion(context) {
+      var pool = GroupPool.explosion(context);
+      pool.members.map(function (member) {
+        Explosion.isLastOfCellIndex(member);
+      });
+    }
+  }, {
+    key: 'forEachRhombusSplinter',
+    value: function forEachRhombusSplinter(context) {
+      var pool = GroupPool.rhombusSplinter(context);
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      pool.forEach(context, Helper.checkSpritePosition);
+      pool.members.map(function (member) {
+        myUnit.overlapOnOther(member);
+      });
+    }
+  }, {
+    key: 'forEachRhombus',
+    value: function forEachRhombus(context) {
+      var pool = GroupPool.rhombus(context);
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      pool.members.map(function (member) {
+        myUnit.overlapOnOther(member);
+      });
+    }
   }]);
 
   return GroupPool;
@@ -1613,37 +1703,14 @@ playState.destroyGroups = function () {
 };
 
 playState.forEachOfPool = function () {
-  this.starPool.forEach(this, Helper.checkSpritePosition);
-  this.cubePool.forEach(this, function (cube) {
-    Helper.updateSpriteRotation(cube, 5);
-  });
-  this.cubePool.forEach(this, Helper.checkSpritePosition);
-  this.cylinderPool.forEach(this, Helper.checkSpritePosition);
-  this.circlePool.forEach(this, Helper.checkSpritePosition);
-  this.circlePool.forEach(this, function (circle) {
-    Helper.updateSpriteRotation(circle, 30);
-  });
-  this.bulletPool.forEach(this, Helper.checkSpritePosition);
-  this.bulletPool.forEach(this, this.checkCollision);
-
-  this.explosionPool.members.map(function (member) {
-    Explosion.isLastOfCellIndex(member);
-  });
-
-  this.rhombusSplinterPool.forEach(this, Helper.checkSpritePosition);
-
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  this.circlePool.members.map(function (member) {
-    myUnit.overlapOnOther(member);
-  });
-  this.rhombusPool.members.map(function (member) {
-    myUnit.overlapOnOther(member);
-  });
-  this.rhombusSplinterPool.members.map(function (member) {
-    myUnit.overlapOnOther(member);
-  });
+  GroupPool.forEachStar(this);
+  GroupPool.forEachCube(this);
+  GroupPool.forEachCylinder(this);
+  GroupPool.forEachCircle(this);
+  GroupPool.forEachBullet(this);
+  GroupPool.forEachExplosion(this);
+  GroupPool.forEachRhombusSplinter(this);
+  GroupPool.forEachRhombus(this);
 };
 
 playState.createHUD = function () {
