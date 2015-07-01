@@ -3,7 +3,7 @@ playState.create = function() {
 
   this.setConfig();
   this.setMusics();
-  this.createHUD();
+  HUD.initialize(this);
   this.createGroups();
   this.createMyUnit();
   this.setGameKeys();

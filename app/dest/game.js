@@ -1746,7 +1746,7 @@ playState.create = function () {
 
   this.setConfig();
   this.setMusics();
-  this.createHUD();
+  HUD.initialize(this);
   this.createGroups();
   this.createMyUnit();
   this.setGameKeys();
@@ -1787,7 +1787,7 @@ playState.update = function () {
   myUnit.context = this;
 
   this.updateMyUnit();
-  this.updateHUD();
+  HUD.update(this);
 
   if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
     Bullet.shoot(this);
@@ -1862,16 +1862,8 @@ playState.forEachOfPool = function () {
   GroupPool.forEachRhombus(this);
 };
 
-playState.createHUD = function () {
-  HUD.initialize(this);
-};
-
 playState.destroyHUD = function () {
   this.game.huds.defaultHUD.removeAllWidgets();
-};
-
-playState.updateHUD = function () {
-  HUD.update(this);
 };
 
 playState.leftInputIsActive = function () {

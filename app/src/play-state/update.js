@@ -4,7 +4,7 @@ playState.update = function() {
   myUnit.context = this;
 
   this.updateMyUnit();
-  this.updateHUD();
+  HUD.update(this);
 
   if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
     Bullet.shoot(this);
