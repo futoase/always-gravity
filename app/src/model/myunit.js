@@ -74,7 +74,7 @@ class MyUnit {
       Helper.revive(object);
       context.CURRENT_HITPOINT--;
       hud.hitPointBar.counter.current--;
-      context.explosionPool.addChild(
+      GroupPool.explosion(context).addChild(
         Explosion.generate(context, myUnit.x, myUnit.y)
       );
       context.soundEffectOfMyUnitExplosion.play();
@@ -207,7 +207,7 @@ class MyUnit {
   _createMyUnitSplinter() {
     const context = this.context;
     const myUnit = this.sprite;
-    let myUnitSplinterMembers = context.myUnitSplinterPool.members;
+    let myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
     let angleBase = parseInt(360 / context.NUMBER_OF_MYUNIT_SPLINTER);
     let myUnitSplinterAngle = 0;
 

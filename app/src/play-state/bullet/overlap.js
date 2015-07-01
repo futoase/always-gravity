@@ -7,7 +7,7 @@ playState.overlapOnObject = function(bullet, object, option) {
     soundEffectVolume = 1.0;
   }
 
-  this.explosionPool.addChild(
+  GroupPool.explosion(this).addChild(
     Explosion.generate(this, bullet.x, bullet.y)
   );
   this.deadBullet(bullet);

@@ -27,7 +27,7 @@ class TimerSpawnObjects {
     const context = this.context;
 
     Helper.strewnSprite(
-      Helper.getMember(context.circlePool.members),
+      Helper.getMember(GroupPool.circle(context).members),
       { y: context.game.stage.height },
       { y: 2 },
       (sprite) => {
@@ -40,7 +40,7 @@ class TimerSpawnObjects {
     const context = this.context;
 
     Helper.strewnSprite(
-      Helper.getMember(context.cubePool.members),
+      Helper.getMember(GroupPool.cube(context).members),
       { y: context.game.stage.height },
       { y: 5 }
     );
@@ -50,7 +50,7 @@ class TimerSpawnObjects {
     const context = this.context;
 
     Helper.strewnSprite(
-      Helper.getMember(context.cylinderPool.members),
+      Helper.getMember(GroupPool.cylinder(context).members),
       { y: context.game.stage.height },
       { y: 10 }
     );
@@ -60,7 +60,7 @@ class TimerSpawnObjects {
     const context = this.context;
 
     Helper.strewnSprite(
-      Helper.getMember(context.starPool.members),
+      Helper.getMember(GroupPool.star(context).members),
       { y: context.game.stage.height },
       { y: 3 }
     );
@@ -79,7 +79,7 @@ class TimerSpawnObjects {
 
     if (context.isSpawnSpriteOfRhombusSplinter) {
       Helper.strewnSprite(
-        Helper.getMember(context.rhombusPool.members),
+        Helper.getMember(GroupPool.rhombus(context).members),
         { y: context.game.stage.height / 2 - 32 },
         { y: 1 },
         (sprite) => {
@@ -113,7 +113,7 @@ class TimerSpawnObjects {
   }
 
   _explosionRhombus(context, sprite) {
-    const rhombusSplinterMembers = context.rhombusSplinterPool.members;
+    const rhombusSplinterMembers = GroupPool.rhombusSplinter(context).members;
     const angleBase = parseInt(360 / context.NUMBER_OF_RHOMBUS_SPLINTER);
     let rhombusSplinterAngle = 0;
     let explosionCounter = 0;

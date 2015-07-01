@@ -443,8 +443,8 @@ var GroupPool = (function () {
 
       myUnit.context = context;
 
-      context.circlePool.forEach(context, Helper.checkSpritePosition);
-      context.circlePool.forEach(context, function (circle) {
+      pool.forEach(context, Helper.checkSpritePosition);
+      pool.forEach(context, function (circle) {
         Helper.updateSpriteRotation(circle, 30);
       });
       pool.members.map(function (member) {
@@ -817,7 +817,7 @@ var MyUnit = (function () {
         Helper.revive(object);
         context.CURRENT_HITPOINT--;
         hud.hitPointBar.counter.current--;
-        context.explosionPool.addChild(Explosion.generate(context, myUnit.x, myUnit.y));
+        GroupPool.explosion(context).addChild(Explosion.generate(context, myUnit.x, myUnit.y));
         context.soundEffectOfMyUnitExplosion.play();
       }
 
@@ -949,7 +949,7 @@ var MyUnit = (function () {
     value: function _createMyUnitSplinter() {
       var context = this.context;
       var myUnit = this.sprite;
-      var myUnitSplinterMembers = context.myUnitSplinterPool.members;
+      var myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
       var angleBase = parseInt(360 / context.NUMBER_OF_MYUNIT_SPLINTER);
       var myUnitSplinterAngle = 0;
 
@@ -1183,7 +1183,7 @@ var TimerSpawnObjects = (function () {
 
       var context = this.context;
 
-      Helper.strewnSprite(Helper.getMember(context.circlePool.members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
+      Helper.strewnSprite(Helper.getMember(GroupPool.circle(context).members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
         _this2._tweenOfCircle(context, sprite);
       });
     }
@@ -1192,21 +1192,21 @@ var TimerSpawnObjects = (function () {
     value: function cube() {
       var context = this.context;
 
-      Helper.strewnSprite(Helper.getMember(context.cubePool.members), { y: context.game.stage.height }, { y: 5 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.cube(context).members), { y: context.game.stage.height }, { y: 5 });
     }
   }, {
     key: 'cylinder',
     value: function cylinder() {
       var context = this.context;
 
-      Helper.strewnSprite(Helper.getMember(context.cylinderPool.members), { y: context.game.stage.height }, { y: 10 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.cylinder(context).members), { y: context.game.stage.height }, { y: 10 });
     }
   }, {
     key: 'star',
     value: function star() {
       var context = this.context;
 
-      Helper.strewnSprite(Helper.getMember(context.starPool.members), { y: context.game.stage.height }, { y: 3 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.star(context).members), { y: context.game.stage.height }, { y: 3 });
     }
   }, {
     key: 'rhombus',
@@ -1224,7 +1224,7 @@ var TimerSpawnObjects = (function () {
       }
 
       if (context.isSpawnSpriteOfRhombusSplinter) {
-        Helper.strewnSprite(Helper.getMember(context.rhombusPool.members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
+        Helper.strewnSprite(Helper.getMember(GroupPool.rhombus(context).members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
           _this3._scaleUpRhombus(context, sprite);
         }, { revive: false });
       }
@@ -1253,7 +1253,7 @@ var TimerSpawnObjects = (function () {
   }, {
     key: '_explosionRhombus',
     value: function _explosionRhombus(context, sprite) {
-      var rhombusSplinterMembers = context.rhombusSplinterPool.members;
+      var rhombusSplinterMembers = GroupPool.rhombusSplinter(context).members;
       var angleBase = parseInt(360 / context.NUMBER_OF_RHOMBUS_SPLINTER);
       var rhombusSplinterAngle = 0;
       var explosionCounter = 0;
@@ -1564,9 +1564,9 @@ playState.update = function () {
 };
 
 playState.checkCollision = function (bullet) {
-  var cubeMembers = this.cubePool.members;
-  var circleMembers = this.circlePool.members;
-  var cylinderMembers = this.cylinderPool.members;
+  var cubeMembers = GroupPool.cube(this).members;
+  var circleMembers = GroupPool.circle(this).members;
+  var cylinderMembers = GroupPool.cylinder(this).members;
 
   for (var i = 0; i < cubeMembers.length; i++) {
     if (bullet.physics.overlaps(cubeMembers[i])) {
@@ -1594,7 +1594,7 @@ playState.deadBullet = function (bullet) {
 };
 
 playState.getFirstDeadBullet = function () {
-  var bulletMembers = this.bulletPool.members;
+  var bulletMembers = GroupPool.bullet(this).members;
   for (var i = bulletMembers.length - 1; i >= 0; i--) {
     if (bulletMembers[i].alive === false) {
       return bulletMembers[i];
@@ -1611,7 +1611,7 @@ playState.overlapOnObject = function (bullet, object, option) {
     soundEffectVolume = 1.0;
   }
 
-  this.explosionPool.addChild(Explosion.generate(this, bullet.x, bullet.y));
+  GroupPool.explosion(this).addChild(Explosion.generate(this, bullet.x, bullet.y));
   this.deadBullet(bullet);
   Helper.revive(object);
   this.playSoundEffectOfExplosion(soundEffectVolume);

@@ -1,7 +1,7 @@
 playState.checkCollision = function(bullet) {
-  var cubeMembers = this.cubePool.members;
-  var circleMembers = this.circlePool.members;
-  var cylinderMembers = this.cylinderPool.members;
+  var cubeMembers = GroupPool.cube(this).members;
+  var circleMembers = GroupPool.circle(this).members;
+  var cylinderMembers = GroupPool.cylinder(this).members;
 
   for (var i = 0; i < cubeMembers.length; i++) {
     if (bullet.physics.overlaps(cubeMembers[i])) {

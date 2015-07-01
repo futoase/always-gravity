@@ -118,8 +118,8 @@ class GroupPool {
 
     myUnit.context = context;
 
-    context.circlePool.forEach(context, Helper.checkSpritePosition);
-    context.circlePool.forEach(context, (circle) => {
+    pool.forEach(context, Helper.checkSpritePosition);
+    pool.forEach(context, (circle) => {
       Helper.updateSpriteRotation(circle, 30);
     });
     pool.members.map((member) => {
