@@ -4,7 +4,7 @@ playState.create = function() {
   this.setConfig();
   this.setMusics();
   HUD.initialize(this);
-  this.createGroups();
+  Group.initialize(this);
   MyUnit.initialize(this);
   this.setGameKeys();
   Timer.initialize(this);

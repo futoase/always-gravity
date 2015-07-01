@@ -11,8 +11,7 @@ playState.update = function() {
     //this.shootBullet();
   }
 
-  this.forEachOfPool();
-
+  GroupPool.forEachAll(this);
   if (this.isGameOver) {
     this.whenGameOverInputKeys();
   }

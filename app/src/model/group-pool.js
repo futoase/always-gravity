@@ -80,6 +80,17 @@ class GroupPool {
     rhombus.removeChildren(0, rhombus.members.length);
   }
 
+  static forEachAll(context) {
+    GroupPool.forEachStar(context);
+    GroupPool.forEachCube(context);
+    GroupPool.forEachCylinder(context);
+    GroupPool.forEachCircle(context);
+    GroupPool.forEachBullet(context);
+    GroupPool.forEachExplosion(context);
+    GroupPool.forEachRhombusSplinter(context);
+    GroupPool.forEachRhombus(context);
+  }
+
   static forEachStar(context) {
     let pool = GroupPool.star(context);
     pool.forEach(context, Helper.checkSpritePosition);

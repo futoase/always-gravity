@@ -616,6 +616,18 @@ var GroupPool = (function () {
       rhombus.removeChildren(0, rhombus.members.length);
     }
   }, {
+    key: 'forEachAll',
+    value: function forEachAll(context) {
+      GroupPool.forEachStar(context);
+      GroupPool.forEachCube(context);
+      GroupPool.forEachCylinder(context);
+      GroupPool.forEachCircle(context);
+      GroupPool.forEachBullet(context);
+      GroupPool.forEachExplosion(context);
+      GroupPool.forEachRhombusSplinter(context);
+      GroupPool.forEachRhombus(context);
+    }
+  }, {
     key: 'forEachStar',
     value: function forEachStar(context) {
       var pool = GroupPool.star(context);
@@ -1779,7 +1791,7 @@ playState.create = function () {
   this.setConfig();
   this.setMusics();
   HUD.initialize(this);
-  this.createGroups();
+  Group.initialize(this);
   MyUnit.initialize(this);
   this.setGameKeys();
   Timer.initialize(this);
@@ -1826,15 +1838,14 @@ playState.update = function () {
     //this.shootBullet();
   }
 
-  this.forEachOfPool();
-
+  GroupPool.forEachAll(this);
   if (this.isGameOver) {
     this.whenGameOverInputKeys();
   }
 };
 
 playState.destroyObjects = function () {
-  this.destroyGroups();
+  GroupPool.removeChildrenForAll(this);
   this.destroyMusics();
   this.game.huds.defaultHUD.removeAllWidgets();
   Timer.destroy(this);
