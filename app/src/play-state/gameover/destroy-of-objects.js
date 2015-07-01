@@ -2,7 +2,7 @@ playState.destroyObjects = function() {
   this.destroyGroups();
   this.destroyMusics();
   this.game.huds.defaultHUD.removeAllWidgets();
-  this.destroyTimers();
+  Timer.destroy(this);
 
   let myUnit = MyUnit.instance;
   myUnit.context = this;

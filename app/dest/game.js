@@ -1389,6 +1389,22 @@ var Timer = (function () {
       this._context = value;
     }
   }], [{
+    key: 'initialize',
+    value: function initialize(context) {
+      var timer = Timer.instance;
+      timer.context = context;
+
+      timer.createAllTimer();
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy(context) {
+      var timer = Timer.instance;
+      timer.context = context;
+
+      timer.removeAllTimer();
+    }
+  }, {
     key: 'instance',
     get: function get() {
       if (!this[timerSingleton]) {
@@ -1750,7 +1766,7 @@ playState.create = function () {
   this.createGroups();
   this.createMyUnit();
   this.setGameKeys();
-  this.createTimers();
+  Timer.initialize(this);
   GameText.createSlowDownCount(this);
   GameText.createSlowDown(this);
 };
@@ -1805,7 +1821,7 @@ playState.destroyObjects = function () {
   this.destroyGroups();
   this.destroyMusics();
   this.game.huds.defaultHUD.removeAllWidgets();
-  this.destroyTimers();
+  Timer.destroy(this);
 
   var myUnit = MyUnit.instance;
   myUnit.context = this;
@@ -1860,10 +1876,6 @@ playState.forEachOfPool = function () {
   GroupPool.forEachExplosion(this);
   GroupPool.forEachRhombusSplinter(this);
   GroupPool.forEachRhombus(this);
-};
-
-playState.destroyHUD = function () {
-  this.game.huds.defaultHUD.removeAllWidgets();
 };
 
 playState.leftInputIsActive = function () {
@@ -1946,17 +1958,11 @@ playState.updateMyUnit = function () {
 };
 
 playState.createTimers = function () {
-  var timer = Timer.instance;
-  timer.context = this;
-
-  timer.createAllTimer();
+  Timer.initialize(this);
 };
 
 playState.destroyTimers = function () {
-  var timer = Timer.instance;
-  timer.context = this;
-
-  timer.removeAllTimer();
+  Timer.destroy(this);
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);

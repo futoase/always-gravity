@@ -7,7 +7,7 @@ playState.create = function() {
   this.createGroups();
   this.createMyUnit();
   this.setGameKeys();
-  this.createTimers();
+  Timer.initialize(this);
   GameText.createSlowDownCount(this);
   GameText.createSlowDown(this);
 };

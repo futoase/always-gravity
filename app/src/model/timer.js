@@ -15,6 +15,20 @@ class Timer {
     return this[timerSingleton];
   }
 
+  static initialize(context) {
+    let timer = Timer.instance;
+    timer.context = context;
+
+    timer.createAllTimer();
+  }
+
+  static destroy(context) {
+    let timer = Timer.instance;
+    timer.context = context;
+
+    timer.removeAllTimer();
+  }
+
   get context() {
     return this._context;
   }
