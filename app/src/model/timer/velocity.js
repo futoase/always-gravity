@@ -45,8 +45,8 @@ class TimerVelocity {
     hud.context = context;
 
     if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY) {
-      if (context.contains(context.slowDownCountText)) {
-        context.slowDownCountText.text = (
+      if (context.contains(GameText.slowDownCount)) {
+        GameText.slowDownCount = (
           context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
         );
       }
@@ -54,7 +54,7 @@ class TimerVelocity {
     }
     else {
       this.overTheLimitVelocityCounter = 0;
-      context.slowDownCountText.text = context.LIMIT_VELOCITY_MAX_COUNT;
+      GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT;
     }
 
     if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
@@ -70,20 +70,20 @@ class TimerVelocity {
 
     if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
       context.soundEffectOfCautionForSpeed.play();
-      if (!context.contains(context.slowDownText)) {
-        context.addChild(context.slowDownText);
+      if (!context.contains(GameText.slowDown)) {
+        context.addChild(GameText.slowDown);
       }
-      if (!context.contains(context.slowDownCountText)) {
-        context.addChild(context.slowDownCountText);
+      if (!context.contains(GameText.slowDownCount)) {
+        context.addChild(GameText.slowDownCount);
       }
     }
     else{
       context.soundEffectOfCautionForSpeed.stop();
-      if (context.contains(context.slowDownText)) {
-        context.removeChild(context.slowDownText);
+      if (context.contains(GameText.slowDown)) {
+        context.removeChild(GameText.slowDown);
       }
-      if (context.contains(context.slowDownCountText)) {
-        context.removeChild(context.slowDownCountText);
+      if (context.contains(GameText.slowDownCount)) {
+        context.removeChild(GameText.slowDownCount);
       }
     }
   }

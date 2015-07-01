@@ -10,17 +10,10 @@ playState.gameOver = function(){
   );
   this.musicGameOver.play();
 
-  this.createGameOverText();
-  this.addChild(this.gameOverText);
-
-  this.createScoreText(this.gameScoreCounter);
-  this.addChild(this.scoreText);
-
-  this.createRestartText();
-  this.addChild(this.restartText);
-
-  this.createExitGameText();
-  this.addChild(this.exitGameText);
+  this.addChild(GameText.createGameOver(this));
+  this.addChild(GameText.createScore(this, this.gameScoreCounter));
+  this.addChild(GameText.createRestart(this));
+  this.addChild(GameText.createExitGame(this));
 
   if (this.isGameOver === undefined) {
     this.isGameOver = true;

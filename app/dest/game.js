@@ -429,6 +429,96 @@ var Explosion = (function () {
   return Explosion;
 })();
 
+var textExitGame = Symbol();
+var textGameOver = Symbol();
+var textRestart = Symbol();
+var textScore = Symbol();
+var textSlowDownCount = Symbol();
+var textSlowDown = Symbol();
+
+var GameText = (function () {
+  function GameText() {
+    _classCallCheck(this, GameText);
+  }
+
+  _createClass(GameText, null, [{
+    key: 'createExitGame',
+    value: function createExitGame(context) {
+      if (!this[textExitGame]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textExitGame] = text;
+      }
+      return this[textExitGame];
+    }
+  }, {
+    key: 'createGameOver',
+    value: function createGameOver(context) {
+      if (!this[textGameOver]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'GAME OVER', context.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textGameOver] = text;
+      }
+      return this[textGameOver];
+    }
+  }, {
+    key: 'createRestart',
+    value: function createRestart(context) {
+      if (!this[textRestart]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'RESTART: R', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textRestart] = text;
+      }
+      return this[textRestart];
+    }
+  }, {
+    key: 'createScore',
+    value: function createScore(context, score) {
+      if (!this[textScore]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'SCORE: ' + score, context.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textScore] = text;
+      }
+      return this[textScore];
+    }
+  }, {
+    key: 'createSlowDownCount',
+    value: function createSlowDownCount(context) {
+      if (!this[textSlowDownCount]) {
+        var text = new Kiwi.GameObjects.TextField(context, context.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textSlowDownCount] = text;
+      }
+      return this[textSlowDownCount];
+    }
+  }, {
+    key: 'createSlowDown',
+    value: function createSlowDown(context) {
+      if (!this[textSlowDown]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'SLOW DOWN !!!', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textSlowDown] = text;
+      }
+      return this[textSlowDown];
+    }
+  }, {
+    key: 'slowDownCount',
+    get: function get() {
+      return this[textSlowDownCount];
+    },
+    set: function set(text) {
+      this[textSlowDownCount].text = text;
+    }
+  }, {
+    key: 'slowDown',
+    get: function get() {
+      return this[textSlowDown];
+    }
+  }]);
+
+  return GameText;
+})();
+
 var GroupPool = (function () {
   function GroupPool() {
     _classCallCheck(this, GroupPool);
@@ -1461,13 +1551,13 @@ var TimerVelocity = (function () {
       hud.context = context;
 
       if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY) {
-        if (context.contains(context.slowDownCountText)) {
-          context.slowDownCountText.text = context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
+        if (context.contains(GameText.slowDownCount)) {
+          GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
         }
         this.overTheLimitVelocityCounter += 1;
       } else {
         this.overTheLimitVelocityCounter = 0;
-        context.slowDownCountText.text = context.LIMIT_VELOCITY_MAX_COUNT;
+        GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT;
       }
 
       if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
@@ -1484,19 +1574,19 @@ var TimerVelocity = (function () {
 
       if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
         context.soundEffectOfCautionForSpeed.play();
-        if (!context.contains(context.slowDownText)) {
-          context.addChild(context.slowDownText);
+        if (!context.contains(GameText.slowDown)) {
+          context.addChild(GameText.slowDown);
         }
-        if (!context.contains(context.slowDownCountText)) {
-          context.addChild(context.slowDownCountText);
+        if (!context.contains(GameText.slowDownCount)) {
+          context.addChild(GameText.slowDownCount);
         }
       } else {
         context.soundEffectOfCautionForSpeed.stop();
-        if (context.contains(context.slowDownText)) {
-          context.removeChild(context.slowDownText);
+        if (context.contains(GameText.slowDown)) {
+          context.removeChild(GameText.slowDown);
         }
-        if (context.contains(context.slowDownCountText)) {
-          context.removeChild(context.slowDownCountText);
+        if (context.contains(GameText.slowDownCount)) {
+          context.removeChild(GameText.slowDownCount);
         }
       }
     }
@@ -1644,8 +1734,8 @@ playState.create = function () {
   this.createMyUnit();
   this.setGameKeys();
   this.createTimers();
-  this.createSlowDownText();
-  this.createSlowDownCountText();
+  GameText.createSlowDownCount(this);
+  GameText.createSlowDown(this);
 };
 
 playState.preload = function () {
@@ -1694,50 +1784,6 @@ playState.update = function () {
   }
 };
 
-playState.getFirstDeadBullet = function () {
-  var bulletMembers = GroupPool.bullet(this).members;
-  for (var i = bulletMembers.length - 1; i >= 0; i--) {
-    if (bulletMembers[i].alive === false) {
-      return bulletMembers[i];
-    }
-  }
-  return null;
-};
-
-playState.shootBullet = function () {
-  if (this.lastBulletShotAt === undefined) {
-    this.lastBulletShotAt = 0;
-  }
-
-  if (this.game.time.now() - this.lastBulletShotAt < this.SHOT_DELAY) {
-    return;
-  }
-
-  this.lastBulletShotAt = this.game.time.now();
-
-  var bullet = this.getFirstDeadBullet();
-
-  if (bullet === null || bullet === undefined) {
-    return;
-  }
-
-  bullet.alive = true;
-
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
-  bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
-
-  bullet.rotation = myUnit.sprite.rotation;
-
-  bullet.physics.velocity.x = Math.cos(bullet.rotation) * this.BULLET_SPEED;
-  bullet.physics.velocity.y = Math.sin(bullet.rotation) * this.BULLET_SPEED;
-
-  this.soundEffectOfBullet.stop();
-  this.soundEffectOfBullet.play();
-};
-
 playState.destroyObjects = function () {
   this.destroyGroups();
   this.destroyMusics();
@@ -1760,17 +1806,10 @@ playState.gameOver = function () {
   this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
   this.musicGameOver.play();
 
-  this.createGameOverText();
-  this.addChild(this.gameOverText);
-
-  this.createScoreText(this.gameScoreCounter);
-  this.addChild(this.scoreText);
-
-  this.createRestartText();
-  this.addChild(this.restartText);
-
-  this.createExitGameText();
-  this.addChild(this.exitGameText);
+  this.addChild(GameText.createGameOver(this));
+  this.addChild(GameText.createScore(this, this.gameScoreCounter));
+  this.addChild(GameText.createRestart(this));
+  this.addChild(GameText.createExitGame(this));
 
   if (this.isGameOver === undefined) {
     this.isGameOver = true;
