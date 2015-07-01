@@ -974,6 +974,16 @@ var HUD = (function () {
       }
     }
   }], [{
+    key: 'initialize',
+    value: function initialize(context) {
+      var hud = HUD.instance;
+      hud.context = context;
+
+      context.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
+      context.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
+      context.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
+    }
+  }, {
     key: 'instance',
     get: function get() {
       if (!this[hudSingleton]) {
@@ -1846,12 +1856,7 @@ playState.forEachOfPool = function () {
 };
 
 playState.createHUD = function () {
-  var hud = HUD.instance;
-  hud.context = this;
-
-  this.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
-  this.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
-  this.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
+  HUD.initialize(this);
 };
 
 playState.destroyHUD = function () {
@@ -1941,36 +1946,6 @@ playState.updateMyUnit = function () {
   myUnit.context = this;
 
   myUnit.update();
-};
-
-playState.createExitGameText = function () {
-  this.exitGameText = new Kiwi.GameObjects.TextField(this, 'QUIT: ESC', this.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace');
-  this.exitGameText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-};
-
-playState.createGameOverText = function () {
-  this.gameOverText = new Kiwi.GameObjects.TextField(this, 'GAME OVER', this.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace');
-  this.gameOverText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-};
-
-playState.createRestartText = function () {
-  this.restartText = new Kiwi.GameObjects.TextField(this, 'RESTART: R', this.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
-  this.restartText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-};
-
-playState.createScoreText = function (score) {
-  this.scoreText = new Kiwi.GameObjects.TextField(this, 'SCORE: ' + score, this.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace');
-  this.scoreText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-};
-
-playState.createSlowDownCountText = function () {
-  this.slowDownCountText = new Kiwi.GameObjects.TextField(this, this.LIMIT_VELOCITY_MAX_COUNT, this.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
-  this.slowDownCountText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-};
-
-playState.createSlowDownText = function () {
-  this.slowDownText = new Kiwi.GameObjects.TextField(this, 'SLOW DOWN !!!', this.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
-  this.slowDownText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
 };
 
 playState.createTimers = function () {

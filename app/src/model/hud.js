@@ -15,6 +15,21 @@ class HUD {
     return this[hudSingleton];
   }
 
+  static initialize(context) {
+    let hud = HUD.instance;
+    hud.context = context;
+
+    context.game.huds.defaultHUD.addWidget(
+      hud.createVelocityBar()
+    );
+    context.game.huds.defaultHUD.addWidget(
+      hud.createHitPointBar()
+    );
+    context.game.huds.defaultHUD.addWidget(
+      hud.createGameScoreCounter()
+    );
+  }
+
   set context(value) {
     this._context = value;
   }
