@@ -30,6 +30,12 @@ class HUD {
     );
   }
 
+  static update(context) {
+    let hud = HUD.instance;
+    hud.context = context;
+    hud.update();
+  }
+
   set context(value) {
     this._context = value;
   }

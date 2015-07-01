@@ -984,6 +984,13 @@ var HUD = (function () {
       context.game.huds.defaultHUD.addWidget(hud.createGameScoreCounter());
     }
   }, {
+    key: 'update',
+    value: function update(context) {
+      var hud = HUD.instance;
+      hud.context = context;
+      hud.update();
+    }
+  }, {
     key: 'instance',
     get: function get() {
       if (!this[hudSingleton]) {
@@ -1864,9 +1871,7 @@ playState.destroyHUD = function () {
 };
 
 playState.updateHUD = function () {
-  var hud = HUD.instance;
-  hud.context = this;
-  hud.update();
+  HUD.update(this);
 };
 
 playState.leftInputIsActive = function () {
