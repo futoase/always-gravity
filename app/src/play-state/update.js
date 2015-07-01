@@ -6,7 +6,7 @@ playState.update = function() {
   MyUnit.update(this);
   HUD.update(this);
 
-  if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
+  if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
     Bullet.shoot(this);
     //this.shootBullet();
   }

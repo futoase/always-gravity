@@ -1015,6 +1015,111 @@ var HUD = (function () {
   return HUD;
 })();
 
+var _leftKey = Symbol();
+var _rightKey = Symbol();
+var _upKey = Symbol();
+var _shootKey = Symbol();
+var _exitKey = Symbol();
+var _restartKey = Symbol();
+
+var GameKey = (function () {
+  function GameKey() {
+    _classCallCheck(this, GameKey);
+  }
+
+  _createClass(GameKey, null, [{
+    key: 'initialize',
+    value: function initialize(context) {
+      GameKey.leftKey(context);
+      GameKey.rightKey(context);
+      GameKey.upKey(context);
+      GameKey.shootKey(context);
+      GameKey.exitKey(context);
+      GameKey.restartKey(context);
+    }
+  }, {
+    key: 'leftKey',
+    value: function leftKey(context) {
+      if (!this[_leftKey]) {
+        this[_leftKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.LEFT);
+      }
+      return this[_leftKey];
+    }
+  }, {
+    key: 'activeLeftKey',
+    value: function activeLeftKey() {
+      return this[_leftKey].isDown;
+    }
+  }, {
+    key: 'rightKey',
+    value: function rightKey(context) {
+      if (!this[_rightKey]) {
+        this[_rightKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.RIGHT);
+      }
+      return this[_rightKey];
+    }
+  }, {
+    key: 'activeRightKey',
+    value: function activeRightKey() {
+      return this[_rightKey].isDown;
+    }
+  }, {
+    key: 'upKey',
+    value: function upKey(context) {
+      if (!this[_upKey]) {
+        this[_upKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
+      }
+      return this[_upKey];
+    }
+  }, {
+    key: 'activeUpKey',
+    value: function activeUpKey() {
+      return this[_upKey].isDown;
+    }
+  }, {
+    key: 'shootKey',
+    value: function shootKey(context) {
+      if (!this[_shootKey]) {
+        this[_shootKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
+      }
+      return this[_shootKey];
+    }
+  }, {
+    key: 'activeShootKey',
+    value: function activeShootKey() {
+      return this[_shootKey].isDown;
+    }
+  }, {
+    key: 'exitKey',
+    value: function exitKey(context) {
+      if (!this[_exitKey]) {
+        this[_exitKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
+      }
+      return this[_exitKey];
+    }
+  }, {
+    key: 'activeExitKey',
+    value: function activeExitKey() {
+      return this[_exitKey].isDown;
+    }
+  }, {
+    key: 'restartKey',
+    value: function restartKey(context) {
+      if (!this[_restartKey]) {
+        this[_restartKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
+      }
+      return this[_restartKey];
+    }
+  }, {
+    key: 'activeRestartKey',
+    value: function activeRestartKey() {
+      return this[_restartKey].isDown;
+    }
+  }]);
+
+  return GameKey;
+})();
+
 var myUnitSingleton = Symbol();
 var myUnitSingletonEnforcer = Symbol();
 
@@ -1122,9 +1227,9 @@ var MyUnit = (function () {
         return;
       }
 
-      if (context.leftInputIsActive()) {
+      if (GameKey.activeLeftKey()) {
         myUnit.physics.angularVelocity = -context.ROTATION_SPEED;
-      } else if (context.rightInputIsActive()) {
+      } else if (GameKey.activeRightKey()) {
         myUnit.physics.angularVelocity = context.ROTATION_SPEED;
       } else {
         myUnit.physics.angularVelocity = 0;
@@ -1140,7 +1245,7 @@ var MyUnit = (function () {
         return;
       }
 
-      if (context.upInputIsActive()) {
+      if (GameKey.activeUpKey()) {
         myUnit.physics.acceleration.x = Math.cos(myUnit.rotation) * context.ACCELERATION;
         myUnit.physics.acceleration.y = Math.sin(myUnit.rotation) * context.ACCELERATION;
         // Change sprite 'Engine on'.
@@ -1793,7 +1898,7 @@ playState.create = function () {
   HUD.initialize(this);
   Group.initialize(this);
   MyUnit.initialize(this);
-  this.setGameKeys();
+  GameKey.initialize(this);
   Timer.initialize(this);
   GameText.createSlowDownCount(this);
   GameText.createSlowDown(this);
@@ -1833,7 +1938,7 @@ playState.update = function () {
   MyUnit.update(this);
   HUD.update(this);
 
-  if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
+  if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
     Bullet.shoot(this);
     //this.shootBullet();
   }
@@ -1877,65 +1982,13 @@ playState.gameOver = function () {
 };
 
 playState.whenGameOverInputKeys = function () {
-  if (this.exitGameInputIsActive()) {
+  if (GameKey.activeExitKey()) {
     ipc.sendSync('quit');
   }
 
-  if (this.restartInputIsActive()) {
+  if (GameKey.activeRestartKey()) {
     window.location.reload(true);
   }
-};
-
-playState.createGroups = function () {
-  Group.initialize(this);
-};
-
-playState.destroyGroups = function () {
-  GroupPool.removeChildrenForAll(this);
-};
-
-playState.forEachOfPool = function () {
-  GroupPool.forEachStar(this);
-  GroupPool.forEachCube(this);
-  GroupPool.forEachCylinder(this);
-  GroupPool.forEachCircle(this);
-  GroupPool.forEachBullet(this);
-  GroupPool.forEachExplosion(this);
-  GroupPool.forEachRhombusSplinter(this);
-  GroupPool.forEachRhombus(this);
-};
-
-playState.leftInputIsActive = function () {
-  return this.leftKey.isDown;
-};
-
-playState.rightInputIsActive = function () {
-  return this.rightKey.isDown;
-};
-
-playState.upInputIsActive = function () {
-  return this.upKey.isDown;
-};
-
-playState.shootInputIsActive = function () {
-  return this.shootKey.isDown;
-};
-
-playState.restartInputIsActive = function () {
-  return this.restartKey.isDown;
-};
-
-playState.exitGameInputIsActive = function () {
-  return this.exitKey.isDown;
-};
-
-playState.setGameKeys = function () {
-  this.leftKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.LEFT);
-  this.rightKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.RIGHT);
-  this.upKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
-  this.shootKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
-  this.exitKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
-  this.restartKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
 };
 
 playState.destroyMusics = function () {

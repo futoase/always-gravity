@@ -143,10 +143,10 @@ class MyUnit {
       return;
     }
 
-    if (context.leftInputIsActive()) {
+    if (GameKey.activeLeftKey()) {
       myUnit.physics.angularVelocity = -context.ROTATION_SPEED;
     }
-    else if (context.rightInputIsActive()) {
+    else if (GameKey.activeRightKey()) {
       myUnit.physics.angularVelocity = context.ROTATION_SPEED;
     }
     else {
@@ -162,7 +162,7 @@ class MyUnit {
       return;
     }
 
-    if (context.upInputIsActive()) {
+    if (GameKey.activeUpKey()) {
       myUnit.physics.acceleration.x = (
         Math.cos(myUnit.rotation) * context.ACCELERATION
       );

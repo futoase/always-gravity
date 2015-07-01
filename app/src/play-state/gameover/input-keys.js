@@ -1,9 +1,9 @@
 playState.whenGameOverInputKeys = function() {
-  if (this.exitGameInputIsActive()) {
+  if (GameKey.activeExitKey()) {
     ipc.sendSync('quit');
   }
 
-  if (this.restartInputIsActive()){
+  if (GameKey.activeRestartKey()){
     window.location.reload(true);
   }
 };
