@@ -15,6 +15,20 @@ class MyUnit {
     return this[myUnitSingleton];
   }
 
+  static initialize(context) {
+    let myUnit = MyUnit.instance;
+    myUnit.context = context;
+
+    context.addChild(myUnit.create());
+  }
+
+  static update(context) {
+    let myUnit = MyUnit.instance;
+    myUnit.context = context;
+
+    myUnit.update();
+  }
+
   get sprite() {
     return this._sprite;
   }

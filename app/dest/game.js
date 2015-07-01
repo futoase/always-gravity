@@ -1250,6 +1250,22 @@ var MyUnit = (function () {
       this._explosionCounter = value;
     }
   }], [{
+    key: 'initialize',
+    value: function initialize(context) {
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      context.addChild(myUnit.create());
+    }
+  }, {
+    key: 'update',
+    value: function update(context) {
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      myUnit.update();
+    }
+  }, {
     key: 'instance',
     get: function get() {
       if (!this[myUnitSingleton]) {
@@ -1764,7 +1780,7 @@ playState.create = function () {
   this.setMusics();
   HUD.initialize(this);
   this.createGroups();
-  this.createMyUnit();
+  MyUnit.initialize(this);
   this.setGameKeys();
   Timer.initialize(this);
   GameText.createSlowDownCount(this);
@@ -1802,7 +1818,7 @@ playState.update = function () {
   var myUnit = MyUnit.instance;
   myUnit.context = this;
 
-  this.updateMyUnit();
+  MyUnit.update(this);
   HUD.update(this);
 
   if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
@@ -1934,35 +1950,6 @@ playState.setMusics = function () {
   this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
 
   this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
-};
-
-playState.createMyUnit = function () {
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  this.addChild(myUnit.create());
-};
-
-playState.explosionOfMyUnit = function () {
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  myUnit.explosion();
-};
-
-playState.updateMyUnit = function () {
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  myUnit.update();
-};
-
-playState.createTimers = function () {
-  Timer.initialize(this);
-};
-
-playState.destroyTimers = function () {
-  Timer.destroy(this);
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);

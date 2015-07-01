@@ -3,7 +3,7 @@ playState.update = function() {
   let myUnit = MyUnit.instance;
   myUnit.context = this;
 
-  this.updateMyUnit();
+  MyUnit.update(this);
   HUD.update(this);
 
   if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
