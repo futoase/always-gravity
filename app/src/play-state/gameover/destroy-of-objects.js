@@ -1,6 +1,6 @@
 playState.destroyObjects = function() {
   GroupPool.removeChildrenForAll(this);
-  this.destroyMusics();
+  GameMusic.destroy();
   this.game.huds.defaultHUD.removeAllWidgets();
   Timer.destroy(this);
 

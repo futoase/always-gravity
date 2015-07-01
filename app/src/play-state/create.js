@@ -2,7 +2,9 @@ playState.create = function() {
   Kiwi.State.prototype.create.call(this);
 
   this.setConfig();
-  this.setMusics();
+  //this.setMusics();
+  GameMusic.initialize(this);
+  GameMusic.main.play();
   HUD.initialize(this);
   Group.initialize(this);
   MyUnit.initialize(this);

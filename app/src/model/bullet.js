@@ -39,8 +39,8 @@ class Bullet {
       Math.sin(bullet.rotation) * context.BULLET_SPEED
     );
 
-    context.soundEffectOfBullet.stop();
-    context.soundEffectOfBullet.play();
+    GameMusic.soundEffectOfBullet.stop();
+    GameMusic.soundEffectOfBullet.play();
   }
 
   static getFirstDeadBullet(context) {
@@ -71,8 +71,9 @@ class Bullet {
   }
 
   static playSoundEffectOfExplosion(context, volume) {
-    context.soundEffectOfExplosion.stop();
-    context.soundEffectOfExplosion.volume = volume;
-    context.soundEffectOfExplosion.play();
+    let se = GameMusic.soundEffectOfExplosion;
+    se.stop();
+    se.volume = volume;
+    se.play();
   }
 }

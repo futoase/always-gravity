@@ -69,7 +69,7 @@ class TimerVelocity {
     hud.context = context;
 
     if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
-      context.soundEffectOfCautionForSpeed.play();
+      GameMusic.soundEffectOfCautionForSpeed.play();
       if (!context.contains(GameText.slowDown)) {
         context.addChild(GameText.slowDown);
       }
@@ -78,7 +78,7 @@ class TimerVelocity {
       }
     }
     else{
-      context.soundEffectOfCautionForSpeed.stop();
+      GameMusic.soundEffectOfCautionForSpeed.stop();
       if (context.contains(GameText.slowDown)) {
         context.removeChild(GameText.slowDown);
       }

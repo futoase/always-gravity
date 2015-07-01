@@ -91,7 +91,7 @@ class MyUnit {
       GroupPool.explosion(context).addChild(
         Explosion.generate(context, myUnit.x, myUnit.y)
       );
-      context.soundEffectOfMyUnitExplosion.play();
+      GameMusic.soundEffectOfMyUnitExplosion.play();
     }
 
     if (isOverlapOfRhombus || context.CURRENT_HITPOINT < 1) {
@@ -248,9 +248,7 @@ class MyUnit {
   }
 
   _explosionSoundEffect() {
-    const context = this.context;
-
-    context.soundEffectOfMyUnitExplosion.play();
+    GameMusic.soundEffectOfMyUnitExplosion.play();
   }
 
   _startCountUpOfExplosion() {

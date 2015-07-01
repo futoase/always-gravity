@@ -314,8 +314,8 @@ var Bullet = (function () {
       bullet.physics.velocity.x = Math.cos(bullet.rotation) * context.BULLET_SPEED;
       bullet.physics.velocity.y = Math.sin(bullet.rotation) * context.BULLET_SPEED;
 
-      context.soundEffectOfBullet.stop();
-      context.soundEffectOfBullet.play();
+      GameMusic.soundEffectOfBullet.stop();
+      GameMusic.soundEffectOfBullet.play();
     }
   }, {
     key: 'getFirstDeadBullet',
@@ -350,9 +350,10 @@ var Bullet = (function () {
   }, {
     key: 'playSoundEffectOfExplosion',
     value: function playSoundEffectOfExplosion(context, volume) {
-      context.soundEffectOfExplosion.stop();
-      context.soundEffectOfExplosion.volume = volume;
-      context.soundEffectOfExplosion.play();
+      var se = GameMusic.soundEffectOfExplosion;
+      se.stop();
+      se.volume = volume;
+      se.play();
     }
   }]);
 
@@ -1120,6 +1121,103 @@ var GameKey = (function () {
   return GameKey;
 })();
 
+var gameMusicContext = Symbol();
+var musicMain = Symbol();
+var soundEffectOfBullet = Symbol();
+var soundEffectOfExplosion = Symbol();
+var soundEffectOfCautionForSpeed = Symbol();
+var soundEffectOfCircle = Symbol();
+var soundEffectOfMyUnitExplosion = Symbol();
+
+var GameMusic = (function () {
+  function GameMusic() {
+    _classCallCheck(this, GameMusic);
+  }
+
+  _createClass(GameMusic, null, [{
+    key: 'initialize',
+    value: function initialize(context) {
+      GameMusic.context = context;
+      GameMusic.main;
+      GameMusic.soundEffectOfBullet;
+      GameMusic.soundEffectOfExplosion;
+      GameMusic.soundEffectOfCautionForSpeed;
+      GameMusic.soundEffectOfCircle;
+      GameMusic.soundEffectOfMyUnitExplosion;
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      GameMusic.main.stop();
+      GameMusic.main.destroy();
+      GameMusic.soundEffectOfBullet.stop();
+      GameMusic.soundEffectOfBullet.destroy();
+      GameMusic.soundEffectOfExplosion.stop();
+      GameMusic.soundEffectOfExplosion.destroy();
+      GameMusic.soundEffectOfCautionForSpeed.stop();
+      GameMusic.soundEffectOfCautionForSpeed.destroy();
+    }
+  }, {
+    key: 'context',
+    set: function set(value) {
+      this[gameMusicContext] = value;
+    },
+    get: function get() {
+      return this[gameMusicContext];
+    }
+  }, {
+    key: 'main',
+    get: function get() {
+      if (!this[musicMain]) {
+        this[musicMain] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicMain', GameMusic.context.BASE_MUSIC_VOLUME_PER, true);
+      }
+      return this[musicMain];
+    }
+  }, {
+    key: 'soundEffectOfBullet',
+    get: function get() {
+      if (!this[soundEffectOfBullet]) {
+        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(GameMusic.context.game, 'bullet-se', GameMusic.context.BASE_LASER_VOLUME_PER, false);
+      }
+      return this[soundEffectOfBullet];
+    }
+  }, {
+    key: 'soundEffectOfExplosion',
+    get: function get() {
+      if (!this[soundEffectOfExplosion]) {
+        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-se', GameMusic.context.BASE_EXPLOSION_VOLUME_PER, false);
+      }
+      return this[soundEffectOfExplosion];
+    }
+  }, {
+    key: 'soundEffectOfCautionForSpeed',
+    get: function get() {
+      if (!this[soundEffectOfCautionForSpeed]) {
+        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(GameMusic.context.game, 'caution-of-speed-se', GameMusic.context.BASE_CAUTION_VOLUME_PER, false);
+      }
+      return this[soundEffectOfCautionForSpeed];
+    }
+  }, {
+    key: 'soundEffectOfCircle',
+    get: function get() {
+      if (!this[soundEffectOfCircle]) {
+        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(GameMusic.context.game, 'circle-se', GameMusic.context.BASE_CIRCLE_VOLUME_PER, false);
+      }
+      return this[soundEffectOfCircle];
+    }
+  }, {
+    key: 'soundEffectOfMyUnitExplosion',
+    get: function get() {
+      if (!this[soundEffectOfMyUnitExplosion]) {
+        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-myunit-se', GameMusic.context.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
+      }
+      return this[soundEffectOfMyUnitExplosion];
+    }
+  }]);
+
+  return GameMusic;
+})();
+
 var myUnitSingleton = Symbol();
 var myUnitSingletonEnforcer = Symbol();
 
@@ -1172,7 +1270,7 @@ var MyUnit = (function () {
         context.CURRENT_HITPOINT--;
         hud.hitPointBar.counter.current--;
         GroupPool.explosion(context).addChild(Explosion.generate(context, myUnit.x, myUnit.y));
-        context.soundEffectOfMyUnitExplosion.play();
+        GameMusic.soundEffectOfMyUnitExplosion.play();
       }
 
       if (isOverlapOfRhombus || context.CURRENT_HITPOINT < 1) {
@@ -1328,9 +1426,7 @@ var MyUnit = (function () {
   }, {
     key: '_explosionSoundEffect',
     value: function _explosionSoundEffect() {
-      var context = this.context;
-
-      context.soundEffectOfMyUnitExplosion.play();
+      GameMusic.soundEffectOfMyUnitExplosion.play();
     }
   }, {
     key: '_startCountUpOfExplosion',
@@ -1739,7 +1835,7 @@ var TimerVelocity = (function () {
       hud.context = context;
 
       if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
-        context.soundEffectOfCautionForSpeed.play();
+        GameMusic.soundEffectOfCautionForSpeed.play();
         if (!context.contains(GameText.slowDown)) {
           context.addChild(GameText.slowDown);
         }
@@ -1747,7 +1843,7 @@ var TimerVelocity = (function () {
           context.addChild(GameText.slowDownCount);
         }
       } else {
-        context.soundEffectOfCautionForSpeed.stop();
+        GameMusic.soundEffectOfCautionForSpeed.stop();
         if (context.contains(GameText.slowDown)) {
           context.removeChild(GameText.slowDown);
         }
@@ -1894,7 +1990,9 @@ playState.create = function () {
   Kiwi.State.prototype.create.call(this);
 
   this.setConfig();
-  this.setMusics();
+  //this.setMusics();
+  GameMusic.initialize(this);
+  GameMusic.main.play();
   HUD.initialize(this);
   Group.initialize(this);
   MyUnit.initialize(this);
@@ -1951,7 +2049,7 @@ playState.update = function () {
 
 playState.destroyObjects = function () {
   GroupPool.removeChildrenForAll(this);
-  this.destroyMusics();
+  GameMusic.destroy();
   this.game.huds.defaultHUD.removeAllWidgets();
   Timer.destroy(this);
 
@@ -1992,14 +2090,7 @@ playState.whenGameOverInputKeys = function () {
 };
 
 playState.destroyMusics = function () {
-  this.musicMain.stop();
-  this.musicMain.destroy();
-  this.soundEffectOfBullet.stop();
-  this.soundEffectOfBullet.destroy();
-  this.soundEffectOfExplosion.stop();
-  this.soundEffectOfExplosion.destroy();
-  this.soundEffectOfCautionForSpeed.stop();
-  this.soundEffectOfCautionForSpeed.destroy();
+  GameMusic.destroy();
 };
 
 playState.setMusics = function () {
