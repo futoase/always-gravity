@@ -1,7 +1,7 @@
 playState.destroyObjects = function() {
   this.destroyGroups();
   this.destroyMusics();
-  this.destroyHUD();
+  this.game.huds.defaultHUD.removeAllWidgets();
   this.destroyTimers();
 
   let myUnit = MyUnit.instance;
