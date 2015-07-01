@@ -69,7 +69,7 @@ class GroupPool {
     let cylinder = GroupPool.cylinder(context);
     let bullet = GroupPool.bullet(context);
     let explosion = GroupPool.explosion(context);
-    let rhombus = GroupPool.rhombus(content);
+    let rhombus = GroupPool.rhombus(context);
 
     star.removeChildren(0, star.members.length);
     cube.removeChildren(0, cube.members.length);
