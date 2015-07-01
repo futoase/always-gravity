@@ -7,7 +7,8 @@ playState.update = function() {
   this.updateHUD();
 
   if (this.contains(myUnit.sprite) && this.shootInputIsActive()) {
-    this.shootBullet();
+    Bullet.shoot(this);
+    //this.shootBullet();
   }
 
   this.forEachOfPool();
