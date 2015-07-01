@@ -130,7 +130,11 @@ class GroupPool {
   static forEachBullet(context) {
     let pool = GroupPool.bullet(context);
     pool.forEach(context, Helper.checkSpritePosition);
-    pool.forEach(context, context.checkCollision);
+    pool.members.map((member) => {
+      CollisionDelection.BulletCollideWithCube(context, member);
+      CollisionDelection.BulletCollideWithCircle(context, member);
+      CollisionDelection.BulletCollideWithCylinder(context, member);
+    });
   }
 
   static forEachExplosion(context) {

@@ -273,6 +273,81 @@ var StarGenerator = (function () {
   return StarGenerator;
 })();
 
+var Bullet = (function () {
+  function Bullet() {
+    _classCallCheck(this, Bullet);
+  }
+
+  _createClass(Bullet, null, [{
+    key: 'overlapOnObject',
+    value: function overlapOnObject(context, bullet, object) {
+      var volume = arguments[3] === undefined ? 1.0 : arguments[3];
+
+      GroupPool.explosion(context).addChild(Explosion.generate(context, bullet.x, bullet.y));
+      Bullet.deadBullet(bullet);
+      Helper.revive(object);
+      Bullet.playSoundEffectOfExplosion(context, volume);
+      context.gameScoreCounter += object.score;
+    }
+  }, {
+    key: 'deadBullet',
+    value: function deadBullet(bullet) {
+      bullet.x = -1000;
+      bullet.y = -1000;
+      bullet.alive = false;
+    }
+  }, {
+    key: 'playSoundEffectOfExplosion',
+    value: function playSoundEffectOfExplosion(context, volume) {
+      context.soundEffectOfExplosion.stop();
+      context.soundEffectOfExplosion.volume = volume;
+      context.soundEffectOfExplosion.play();
+    }
+  }]);
+
+  return Bullet;
+})();
+
+var CollisionDelection = (function () {
+  function CollisionDelection() {
+    _classCallCheck(this, CollisionDelection);
+  }
+
+  _createClass(CollisionDelection, null, [{
+    key: 'BulletCollideWithCube',
+    value: function BulletCollideWithCube(context, bullet) {
+      var members = GroupPool.cube(context).members;
+      members.map(function (member) {
+        if (bullet.physics.overlaps(member)) {
+          Bullet.overlapOnObject(context, bullet, member, 0.3);
+        }
+      });
+    }
+  }, {
+    key: 'BulletCollideWithCircle',
+    value: function BulletCollideWithCircle(context, bullet) {
+      var members = GroupPool.circle(context).members;
+      members.map(function (member) {
+        if (bullet.physics.overlaps(member)) {
+          Bullet.overlapOnObject(context, bullet, member, 0.3);
+        }
+      });
+    }
+  }, {
+    key: 'BulletCollideWithCylinder',
+    value: function BulletCollideWithCylinder(context, bullet) {
+      var members = GroupPool.cylinder(context).members;
+      members.map(function (member) {
+        if (bullet.physics.overlaps(member)) {
+          Bullet.overlapOnObject(context, bullet, member, 0.3);
+        }
+      });
+    }
+  }]);
+
+  return CollisionDelection;
+})();
+
 var Explosion = (function () {
   function Explosion() {
     _classCallCheck(this, Explosion);
@@ -456,7 +531,11 @@ var GroupPool = (function () {
     value: function forEachBullet(context) {
       var pool = GroupPool.bullet(context);
       pool.forEach(context, Helper.checkSpritePosition);
-      pool.forEach(context, context.checkCollision);
+      pool.members.map(function (member) {
+        CollisionDelection.BulletCollideWithCube(context, member);
+        CollisionDelection.BulletCollideWithCircle(context, member);
+        CollisionDelection.BulletCollideWithCylinder(context, member);
+      });
     }
   }, {
     key: 'forEachExplosion',
@@ -1563,36 +1642,6 @@ playState.update = function () {
   }
 };
 
-playState.checkCollision = function (bullet) {
-  var cubeMembers = GroupPool.cube(this).members;
-  var circleMembers = GroupPool.circle(this).members;
-  var cylinderMembers = GroupPool.cylinder(this).members;
-
-  for (var i = 0; i < cubeMembers.length; i++) {
-    if (bullet.physics.overlaps(cubeMembers[i])) {
-      this.overlapOnObject(bullet, cubeMembers[i], { soundEffectVolume: 0.3 });
-    }
-  }
-
-  for (var i = 0; i < circleMembers.length; i++) {
-    if (bullet.physics.overlaps(circleMembers[i])) {
-      this.overlapOnObject(bullet, circleMembers[i], { soundEffectVolume: 0.6 });
-    }
-  }
-
-  for (var i = 0; i < cylinderMembers.length; i++) {
-    if (bullet.physics.overlaps(cylinderMembers[i])) {
-      this.overlapOnObject(bullet, cylinderMembers[i], { soundEffectVolume: 0.6 });
-    }
-  }
-};
-
-playState.deadBullet = function (bullet) {
-  bullet.x = -1000;
-  bullet.y = -1000;
-  bullet.alive = false;
-};
-
 playState.getFirstDeadBullet = function () {
   var bulletMembers = GroupPool.bullet(this).members;
   for (var i = bulletMembers.length - 1; i >= 0; i--) {
@@ -1601,21 +1650,6 @@ playState.getFirstDeadBullet = function () {
     }
   }
   return null;
-};
-
-playState.overlapOnObject = function (bullet, object, option) {
-  var soundEffectVolume;
-  if (option && option.soundEffectVolume !== undefined) {
-    soundEffectVolume = option.soundEffectVolume;
-  } else {
-    soundEffectVolume = 1.0;
-  }
-
-  GroupPool.explosion(this).addChild(Explosion.generate(this, bullet.x, bullet.y));
-  this.deadBullet(bullet);
-  Helper.revive(object);
-  this.playSoundEffectOfExplosion(soundEffectVolume);
-  this.gameScoreCounter += object.score;
 };
 
 playState.shootBullet = function () {
@@ -1650,12 +1684,6 @@ playState.shootBullet = function () {
 
   this.soundEffectOfBullet.stop();
   this.soundEffectOfBullet.play();
-};
-
-playState.playSoundEffectOfExplosion = function (volume) {
-  this.soundEffectOfExplosion.stop();
-  this.soundEffectOfExplosion.volume = volume;
-  this.soundEffectOfExplosion.play();
 };
 
 playState.destroyObjects = function () {
