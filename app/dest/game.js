@@ -529,6 +529,10 @@ var GameOver = (function () {
   return GameOver;
 })();
 
+var textTitle = Symbol();
+var textSubTitle = Symbol();
+var textStart = Symbol();
+var textQuit = Symbol();
 var textExitGame = Symbol();
 var textGameOver = Symbol();
 var textRestart = Symbol();
@@ -542,6 +546,46 @@ var GameText = (function () {
   }
 
   _createClass(GameText, null, [{
+    key: 'createTitle',
+    value: function createTitle(context) {
+      if (!this[textTitle]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'Always Gravity', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textTitle] = text;
+      }
+      return this[textTitle];
+    }
+  }, {
+    key: 'createSubTitle',
+    value: function createSubTitle(context) {
+      if (!this[textSubTitle]) {
+        var text = new Kiwi.GameObjects.TextField(context, '常に重力', context.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textSubTitle] = text;
+      }
+      return this[textSubTitle];
+    }
+  }, {
+    key: 'createStart',
+    value: function createStart(context) {
+      if (!this[textStart]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'START: SPACEBAR', context.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textStart] = text;
+      }
+      return this[textStart];
+    }
+  }, {
+    key: 'createQuit',
+    value: function createQuit(context) {
+      if (!this[textQuit]) {
+        var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
+        text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
+        this[textQuit] = text;
+      }
+      return this[textQuit];
+    }
+  }, {
     key: 'createExitGame',
     value: function createExitGame(context) {
       if (!this[textExitGame]) {
@@ -600,6 +644,26 @@ var GameText = (function () {
         this[textSlowDown] = text;
       }
       return this[textSlowDown];
+    }
+  }, {
+    key: 'title',
+    get: function get() {
+      return this[textTitle];
+    }
+  }, {
+    key: 'subTitle',
+    get: function get() {
+      return this[textSubTitle];
+    }
+  }, {
+    key: 'start',
+    get: function get() {
+      return this[textStart];
+    }
+  }, {
+    key: 'quit',
+    get: function get() {
+      return this[textQuit];
     }
   }, {
     key: 'slowDownCount',
@@ -1999,7 +2063,11 @@ titleState.create = function () {
   this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
 
   this.setGameKeys();
-  this.createTitleText();
+
+  this.addChild(GameText.createTitle(this));
+  this.addChild(GameText.createSubTitle(this));
+  this.addChild(GameText.createStart(this));
+  this.addChild(GameText.createQuit(this));
 };
 
 titleState.preload = function () {
@@ -2010,7 +2078,10 @@ titleState.update = function () {
   Kiwi.State.prototype.update.call(this);
 
   if (this.startInputIsActive()) {
-    this.destroyTitleText();
+    this.removeChild(GameText.title);
+    this.removeChild(GameText.subTitle);
+    this.removeChild(GameText.start);
+    this.removeChild(GameText.quit);
     this.game.states.switchState('Play');
   }
 
@@ -2033,30 +2104,17 @@ titleState.setGameKeys = function () {
 };
 
 titleState.createTitleText = function () {
-  this.titleText = new Kiwi.GameObjects.TextField(this, 'Always Gravity', this.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
-  this.titleText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-
-  this.addChild(this.titleText);
-
-  this.subTitleText = new Kiwi.GameObjects.TextField(this, '常に重力', this.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace');
-  this.subTitleText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-  this.addChild(this.subTitleText);
-
-  this.startText = new Kiwi.GameObjects.TextField(this, 'START: SPACEBAR', this.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace');
-  this.startText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-
-  this.addChild(this.startText);
-
-  this.quitText = new Kiwi.GameObjects.TextField(this, 'QUIT: ESC', this.game.stage.width / 2, this.startText.y + 30, '#ffffff', 20, 'bold', 'monospace');
-  this.quitText.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-  this.addChild(this.quitText);
+  this.addChild(GameText.createTitle(this));
+  this.addChild(GameText.createSubTitle(this));
+  this.addChild(GameText.createStart(this));
+  this.addChild(GameText.createQuit(this));
 };
 
 titleState.destroyTitleText = function () {
-  this.removeChild(this.titleText);
-  this.removeChild(this.subTitleText);
-  this.removeChild(this.startText);
-  this.removeChild(this.quitText);
+  this.removeChild(GameText.title);
+  this.removeChild(GameText.subTitle);
+  this.removeChild(GameText.start);
+  this.removeChild(GameText.quit);
 };
 
 playState.create = function () {

@@ -4,5 +4,9 @@ titleState.create = function() {
   this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
 
   this.setGameKeys();
-  this.createTitleText();
+
+  this.addChild(GameText.createTitle(this));
+  this.addChild(GameText.createSubTitle(this));
+  this.addChild(GameText.createStart(this));
+  this.addChild(GameText.createQuit(this));
 };
