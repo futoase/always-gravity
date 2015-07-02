@@ -430,6 +430,68 @@ var Explosion = (function () {
   return Explosion;
 })();
 
+var gameOverContext = Symbol();
+var gameOverStatus = Symbol();
+
+var GameOver = (function () {
+  function GameOver() {
+    _classCallCheck(this, GameOver);
+  }
+
+  _createClass(GameOver, null, [{
+    key: 'execute',
+    value: function execute(context) {
+      if (GameOver.status) {
+        return;
+      }
+
+      GameOver.destroyObjects(context);
+
+      GameMusic.gameOver.play();
+
+      context.addChild(GameText.createGameOver(context));
+      context.addChild(GameText.createScore(context, context.gameScoreCounter));
+      context.addChild(GameText.createRestart(context));
+      context.addChild(GameText.createExitGame(context));
+
+      GameOver.status = true;
+    }
+  }, {
+    key: 'destroyObjects',
+    value: function destroyObjects(context) {
+      GroupPool.removeChildrenForAll(context);
+      GameMusic.destroy();
+      context.game.huds.defaultHUD.removeAllWidgets();
+      Timer.destroy(context);
+
+      var myUnit = MyUnit.instance;
+      myUnit.context = context;
+
+      myUnit.sprite.destroy();
+    }
+  }, {
+    key: 'context',
+    get: function get() {
+      return this[gameOverContext];
+    },
+    set: function set(value) {
+      this[gameOverContext] = value;
+    }
+  }, {
+    key: 'status',
+    get: function get() {
+      return this[gameOverStatus];
+    },
+    set: function set(value) {
+      if (typeof value === 'boolean') {
+        this[gameOverStatus] = value;
+      }
+    }
+  }]);
+
+  return GameOver;
+})();
+
 var textExitGame = Symbol();
 var textGameOver = Symbol();
 var textRestart = Symbol();
@@ -1449,7 +1511,7 @@ var MyUnit = (function () {
         if (_this.exposionCounter < 2) {
           _this.explosionCounter += 1;
         } else {
-          context.gameOver();
+          GameOver.execute(context);
         }
       }, 1000, context);
     }
@@ -2052,39 +2114,8 @@ playState.update = function () {
   }
 
   GroupPool.forEachAll(this);
-  if (this.isGameOver) {
+  if (GameOver.status) {
     this.whenGameOverInputKeys();
-  }
-};
-
-playState.destroyObjects = function () {
-  GroupPool.removeChildrenForAll(this);
-  GameMusic.destroy();
-  this.game.huds.defaultHUD.removeAllWidgets();
-  Timer.destroy(this);
-
-  var myUnit = MyUnit.instance;
-  myUnit.context = this;
-
-  myUnit.sprite.destroy();
-};
-
-playState.gameOver = function () {
-  if (this.isGameOver) {
-    return;
-  }
-
-  this.destroyObjects();
-
-  GameMusic.gameOver.play();
-
-  this.addChild(GameText.createGameOver(this));
-  this.addChild(GameText.createScore(this, this.gameScoreCounter));
-  this.addChild(GameText.createRestart(this));
-  this.addChild(GameText.createExitGame(this));
-
-  if (this.isGameOver === undefined) {
-    this.isGameOver = true;
   }
 };
 

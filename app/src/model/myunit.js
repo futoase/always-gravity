@@ -259,7 +259,7 @@ class MyUnit {
         this.explosionCounter += 1;
       }
       else {
-        context.gameOver();
+        GameOver.execute(context);
       }
     }, 1000, context);
   }

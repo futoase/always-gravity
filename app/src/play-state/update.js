@@ -12,7 +12,7 @@ playState.update = function() {
   }
 
   GroupPool.forEachAll(this);
-  if (this.isGameOver) {
+  if (GameOver.status) {
     this.whenGameOverInputKeys();
   }
 };
