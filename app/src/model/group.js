@@ -43,7 +43,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_STAR; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_STAR; i++) {
       pool.addChild(StarGenerator.create(context, i));
     }
   }
@@ -54,7 +54,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_CUBE; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_CUBE; i++) {
       pool.addChild(CubeGenerator.create(context, i));
     }
   }
@@ -65,7 +65,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_CIRCLE; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_CIRCLE; i++) {
       pool.addChild(CircleGenerator.create(context, i));
     }
   }
@@ -76,7 +76,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_BULLET; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_BULLET; i++) {
       pool.addChild(BulletGenerator.create(context, i));
     }
   }
@@ -87,7 +87,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_CYLINDER; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_CYLINDER; i++) {
       pool.addChild(CylinderGenerator.create(context, i));
     }
   }
@@ -98,7 +98,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_MYUNIT_SPLINTER; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER; i++) {
       pool.addChild(MyUnitSplinterGenerator.create(context, i));
     }
   }
@@ -109,7 +109,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
       pool.addChild(RhombusSplinterGenerator.create(context, i));
     }
   }
@@ -120,7 +120,7 @@ class Group {
     context.addChild(pool);
 
     let i;
-    for(i = 0; i < context.NUMBER_OF_RHOMBUS; i++) {
+    for(i = 0; i < GAME_CONFIG.NUMBER_OF_RHOMBUS; i++) {
       pool.addChild(RhombusGenerator.create(context, i));
     }
   }

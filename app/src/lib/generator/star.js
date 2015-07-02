@@ -10,7 +10,7 @@ class StarGenerator {
     );
     star.physics.acceleration.y = 1;
     star.x = parseInt(Math.random() * 800);
-    if (index < parseInt(context.NUMBER_OF_STAR / 3)) {
+    if (index < parseInt(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
       star.y = parseInt(Math.random() * 600);
     }
     else {

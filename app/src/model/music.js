@@ -44,7 +44,7 @@ class GameMusic {
       this[musicMain] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'musicMain',
-        GameMusic.context.BASE_MUSIC_VOLUME_PER,
+        GAME_CONFIG.BASE_MUSIC_VOLUME_PER,
         true
       );
     }
@@ -68,7 +68,7 @@ class GameMusic {
       this[soundEffectOfBullet] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'bullet-se',
-        GameMusic.context.BASE_LASER_VOLUME_PER,
+        GAME_CONFIG.BASE_LASER_VOLUME_PER,
         false
       );
     }
@@ -80,7 +80,7 @@ class GameMusic {
       this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'explosion-se',
-        GameMusic.context.BASE_EXPLOSION_VOLUME_PER,
+        GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER,
         false
       );
     }
@@ -92,7 +92,7 @@ class GameMusic {
       this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'caution-of-speed-se',
-        GameMusic.context.BASE_CAUTION_VOLUME_PER,
+        GAME_CONFIG.BASE_CAUTION_VOLUME_PER,
         false
       );
     }
@@ -104,7 +104,7 @@ class GameMusic {
       this[soundEffectOfCircle] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'circle-se',
-        GameMusic.context.BASE_CIRCLE_VOLUME_PER,
+        GAME_CONFIG.BASE_CIRCLE_VOLUME_PER,
         false
       );
     }
@@ -116,7 +116,7 @@ class GameMusic {
       this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(
         GameMusic.context.game,
         'explosion-myunit-se',
-        GameMusic.context.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
+        GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
         false
       );
     }

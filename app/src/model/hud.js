@@ -76,7 +76,7 @@ class HUD {
     const context = this.context;
 
     let hud = new Kiwi.HUD.Widget.Bar(
-      context.game, 0, context.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
+      context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
     );
 
     this._velocityBar = hud;
@@ -92,7 +92,7 @@ class HUD {
     const context = this.context;
 
     let hud = new Kiwi.HUD.Widget.Bar(
-      context.game, context.CURRENT_HITPOINT, context.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
+      context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
     );
 
     this._hitPointBar = hud;
@@ -137,6 +137,6 @@ class HUD {
       currentVelocityX + currentVelocityY
     );
 
-    this.gameScoreCounter = context.gameScoreCounter;
+    this.gameScoreCounter = GAME_COUNTER.gameScore;
   }
 }

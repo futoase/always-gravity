@@ -10,7 +10,7 @@ class Bullet {
       context.game.time.now() - this[lastBulletShootAt]
     );
 
-    if (lastShootTime < context.SHOT_DELAY) {
+    if (lastShootTime < GAME_CONFIG.SHOOT_DELAY) {
       return;
     }
 
@@ -33,10 +33,10 @@ class Bullet {
     bullet.rotation = myUnit.sprite.rotation;
 
     bullet.physics.velocity.x = (
-      Math.cos(bullet.rotation) * context.BULLET_SPEED
+      Math.cos(bullet.rotation) * GAME_CONFIG.BULLET_SPEED
     );
     bullet.physics.velocity.y = (
-      Math.sin(bullet.rotation) * context.BULLET_SPEED
+      Math.sin(bullet.rotation) * GAME_CONFIG.BULLET_SPEED
     );
 
     GameMusic.soundEffectOfBullet.stop();
@@ -61,7 +61,7 @@ class Bullet {
     Bullet.deadBullet(bullet);
     Helper.revive(object);
     Bullet.playSoundEffectOfExplosion(context, volume);
-    context.gameScoreCounter += object.score;
+    GAME_COUNTER.gameScore += object.score;
   }
 
   static deadBullet(bullet) {

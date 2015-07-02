@@ -79,10 +79,47 @@ var gameOptions = {
   width: 800,
   height: 600
 };
-var gameContainerID = 'game-container';
-var nameOfGame = 'Always Glavity';
-var titleStageColor = '010101';
-var stageColor = '010101';
+
+var GAME_CONFIG = {
+  CONTAINER_ID: 'game-container',
+  NAME: 'Always Glavity',
+  STAGE_COLOR: '010101',
+  SHOOT_DELAY: 100,
+  NUMBER_OF_STAR: 30,
+  NUMBER_OF_CUBE: 5,
+  NUMBER_OF_CYLINDER: 10,
+  NUMBER_OF_BULLET: 3,
+  NUMBER_OF_CIRCLE: 5,
+  NUMBER_OF_MYUNIT_SPLINTER: 60,
+  NUMBER_OF_RHOMBUS: 1,
+  NUMBER_OF_RHOMBUS_SPLINTER: 8,
+  STAR_SPEED: 50,
+  CUBE_SPEED: 30,
+  SHOOT_DELAY: 200,
+  BULLET_SPEED: 100,
+  FRAME_MS: 17,
+  ROTATION_SPEED: Math.PI / 3,
+  ACCELERATION: 20,
+  MAX_SPEED: 25,
+  LIMIT_VELOCITY: 100,
+  LIMIT_VELOCITY_MAX_COUNT: 3,
+  LIMIT_HITPOINT: 5,
+  GRAVITY: 5,
+  DRAG: 2.5,
+  BASE_MUSIC_VOLUME_PER: 1.0,
+  BASE_LASER_VOLUME_PER: 0.6,
+  BASE_EXPLOSION_VOLUME_PER: 1.0,
+  BASE_CAUTION_VOLUME_PER: 2.0,
+  BASE_CIRCLE_VOLUME_PER: 1.0,
+  BASE_EXPLOSION_MYUNIT_VOLUME_PER: 1.0
+};
+
+var GAME_COUNTER = {
+  hitPoint: 5,
+  bullet: 0,
+  explosion: 0,
+  gameScore: 0
+};
 
 var titleState = new Kiwi.State('Title');
 var playState = new Kiwi.State('Play');
@@ -259,7 +296,7 @@ var StarGenerator = (function () {
       star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
       star.physics.acceleration.y = 1;
       star.x = parseInt(Math.random() * 800);
-      if (index < parseInt(context.NUMBER_OF_STAR / 3)) {
+      if (index < parseInt(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
         star.y = parseInt(Math.random() * 600);
       } else {
         star.y = -1 * parseInt(Math.random() * 200);
@@ -289,7 +326,7 @@ var Bullet = (function () {
 
       var lastShootTime = context.game.time.now() - this[lastBulletShootAt];
 
-      if (lastShootTime < context.SHOT_DELAY) {
+      if (lastShootTime < GAME_CONFIG.SHOOT_DELAY) {
         return;
       }
 
@@ -311,8 +348,8 @@ var Bullet = (function () {
 
       bullet.rotation = myUnit.sprite.rotation;
 
-      bullet.physics.velocity.x = Math.cos(bullet.rotation) * context.BULLET_SPEED;
-      bullet.physics.velocity.y = Math.sin(bullet.rotation) * context.BULLET_SPEED;
+      bullet.physics.velocity.x = Math.cos(bullet.rotation) * GAME_CONFIG.BULLET_SPEED;
+      bullet.physics.velocity.y = Math.sin(bullet.rotation) * GAME_CONFIG.BULLET_SPEED;
 
       GameMusic.soundEffectOfBullet.stop();
       GameMusic.soundEffectOfBullet.play();
@@ -338,7 +375,7 @@ var Bullet = (function () {
       Bullet.deadBullet(bullet);
       Helper.revive(object);
       Bullet.playSoundEffectOfExplosion(context, volume);
-      context.gameScoreCounter += object.score;
+      GAME_COUNTER.gameScore += object.score;
     }
   }, {
     key: 'deadBullet',
@@ -450,7 +487,7 @@ var GameOver = (function () {
       GameMusic.gameOver.play();
 
       context.addChild(GameText.createGameOver(context));
-      context.addChild(GameText.createScore(context, context.gameScoreCounter));
+      context.addChild(GameText.createScore(context, GAME_COUNTER.gameScore));
       context.addChild(GameText.createRestart(context));
       context.addChild(GameText.createExitGame(context));
 
@@ -548,7 +585,7 @@ var GameText = (function () {
     key: 'createSlowDownCount',
     value: function createSlowDownCount(context) {
       if (!this[textSlowDownCount]) {
-        var text = new Kiwi.GameObjects.TextField(context, context.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
+        var text = new Kiwi.GameObjects.TextField(context, GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textSlowDownCount] = text;
       }
@@ -809,7 +846,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_STAR; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_STAR; i++) {
         pool.addChild(StarGenerator.create(context, i));
       }
     }
@@ -821,7 +858,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_CUBE; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_CUBE; i++) {
         pool.addChild(CubeGenerator.create(context, i));
       }
     }
@@ -833,7 +870,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_CIRCLE; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_CIRCLE; i++) {
         pool.addChild(CircleGenerator.create(context, i));
       }
     }
@@ -845,7 +882,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_BULLET; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_BULLET; i++) {
         pool.addChild(BulletGenerator.create(context, i));
       }
     }
@@ -857,7 +894,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_CYLINDER; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_CYLINDER; i++) {
         pool.addChild(CylinderGenerator.create(context, i));
       }
     }
@@ -869,7 +906,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_MYUNIT_SPLINTER; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER; i++) {
         pool.addChild(MyUnitSplinterGenerator.create(context, i));
       }
     }
@@ -881,7 +918,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
         pool.addChild(RhombusSplinterGenerator.create(context, i));
       }
     }
@@ -893,7 +930,7 @@ var Group = (function () {
       context.addChild(pool);
 
       var i = undefined;
-      for (i = 0; i < context.NUMBER_OF_RHOMBUS; i++) {
+      for (i = 0; i < GAME_CONFIG.NUMBER_OF_RHOMBUS; i++) {
         pool.addChild(RhombusGenerator.create(context, i));
       }
     }
@@ -960,7 +997,7 @@ var HUD = (function () {
 
       var context = this.context;
 
-      var hud = new Kiwi.HUD.Widget.Bar(context.game, 0, context.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
+      var hud = new Kiwi.HUD.Widget.Bar(context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
 
       this._velocityBar = hud;
 
@@ -975,7 +1012,7 @@ var HUD = (function () {
 
       var context = this.context;
 
-      var hud = new Kiwi.HUD.Widget.Bar(context.game, context.CURRENT_HITPOINT, context.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
+      var hud = new Kiwi.HUD.Widget.Bar(context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
 
       this._hitPointBar = hud;
 
@@ -1013,7 +1050,7 @@ var HUD = (function () {
 
       this.velocityBar = currentVelocityX + currentVelocityY;
 
-      this.gameScoreCounter = context.gameScoreCounter;
+      this.gameScoreCounter = GAME_COUNTER.gameScore;
     }
   }, {
     key: 'context',
@@ -1233,7 +1270,7 @@ var GameMusic = (function () {
     key: 'main',
     get: function get() {
       if (!this[musicMain]) {
-        this[musicMain] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicMain', GameMusic.context.BASE_MUSIC_VOLUME_PER, true);
+        this[musicMain] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicMain', GAME_CONFIG.BASE_MUSIC_VOLUME_PER, true);
       }
       return this[musicMain];
     }
@@ -1249,7 +1286,7 @@ var GameMusic = (function () {
     key: 'soundEffectOfBullet',
     get: function get() {
       if (!this[soundEffectOfBullet]) {
-        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(GameMusic.context.game, 'bullet-se', GameMusic.context.BASE_LASER_VOLUME_PER, false);
+        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(GameMusic.context.game, 'bullet-se', GAME_CONFIG.BASE_LASER_VOLUME_PER, false);
       }
       return this[soundEffectOfBullet];
     }
@@ -1257,7 +1294,7 @@ var GameMusic = (function () {
     key: 'soundEffectOfExplosion',
     get: function get() {
       if (!this[soundEffectOfExplosion]) {
-        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-se', GameMusic.context.BASE_EXPLOSION_VOLUME_PER, false);
+        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-se', GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER, false);
       }
       return this[soundEffectOfExplosion];
     }
@@ -1265,7 +1302,7 @@ var GameMusic = (function () {
     key: 'soundEffectOfCautionForSpeed',
     get: function get() {
       if (!this[soundEffectOfCautionForSpeed]) {
-        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(GameMusic.context.game, 'caution-of-speed-se', GameMusic.context.BASE_CAUTION_VOLUME_PER, false);
+        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(GameMusic.context.game, 'caution-of-speed-se', GAME_CONFIG.BASE_CAUTION_VOLUME_PER, false);
       }
       return this[soundEffectOfCautionForSpeed];
     }
@@ -1273,7 +1310,7 @@ var GameMusic = (function () {
     key: 'soundEffectOfCircle',
     get: function get() {
       if (!this[soundEffectOfCircle]) {
-        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(GameMusic.context.game, 'circle-se', GameMusic.context.BASE_CIRCLE_VOLUME_PER, false);
+        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(GameMusic.context.game, 'circle-se', GAME_CONFIG.BASE_CIRCLE_VOLUME_PER, false);
       }
       return this[soundEffectOfCircle];
     }
@@ -1281,7 +1318,7 @@ var GameMusic = (function () {
     key: 'soundEffectOfMyUnitExplosion',
     get: function get() {
       if (!this[soundEffectOfMyUnitExplosion]) {
-        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-myunit-se', GameMusic.context.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
+        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-myunit-se', GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
       }
       return this[soundEffectOfMyUnitExplosion];
     }
@@ -1312,9 +1349,9 @@ var MyUnit = (function () {
 
       myUnit.rotation = -Math.PI * 0.5;
       myUnit.physics = myUnit.components.add(new Kiwi.Components.ArcadePhysics(myUnit, myUnit.box));
-      myUnit.physics.maxVelocity = context.MAX_SPEED;
-      myUnit.physics.drag.x = context.DRAG;
-      myUnit.physics.drag.y = context.DRAG;
+      myUnit.physics.maxVelocity = GAME_CONFIG.MAX_SPEED;
+      myUnit.physics.drag.x = GAME_CONFIG.DRAG;
+      myUnit.physics.drag.y = GAME_CONFIG.DRAG;
 
       this.sprite = myUnit;
 
@@ -1337,16 +1374,16 @@ var MyUnit = (function () {
       var isOverlap = myUnit.physics.overlaps(object);
       var isOverlapOfRhombus = isOverlap && object.name == 'rhombus';
 
-      if (isOverlap && context.CURRENT_HITPOINT >= 1) {
+      if (isOverlap && GAME_COUNTER.hitPoint >= 1) {
         Helper.revive(object);
-        context.CURRENT_HITPOINT--;
+        GAME_COUNTER.hitPoint--;
         hud.hitPointBar.counter.current--;
         GroupPool.explosion(context).addChild(Explosion.generate(context, myUnit.x, myUnit.y));
         GameMusic.soundEffectOfMyUnitExplosion.play();
       }
 
-      if (isOverlapOfRhombus || context.CURRENT_HITPOINT < 1) {
-        context.CURRENT_HITPOINT = 0;
+      if (isOverlapOfRhombus || GAME_COUNTER.hitPoint < 1) {
+        GAME_COUNTER.hitPoint = 0;
         hud.hitPointBar.counter.current = 0;
         this.explosion();
       }
@@ -1398,9 +1435,9 @@ var MyUnit = (function () {
       }
 
       if (GameKey.activeLeftKey()) {
-        myUnit.physics.angularVelocity = -context.ROTATION_SPEED;
+        myUnit.physics.angularVelocity = -GAME_CONFIG.ROTATION_SPEED;
       } else if (GameKey.activeRightKey()) {
-        myUnit.physics.angularVelocity = context.ROTATION_SPEED;
+        myUnit.physics.angularVelocity = GAME_CONFIG.ROTATION_SPEED;
       } else {
         myUnit.physics.angularVelocity = 0;
       }
@@ -1416,8 +1453,8 @@ var MyUnit = (function () {
       }
 
       if (GameKey.activeUpKey()) {
-        myUnit.physics.acceleration.x = Math.cos(myUnit.rotation) * context.ACCELERATION;
-        myUnit.physics.acceleration.y = Math.sin(myUnit.rotation) * context.ACCELERATION;
+        myUnit.physics.acceleration.x = Math.cos(myUnit.rotation) * GAME_CONFIG.ACCELERATION;
+        myUnit.physics.acceleration.y = Math.sin(myUnit.rotation) * GAME_CONFIG.ACCELERATION;
         // Change sprite 'Engine on'.
         myUnit.cellIndex = 1;
       } else {
@@ -1455,7 +1492,7 @@ var MyUnit = (function () {
       var myUnit = this.sprite;
 
       if (context.myUnitExplosion !== true) {
-        myUnit.physics.acceleration.y += context.GRAVITY;
+        myUnit.physics.acceleration.y += GAME_CONFIG.GRAVITY;
       }
     }
   }, {
@@ -1474,7 +1511,7 @@ var MyUnit = (function () {
       var context = this.context;
       var myUnit = this.sprite;
       var myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
-      var angleBase = parseInt(360 / context.NUMBER_OF_MYUNIT_SPLINTER);
+      var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
       var myUnitSplinterAngle = 0;
 
       myUnitSplinterMembers.forEach(function (splinterMember) {
@@ -1808,7 +1845,7 @@ var TimerSpawnObjects = (function () {
     key: '_explosionRhombus',
     value: function _explosionRhombus(context, sprite) {
       var rhombusSplinterMembers = GroupPool.rhombusSplinter(context).members;
-      var angleBase = parseInt(360 / context.NUMBER_OF_RHOMBUS_SPLINTER);
+      var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
       var rhombusSplinterAngle = 0;
       var explosionCounter = 0;
 
@@ -1884,17 +1921,17 @@ var TimerVelocity = (function () {
       myUnit.context = context;
       hud.context = context;
 
-      if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY) {
+      if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY) {
         if (context.contains(GameText.slowDownCount)) {
-          GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
+          GameText.slowDownCount = GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
         }
         this.overTheLimitVelocityCounter += 1;
       } else {
         this.overTheLimitVelocityCounter = 0;
-        GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT;
+        GameText.slowDownCount = GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT;
       }
 
-      if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
+      if (this.overTheLimitVelocityCounter > GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT) {
         myUnit.explosion();
       }
     }
@@ -1906,7 +1943,7 @@ var TimerVelocity = (function () {
 
       hud.context = context;
 
-      if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
+      if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {
         GameMusic.soundEffectOfCautionForSpeed.play();
         if (!context.contains(GameText.slowDown)) {
           context.addChild(GameText.slowDown);
@@ -1959,7 +1996,7 @@ var TimerVelocity = (function () {
 titleState.create = function () {
   Kiwi.State.prototype.create.call(this);
 
-  this.game.stage.color = titleStageColor;
+  this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
 
   this.setGameKeys();
   this.createTitleText();
@@ -2022,47 +2059,10 @@ titleState.destroyTitleText = function () {
   this.removeChild(this.quitText);
 };
 
-playState.setConfig = function () {
-  this.game.stage.color = stageColor;
-  this.SHOT_DELAY = 100;
-  this.NUMBER_OF_STAR = 30;
-  this.NUMBER_OF_CUBE = 5;
-  this.NUMBER_OF_CYLINDER = 10;
-  this.NUMBER_OF_BULLET = 3;
-  this.NUMBER_OF_CIRCLE = 5;
-  this.NUMBER_OF_MYUNIT_SPLINTER = 60;
-  this.NUMBER_OF_RHOMBUS = 1;
-  this.NUMBER_OF_RHOMBUS_SPLINTER = 8;
-  this.STAR_SPEED = 50;
-  this.CUBE_SPEED = 30;
-  this.SHOOT_DELAY = 200;
-  this.BULLET_SPEED = 100;
-  this.FRAME_MS = 17;
-  this.ROTATION_SPEED = Math.PI / 3;
-  this.ACCELERATION = 20;
-  this.MAX_SPEED = 25;
-  this.LIMIT_VELOCITY = 100;
-  this.LIMIT_VELOCITY_MAX_COUNT = 3;
-  this.LIMIT_HITPOINT = 5;
-  this.CURRENT_HITPOINT = 5;
-  this.GRAVITY = 5;
-  this.DRAG = 2.5;
-  this.BASE_MUSIC_VOLUME_PER = 1.0;
-  this.BASE_LASER_VOLUME_PER = 0.6;
-  this.BASE_EXPLOSION_VOLUME_PER = 1.0;
-  this.BASE_CAUTION_VOLUME_PER = 2.0;
-  this.BASE_CIRCLE_VOLUME_PER = 1.0;
-  this.BASE_EXPLOSION_MYUNIT_VOLUME_PER = 1.0;
-  this.bulletCounter = 0;
-  this.explosionCounter = 0;
-  this.gameScoreCounter = 0;
-};
-
 playState.create = function () {
   Kiwi.State.prototype.create.call(this);
 
-  this.setConfig();
-  //this.setMusics();
+  this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
   GameMusic.initialize(this);
   GameMusic.main.play();
   HUD.initialize(this);
@@ -2125,7 +2125,7 @@ playState.update = function () {
   }
 };
 
-var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);
+var game = new Kiwi.Game(GAME_CONFIG.CONTAINER_ID, GAME_CONFIG.NAME, null, gameOptions);
 game.states.addState(titleState);
 game.states.addState(playState);
 

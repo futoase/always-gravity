@@ -44,20 +44,20 @@ class TimerVelocity {
     myUnit.context = context;
     hud.context = context;
 
-    if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY) {
+    if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY) {
       if (context.contains(GameText.slowDownCount)) {
         GameText.slowDownCount = (
-          context.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
+          GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
         );
       }
       this.overTheLimitVelocityCounter += 1;
     }
     else {
       this.overTheLimitVelocityCounter = 0;
-      GameText.slowDownCount = context.LIMIT_VELOCITY_MAX_COUNT;
+      GameText.slowDownCount = GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT;
     }
 
-    if (this.overTheLimitVelocityCounter > context.LIMIT_VELOCITY_MAX_COUNT) {
+    if (this.overTheLimitVelocityCounter > GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT) {
       myUnit.explosion();
     }
   }
@@ -68,7 +68,7 @@ class TimerVelocity {
 
     hud.context = context;
 
-    if (hud.velocityBar.counter.current >= context.LIMIT_VELOCITY * 0.95) {
+    if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {
       GameMusic.soundEffectOfCautionForSpeed.play();
       if (!context.contains(GameText.slowDown)) {
         context.addChild(GameText.slowDown);

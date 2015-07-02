@@ -60,9 +60,9 @@ class MyUnit {
     myUnit.physics = myUnit.components.add(
       new Kiwi.Components.ArcadePhysics(myUnit, myUnit.box)
     );
-    myUnit.physics.maxVelocity = context.MAX_SPEED;
-    myUnit.physics.drag.x = context.DRAG;
-    myUnit.physics.drag.y = context.DRAG;
+    myUnit.physics.maxVelocity = GAME_CONFIG.MAX_SPEED;
+    myUnit.physics.drag.x = GAME_CONFIG.DRAG;
+    myUnit.physics.drag.y = GAME_CONFIG.DRAG;
 
     this.sprite = myUnit;
 
@@ -84,9 +84,9 @@ class MyUnit {
     let isOverlap = myUnit.physics.overlaps(object);
     let isOverlapOfRhombus = isOverlap && object.name == "rhombus";
 
-    if (isOverlap && context.CURRENT_HITPOINT >= 1) {
+    if (isOverlap && GAME_COUNTER.hitPoint >= 1) {
       Helper.revive(object);
-      context.CURRENT_HITPOINT--;
+      GAME_COUNTER.hitPoint--;
       hud.hitPointBar.counter.current--;
       GroupPool.explosion(context).addChild(
         Explosion.generate(context, myUnit.x, myUnit.y)
@@ -94,8 +94,8 @@ class MyUnit {
       GameMusic.soundEffectOfMyUnitExplosion.play();
     }
 
-    if (isOverlapOfRhombus || context.CURRENT_HITPOINT < 1) {
-      context.CURRENT_HITPOINT = 0;
+    if (isOverlapOfRhombus || GAME_COUNTER.hitPoint < 1) {
+      GAME_COUNTER.hitPoint = 0;
       hud.hitPointBar.counter.current = 0;
       this.explosion();
     }
@@ -144,10 +144,10 @@ class MyUnit {
     }
 
     if (GameKey.activeLeftKey()) {
-      myUnit.physics.angularVelocity = -context.ROTATION_SPEED;
+      myUnit.physics.angularVelocity = -GAME_CONFIG.ROTATION_SPEED;
     }
     else if (GameKey.activeRightKey()) {
-      myUnit.physics.angularVelocity = context.ROTATION_SPEED;
+      myUnit.physics.angularVelocity = GAME_CONFIG.ROTATION_SPEED;
     }
     else {
       myUnit.physics.angularVelocity = 0;
@@ -164,10 +164,10 @@ class MyUnit {
 
     if (GameKey.activeUpKey()) {
       myUnit.physics.acceleration.x = (
-        Math.cos(myUnit.rotation) * context.ACCELERATION
+        Math.cos(myUnit.rotation) * GAME_CONFIG.ACCELERATION
       );
       myUnit.physics.acceleration.y = (
-        Math.sin(myUnit.rotation) * context.ACCELERATION
+        Math.sin(myUnit.rotation) * GAME_CONFIG.ACCELERATION
       );
       // Change sprite 'Engine on'.
       myUnit.cellIndex = 1;
@@ -205,7 +205,7 @@ class MyUnit {
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== true) {
-      myUnit.physics.acceleration.y += context.GRAVITY;
+      myUnit.physics.acceleration.y += GAME_CONFIG.GRAVITY;
     }
   }
 
@@ -222,7 +222,7 @@ class MyUnit {
     const context = this.context;
     const myUnit = this.sprite;
     let myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
-    let angleBase = parseInt(360 / context.NUMBER_OF_MYUNIT_SPLINTER);
+    let angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
     let myUnitSplinterAngle = 0;
 
     myUnitSplinterMembers.forEach((splinterMember) => {

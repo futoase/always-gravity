@@ -1,8 +1,7 @@
 playState.create = function() {
   Kiwi.State.prototype.create.call(this);
 
-  this.setConfig();
-  //this.setMusics();
+  this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
   GameMusic.initialize(this);
   GameMusic.main.play();
   HUD.initialize(this);

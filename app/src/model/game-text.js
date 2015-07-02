@@ -53,7 +53,7 @@ class GameText {
   static createSlowDownCount(context) {
     if (!this[textSlowDownCount]) {
       let text = new Kiwi.GameObjects.TextField(
-        context, context.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, "#ffffff", 48, "bold", "monoscape"
+        context, GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, "#ffffff", 48, "bold", "monoscape"
   );
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textSlowDownCount] = text;

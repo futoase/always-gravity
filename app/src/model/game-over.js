@@ -30,7 +30,7 @@ class GameOver {
     GameMusic.gameOver.play();
 
     context.addChild(GameText.createGameOver(context));
-    context.addChild(GameText.createScore(context, context.gameScoreCounter));
+    context.addChild(GameText.createScore(context, GAME_COUNTER.gameScore));
     context.addChild(GameText.createRestart(context));
     context.addChild(GameText.createExitGame(context));
 
