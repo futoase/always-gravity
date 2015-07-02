@@ -2110,7 +2110,6 @@ playState.update = function () {
 
   if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
     Bullet.shoot(this);
-    //this.shootBullet();
   }
 
   GroupPool.forEachAll(this);
@@ -2123,16 +2122,6 @@ playState.update = function () {
     if (GameKey.activeRestartKey()) {
       window.location.reload(true);
     }
-  }
-};
-
-playState.whenGameOverInputKeys = function () {
-  if (GameKey.activeExitKey()) {
-    ipc.sendSync('quit');
-  }
-
-  if (GameKey.activeRestartKey()) {
-    window.location.reload(true);
   }
 };
 

@@ -8,7 +8,6 @@ playState.update = function() {
 
   if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
     Bullet.shoot(this);
-    //this.shootBullet();
   }
 
   GroupPool.forEachAll(this);
