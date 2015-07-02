@@ -1179,6 +1179,7 @@ var HUD = (function () {
   return HUD;
 })();
 
+var _gameStartKey = Symbol();
 var _leftKey = Symbol();
 var _rightKey = Symbol();
 var _upKey = Symbol();
@@ -1192,14 +1193,33 @@ var GameKey = (function () {
   }
 
   _createClass(GameKey, null, [{
-    key: 'initialize',
-    value: function initialize(context) {
+    key: 'initializeOfPlay',
+    value: function initializeOfPlay(context) {
       GameKey.leftKey(context);
       GameKey.rightKey(context);
       GameKey.upKey(context);
       GameKey.shootKey(context);
       GameKey.exitKey(context);
       GameKey.restartKey(context);
+    }
+  }, {
+    key: 'initializeOfTitle',
+    value: function initializeOfTitle(context) {
+      GameKey.gameStartKey(context);
+      GameKey.exitKey(context);
+    }
+  }, {
+    key: 'gameStartKey',
+    value: function gameStartKey(context) {
+      if (!this[_gameStartKey]) {
+        this[_gameStartKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.SPACEBAR);
+      }
+      return this[_gameStartKey];
+    }
+  }, {
+    key: 'activeGameStartKey',
+    value: function activeGameStartKey() {
+      return this[_gameStartKey].isDown;
     }
   }, {
     key: 'leftKey',
@@ -2062,8 +2082,7 @@ titleState.create = function () {
 
   this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
 
-  this.setGameKeys();
-
+  GameKey.initializeOfTitle(this);
   this.addChild(GameText.createTitle(this));
   this.addChild(GameText.createSubTitle(this));
   this.addChild(GameText.createStart(this));
@@ -2077,7 +2096,7 @@ titleState.preload = function () {
 titleState.update = function () {
   Kiwi.State.prototype.update.call(this);
 
-  if (this.startInputIsActive()) {
+  if (GameKey.activeGameStartKey()) {
     this.removeChild(GameText.title);
     this.removeChild(GameText.subTitle);
     this.removeChild(GameText.start);
@@ -2085,36 +2104,9 @@ titleState.update = function () {
     this.game.states.switchState('Play');
   }
 
-  if (this.exitInputIsActive()) {
+  if (GameKey.activeExitKey()) {
     ipc.sendSync('quit');
   }
-};
-
-titleState.startInputIsActive = function () {
-  return this.startKey.isDown;
-};
-
-titleState.exitInputIsActive = function () {
-  return this.exitKey.isDown;
-};
-
-titleState.setGameKeys = function () {
-  this.startKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.SPACEBAR);
-  this.exitKey = this.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
-};
-
-titleState.createTitleText = function () {
-  this.addChild(GameText.createTitle(this));
-  this.addChild(GameText.createSubTitle(this));
-  this.addChild(GameText.createStart(this));
-  this.addChild(GameText.createQuit(this));
-};
-
-titleState.destroyTitleText = function () {
-  this.removeChild(GameText.title);
-  this.removeChild(GameText.subTitle);
-  this.removeChild(GameText.start);
-  this.removeChild(GameText.quit);
 };
 
 playState.create = function () {
@@ -2126,7 +2118,7 @@ playState.create = function () {
   HUD.initialize(this);
   Group.initialize(this);
   MyUnit.initialize(this);
-  GameKey.initialize(this);
+  GameKey.initializeOfPlay(this);
   Timer.initialize(this);
   GameText.createSlowDownCount(this);
   GameText.createSlowDown(this);

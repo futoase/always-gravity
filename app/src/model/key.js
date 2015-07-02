@@ -1,3 +1,4 @@
+let gameStartKey = Symbol();
 let leftKey = Symbol();
 let rightKey = Symbol();
 let upKey = Symbol();
@@ -7,13 +8,31 @@ let restartKey = Symbol();
 
 class GameKey {
 
-  static initialize(context) {
+  static initializeOfPlay(context) {
     GameKey.leftKey(context);
     GameKey.rightKey(context);
     GameKey.upKey(context);
     GameKey.shootKey(context);
     GameKey.exitKey(context);
     GameKey.restartKey(context);
+  }
+
+  static initializeOfTitle(context) {
+    GameKey.gameStartKey(context);
+    GameKey.exitKey(context);
+  }
+
+  static gameStartKey(context) {
+    if (!this[gameStartKey]) {
+      this[gameStartKey] = context.game.input.keyboard.addKey(
+        Kiwi.Input.Keycodes.SPACEBAR
+      );
+    }
+    return this[gameStartKey];
+  }
+
+  static activeGameStartKey() {
+    return this[gameStartKey].isDown;
   }
 
   static leftKey(context) {

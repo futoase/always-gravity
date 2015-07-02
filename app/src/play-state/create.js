@@ -7,7 +7,7 @@ playState.create = function() {
   HUD.initialize(this);
   Group.initialize(this);
   MyUnit.initialize(this);
-  GameKey.initialize(this);
+  GameKey.initializeOfPlay(this);
   Timer.initialize(this);
   GameText.createSlowDownCount(this);
   GameText.createSlowDown(this);

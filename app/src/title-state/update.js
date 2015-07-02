@@ -1,7 +1,7 @@
 titleState.update = function() {
   Kiwi.State.prototype.update.call(this);
 
-  if (this.startInputIsActive()) {
+  if (GameKey.activeGameStartKey()) {
     this.removeChild(GameText.title);
     this.removeChild(GameText.subTitle);
     this.removeChild(GameText.start);
@@ -9,7 +9,7 @@ titleState.update = function() {
     this.game.states.switchState('Play');
   }
 
-  if (this.exitInputIsActive()) {
+  if (GameKey.activeExitKey()) {
     ipc.sendSync('quit');
   }
 };
