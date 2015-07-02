@@ -5,10 +5,7 @@ playState.gameOver = function(){
 
   this.destroyObjects();
 
-  this.musicGameOver = new Kiwi.Sound.Audio(
-    this.game, 'musicGameover', 1, false
-  );
-  this.musicGameOver.play();
+  GameMusic.gameOver.play();
 
   this.addChild(GameText.createGameOver(this));
   this.addChild(GameText.createScore(this, this.gameScoreCounter));

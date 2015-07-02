@@ -1,5 +1,6 @@
 let gameMusicContext = Symbol();
 let musicMain = Symbol();
+let musicGameOver = Symbol();
 let soundEffectOfBullet = Symbol();
 let soundEffectOfExplosion = Symbol();
 let soundEffectOfCautionForSpeed = Symbol();
@@ -19,6 +20,7 @@ class GameMusic {
   static initialize(context) {
     GameMusic.context = context;
     GameMusic.main;
+    GameMusic.gameOver;
     GameMusic.soundEffectOfBullet;
     GameMusic.soundEffectOfExplosion;
     GameMusic.soundEffectOfCautionForSpeed;
@@ -47,6 +49,18 @@ class GameMusic {
       );
     }
     return this[musicMain];
+  }
+
+  static get gameOver() {
+    if (!this[musicGameOver]) {
+      this[musicGameOver] = new Kiwi.Sound.Audio(
+        GameMusic.context.game,
+        'musicGameover',
+        1,
+        false
+      );
+    }
+    return this[musicGameOver];
   }
 
   static get soundEffectOfBullet() {

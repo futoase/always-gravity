@@ -1123,6 +1123,7 @@ var GameKey = (function () {
 
 var gameMusicContext = Symbol();
 var musicMain = Symbol();
+var musicGameOver = Symbol();
 var soundEffectOfBullet = Symbol();
 var soundEffectOfExplosion = Symbol();
 var soundEffectOfCautionForSpeed = Symbol();
@@ -1139,6 +1140,7 @@ var GameMusic = (function () {
     value: function initialize(context) {
       GameMusic.context = context;
       GameMusic.main;
+      GameMusic.gameOver;
       GameMusic.soundEffectOfBullet;
       GameMusic.soundEffectOfExplosion;
       GameMusic.soundEffectOfCautionForSpeed;
@@ -1172,6 +1174,14 @@ var GameMusic = (function () {
         this[musicMain] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicMain', GameMusic.context.BASE_MUSIC_VOLUME_PER, true);
       }
       return this[musicMain];
+    }
+  }, {
+    key: 'gameOver',
+    get: function get() {
+      if (!this[musicGameOver]) {
+        this[musicGameOver] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicGameover', 1, false);
+      }
+      return this[musicGameOver];
     }
   }, {
     key: 'soundEffectOfBullet',
@@ -2066,8 +2076,7 @@ playState.gameOver = function () {
 
   this.destroyObjects();
 
-  this.musicGameOver = new Kiwi.Sound.Audio(this.game, 'musicGameover', 1, false);
-  this.musicGameOver.play();
+  GameMusic.gameOver.play();
 
   this.addChild(GameText.createGameOver(this));
   this.addChild(GameText.createScore(this, this.gameScoreCounter));
@@ -2087,24 +2096,6 @@ playState.whenGameOverInputKeys = function () {
   if (GameKey.activeRestartKey()) {
     window.location.reload(true);
   }
-};
-
-playState.destroyMusics = function () {
-  GameMusic.destroy();
-};
-
-playState.setMusics = function () {
-  this.musicMain = new Kiwi.Sound.Audio(this.game, 'musicMain', this.BASE_MUSIC_VOLUME_PER, true);
-  this.musicMain.play();
-
-  this.soundEffectOfBullet = new Kiwi.Sound.Audio(this.game, 'bullet-se', this.BASE_LASER_VOLUME_PER, false);
-  this.soundEffectOfExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-se', this.BASE_EXPLOSION_VOLUME_PER, false);
-
-  this.soundEffectOfCautionForSpeed = new Kiwi.Sound.Audio(this.game, 'caution-of-speed-se', this.BASE_CAUTION_VOLUME_PER, false);
-
-  this.soundEffectOfCircle = new Kiwi.Sound.Audio(this.game, 'circle-se', this.BASE_CIRCLE_VOLUME_PER, false);
-
-  this.soundEffectOfMyUnitExplosion = new Kiwi.Sound.Audio(this.game, 'explosion-myunit-se', this.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
 };
 
 var game = new Kiwi.Game(gameContainerID, nameOfGame, null, gameOptions);
