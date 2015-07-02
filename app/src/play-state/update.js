@@ -12,7 +12,14 @@ playState.update = function() {
   }
 
   GroupPool.forEachAll(this);
+
   if (GameOver.status) {
-    this.whenGameOverInputKeys();
+    if (GameKey.activeExitKey()) {
+      ipc.sendSync('quit');
+    }
+
+    if (GameKey.activeRestartKey()){
+      window.location.reload(true);
+    }
   }
 };
