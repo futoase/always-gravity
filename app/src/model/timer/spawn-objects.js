@@ -2,6 +2,7 @@ let timerSpawnObjectsSingleton = Symbol();
 let timerSpawnObjectsSingletonEnforcer = Symbol();
 
 class TimerSpawnObjects {
+
   constructor(enforcer) {
     if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
       throw "Cannot construct singleton!";
@@ -15,19 +16,11 @@ class TimerSpawnObjects {
     return this[timerSpawnObjectsSingleton];
   }
 
-  get context() {
-    return this._context;
-  }
-
-  set context(value) {
-    this._context = value;
-  }
-
   circle() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     Helper.strewnSprite(
-      Helper.getMember(GroupPool.circle(context).members),
+      Helper.getMember(GroupPool.circle().members),
       { y: context.game.stage.height },
       { y: 2 },
       (sprite) => {
@@ -37,37 +30,37 @@ class TimerSpawnObjects {
   }
 
   cube() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     Helper.strewnSprite(
-      Helper.getMember(GroupPool.cube(context).members),
+      Helper.getMember(GroupPool.cube().members),
       { y: context.game.stage.height },
       { y: 5 }
     );
   }
 
   cylinder() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     Helper.strewnSprite(
-      Helper.getMember(GroupPool.cylinder(context).members),
+      Helper.getMember(GroupPool.cylinder().members),
       { y: context.game.stage.height },
       { y: 10 }
     );
   }
 
   star() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     Helper.strewnSprite(
-      Helper.getMember(GroupPool.star(context).members),
+      Helper.getMember(GroupPool.star().members),
       { y: context.game.stage.height },
       { y: 3 }
     );
   }
 
   rhombus() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
       context.isSpawnSpriteOfRhombusSplinter = false;
@@ -79,7 +72,7 @@ class TimerSpawnObjects {
 
     if (context.isSpawnSpriteOfRhombusSplinter) {
       Helper.strewnSprite(
-        Helper.getMember(GroupPool.rhombus(context).members),
+        Helper.getMember(GroupPool.rhombus().members),
         { y: context.game.stage.height / 2 - 32 },
         { y: 1 },
         (sprite) => {
@@ -113,7 +106,7 @@ class TimerSpawnObjects {
   }
 
   _explosionRhombus(context, sprite) {
-    const rhombusSplinterMembers = GroupPool.rhombusSplinter(context).members;
+    const rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
     const angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
     let rhombusSplinterAngle = 0;
     let explosionCounter = 0;
@@ -143,7 +136,6 @@ class TimerSpawnObjects {
   _tweenOfCircle(context, sprite) {
     let tween = context.game.tweens.create(sprite);
     let myUnit = MyUnit.instance;
-    myUnit.context = context;
 
     tween.to(
       { x: myUnit.sprite.x },
@@ -152,4 +144,5 @@ class TimerSpawnObjects {
     );
     tween.start();
   }
+
 }

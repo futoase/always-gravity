@@ -316,7 +316,9 @@ var Bullet = (function () {
 
   _createClass(Bullet, null, [{
     key: 'shoot',
-    value: function shoot(context) {
+    value: function shoot() {
+      var context = GameState.instance.current;
+
       if (!this[lastBulletShootAt]) {
         this[lastBulletShootAt] = 0;
       }
@@ -338,7 +340,6 @@ var Bullet = (function () {
       bullet.alive = true;
 
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
       bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
@@ -354,7 +355,7 @@ var Bullet = (function () {
   }, {
     key: 'getFirstDeadBullet',
     value: function getFirstDeadBullet(context) {
-      var bulletMembers = GroupPool.bullet(context).members;
+      var bulletMembers = GroupPool.bullet().members;
       var i = undefined;
       for (i = bulletMembers.length - 1; i >= 0; i--) {
         if (bulletMembers[i].alive === false) {
@@ -368,7 +369,7 @@ var Bullet = (function () {
     value: function overlapOnObject(context, bullet, object) {
       var volume = arguments[3] === undefined ? 1.0 : arguments[3];
 
-      GroupPool.explosion(context).addChild(Explosion.generate(context, bullet.x, bullet.y));
+      GroupPool.explosion(context).addChild(Explosion.generate(bullet.x, bullet.y));
       Bullet.deadBullet(bullet);
       Helper.revive(object);
       Bullet.playSoundEffectOfExplosion(context, volume);
@@ -401,8 +402,10 @@ var CollisionDelection = (function () {
 
   _createClass(CollisionDelection, null, [{
     key: 'BulletCollideWithCube',
-    value: function BulletCollideWithCube(context, bullet) {
-      var members = GroupPool.cube(context).members;
+    value: function BulletCollideWithCube(bullet) {
+      var context = GameState.instance.current;
+      var members = GroupPool.cube().members;
+
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
           Bullet.overlapOnObject(context, bullet, member, 0.3);
@@ -411,8 +414,10 @@ var CollisionDelection = (function () {
     }
   }, {
     key: 'BulletCollideWithCircle',
-    value: function BulletCollideWithCircle(context, bullet) {
-      var members = GroupPool.circle(context).members;
+    value: function BulletCollideWithCircle(bullet) {
+      var context = GameState.instance.current;
+      var members = GroupPool.circle().members;
+
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
           Bullet.overlapOnObject(context, bullet, member, 0.3);
@@ -421,8 +426,10 @@ var CollisionDelection = (function () {
     }
   }, {
     key: 'BulletCollideWithCylinder',
-    value: function BulletCollideWithCylinder(context, bullet) {
-      var members = GroupPool.cylinder(context).members;
+    value: function BulletCollideWithCylinder(bullet) {
+      var context = GameState.instance.current;
+      var members = GroupPool.cylinder().members;
+
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
           Bullet.overlapOnObject(context, bullet, member, 0.3);
@@ -441,7 +448,8 @@ var Explosion = (function () {
 
   _createClass(Explosion, null, [{
     key: 'generate',
-    value: function generate(context, baseX, baseY) {
+    value: function generate(baseX, baseY) {
+      var context = GameState.instance.current;
       var explosion = new Kiwi.GameObjects.Sprite(context, context.textures.explosion, baseX, baseY);
 
       explosion.x = parseInt(baseX - explosion.width * 0.5);
@@ -483,10 +491,10 @@ var GameOver = (function () {
 
       GameMusic.gameOver.play();
 
-      context.addChild(GameText.createGameOver(context));
-      context.addChild(GameText.createScore(context, GAME_COUNTER.gameScore));
-      context.addChild(GameText.createRestart(context));
-      context.addChild(GameText.createExitGame(context));
+      context.addChild(GameText.createGameOver());
+      context.addChild(GameText.createScore(GAME_COUNTER.gameScore));
+      context.addChild(GameText.createRestart());
+      context.addChild(GameText.createExitGame());
 
       GameOver.status = true;
     }
@@ -496,12 +504,9 @@ var GameOver = (function () {
       GroupPool.removeChildrenForAll(context);
       GameMusic.destroy();
       context.game.huds.defaultHUD.removeAllWidgets();
-      Timer.destroy(context);
+      Timer.destroy();
 
-      var myUnit = MyUnit.instance;
-      myUnit.context = context;
-
-      myUnit.sprite.destroy();
+      MyUnit.instance.sprite.destroy();
     }
   }, {
     key: 'context',
@@ -543,8 +548,30 @@ var GameText = (function () {
   }
 
   _createClass(GameText, null, [{
+    key: 'initializeOfTitle',
+    value: function initializeOfTitle() {
+      var context = GameState.instance.current;
+
+      context.addChild(GameText.createTitle());
+      context.addChild(GameText.createSubTitle());
+      context.addChild(GameText.createStart());
+      context.addChild(GameText.createQuit());
+    }
+  }, {
+    key: 'destroyOfTitle',
+    value: function destroyOfTitle() {
+      var context = GameState.instance.current;
+
+      context.removeChild(GameText.title);
+      context.removeChild(GameText.subTitle);
+      context.removeChild(GameText.start);
+      context.removeChild(GameText.quit);
+    }
+  }, {
     key: 'createTitle',
-    value: function createTitle(context) {
+    value: function createTitle() {
+      var context = GameState.instance.current;
+
       if (!this[textTitle]) {
         var text = new Kiwi.GameObjects.TextField(context, 'Always Gravity', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -554,7 +581,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createSubTitle',
-    value: function createSubTitle(context) {
+    value: function createSubTitle() {
+      var context = GameState.instance.current;
+
       if (!this[textSubTitle]) {
         var text = new Kiwi.GameObjects.TextField(context, '常に重力', context.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -564,7 +593,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createStart',
-    value: function createStart(context) {
+    value: function createStart() {
+      var context = GameState.instance.current;
+
       if (!this[textStart]) {
         var text = new Kiwi.GameObjects.TextField(context, 'START: SPACEBAR', context.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -574,7 +605,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createQuit',
-    value: function createQuit(context) {
+    value: function createQuit() {
+      var context = GameState.instance.current;
+
       if (!this[textQuit]) {
         var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -584,7 +617,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createExitGame',
-    value: function createExitGame(context) {
+    value: function createExitGame() {
+      var context = GameState.instance.current;
+
       if (!this[textExitGame]) {
         var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -594,7 +629,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createGameOver',
-    value: function createGameOver(context) {
+    value: function createGameOver() {
+      var context = GameState.instance.current;
+
       if (!this[textGameOver]) {
         var text = new Kiwi.GameObjects.TextField(context, 'GAME OVER', context.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -604,7 +641,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createRestart',
-    value: function createRestart(context) {
+    value: function createRestart() {
+      var context = GameState.instance.current;
+
       if (!this[textRestart]) {
         var text = new Kiwi.GameObjects.TextField(context, 'RESTART: R', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -614,7 +653,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createScore',
-    value: function createScore(context, score) {
+    value: function createScore(score) {
+      var context = GameState.instance.current;
+
       if (!this[textScore]) {
         var text = new Kiwi.GameObjects.TextField(context, 'SCORE: ' + score, context.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -624,7 +665,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createSlowDownCount',
-    value: function createSlowDownCount(context) {
+    value: function createSlowDownCount() {
+      var context = GameState.instance.current;
+
       if (!this[textSlowDownCount]) {
         var text = new Kiwi.GameObjects.TextField(context, GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -634,7 +677,9 @@ var GameText = (function () {
     }
   }, {
     key: 'createSlowDown',
-    value: function createSlowDown(context) {
+    value: function createSlowDown() {
+      var context = GameState.instance.current;
+
       if (!this[textSlowDown]) {
         var text = new Kiwi.GameObjects.TextField(context, 'SLOW DOWN !!!', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
@@ -687,7 +732,8 @@ var GroupPool = (function () {
 
   _createClass(GroupPool, null, [{
     key: 'star',
-    value: function star(context) {
+    value: function star() {
+      var context = GameState.instance.current;
       if (context.starPool === undefined) {
         context.starPool = new Kiwi.Group(context);
       }
@@ -695,7 +741,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'cube',
-    value: function cube(context) {
+    value: function cube() {
+      var context = GameState.instance.current;
       if (context.cubePool === undefined) {
         context.cubePool = new Kiwi.Group(context);
       }
@@ -703,7 +750,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'circle',
-    value: function circle(context) {
+    value: function circle() {
+      var context = GameState.instance.current;
       if (context.circlePool === undefined) {
         context.circlePool = new Kiwi.Group(context);
       }
@@ -711,7 +759,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'bullet',
-    value: function bullet(context) {
+    value: function bullet() {
+      var context = GameState.instance.current;
       if (context.bulletPool === undefined) {
         context.bulletPool = new Kiwi.Group(context);
       }
@@ -719,7 +768,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'cylinder',
-    value: function cylinder(context) {
+    value: function cylinder() {
+      var context = GameState.instance.current;
       if (context.cylinderPool === undefined) {
         context.cylinderPool = new Kiwi.Group(context);
       }
@@ -727,7 +777,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'myUnitSplinter',
-    value: function myUnitSplinter(context) {
+    value: function myUnitSplinter() {
+      var context = GameState.instance.current;
       if (context.myUnitSplinterPool === undefined) {
         context.myUnitSplinterPool = new Kiwi.Group(context);
       }
@@ -735,7 +786,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'rhombusSplinter',
-    value: function rhombusSplinter(context) {
+    value: function rhombusSplinter() {
+      var context = GameState.instance.current;
       if (context.rhombusSplinterPool === undefined) {
         context.rhombusSplinterPool = new Kiwi.Group(context);
       }
@@ -743,7 +795,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'rhombus',
-    value: function rhombus(context) {
+    value: function rhombus() {
+      var context = GameState.instance.current;
       if (context.rhombusPool === undefined) {
         context.rhombusPool = new Kiwi.Group(context);
       }
@@ -760,13 +813,13 @@ var GroupPool = (function () {
   }, {
     key: 'removeChildrenForAll',
     value: function removeChildrenForAll(context) {
-      var star = GroupPool.star(context);
-      var cube = GroupPool.cube(context);
-      var circle = GroupPool.circle(context);
-      var cylinder = GroupPool.cylinder(context);
-      var bullet = GroupPool.bullet(context);
+      var star = GroupPool.star();
+      var cube = GroupPool.cube();
+      var circle = GroupPool.circle();
+      var cylinder = GroupPool.cylinder();
+      var bullet = GroupPool.bullet();
       var explosion = GroupPool.explosion(context);
-      var rhombus = GroupPool.rhombus(context);
+      var rhombus = GroupPool.rhombus();
 
       star.removeChildren(0, star.members.length);
       cube.removeChildren(0, cube.members.length);
@@ -778,26 +831,30 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachAll',
-    value: function forEachAll(context) {
-      GroupPool.forEachStar(context);
-      GroupPool.forEachCube(context);
-      GroupPool.forEachCylinder(context);
-      GroupPool.forEachCircle(context);
-      GroupPool.forEachBullet(context);
-      GroupPool.forEachExplosion(context);
-      GroupPool.forEachRhombusSplinter(context);
-      GroupPool.forEachRhombus(context);
+    value: function forEachAll() {
+      GroupPool.forEachStar();
+      GroupPool.forEachCube();
+      GroupPool.forEachCylinder();
+      GroupPool.forEachCircle();
+      GroupPool.forEachBullet();
+      GroupPool.forEachExplosion();
+      GroupPool.forEachRhombusSplinter();
+      GroupPool.forEachRhombus();
     }
   }, {
     key: 'forEachStar',
-    value: function forEachStar(context) {
-      var pool = GroupPool.star(context);
+    value: function forEachStar() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.star();
+
       pool.forEach(context, Helper.checkSpritePosition);
     }
   }, {
     key: 'forEachCube',
-    value: function forEachCube(context) {
-      var pool = GroupPool.cube(context);
+    value: function forEachCube() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.cube();
+
       pool.forEach(context, function (cube) {
         Helper.updateSpriteRotation(cube, 5);
       });
@@ -805,16 +862,18 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCylinder',
-    value: function forEachCylinder(context) {
-      var pool = GroupPool.cylinder(context);
+    value: function forEachCylinder() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.cylinder();
+
       pool.forEach(context, Helper.checkSpritePosition);
     }
   }, {
     key: 'forEachCircle',
-    value: function forEachCircle(context) {
-      var pool = GroupPool.circle(context);
+    value: function forEachCircle() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.circle();
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       pool.forEach(context, Helper.checkSpritePosition);
       pool.forEach(context, function (circle) {
@@ -826,11 +885,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCircle',
-    value: function forEachCircle(context) {
-      var pool = GroupPool.circle(context);
+    value: function forEachCircle() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.circle();
       var myUnit = MyUnit.instance;
-
-      myUnit.context = context;
 
       pool.forEach(context, Helper.checkSpritePosition);
       pool.forEach(context, function (circle) {
@@ -842,29 +900,33 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachBullet',
-    value: function forEachBullet(context) {
-      var pool = GroupPool.bullet(context);
+    value: function forEachBullet() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.bullet();
+
       pool.forEach(context, Helper.checkSpritePosition);
       pool.members.map(function (member) {
-        CollisionDelection.BulletCollideWithCube(context, member);
-        CollisionDelection.BulletCollideWithCircle(context, member);
-        CollisionDelection.BulletCollideWithCylinder(context, member);
+        CollisionDelection.BulletCollideWithCube(member);
+        CollisionDelection.BulletCollideWithCircle(member);
+        CollisionDelection.BulletCollideWithCylinder(member);
       });
     }
   }, {
     key: 'forEachExplosion',
-    value: function forEachExplosion(context) {
+    value: function forEachExplosion() {
+      var context = GameState.instance.current;
       var pool = GroupPool.explosion(context);
+
       pool.members.map(function (member) {
         Explosion.isLastOfCellIndex(member);
       });
     }
   }, {
     key: 'forEachRhombusSplinter',
-    value: function forEachRhombusSplinter(context) {
-      var pool = GroupPool.rhombusSplinter(context);
+    value: function forEachRhombusSplinter() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.rhombusSplinter();
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       pool.forEach(context, Helper.checkSpritePosition);
       pool.members.map(function (member) {
@@ -873,10 +935,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachRhombus',
-    value: function forEachRhombus(context) {
-      var pool = GroupPool.rhombus(context);
+    value: function forEachRhombus() {
+      var context = GameState.instance.current;
+      var pool = GroupPool.rhombus();
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       pool.members.map(function (member) {
         myUnit.overlapOnOther(member);
@@ -902,8 +964,8 @@ var Group = (function () {
   _createClass(Group, [{
     key: 'star',
     value: function star() {
-      var context = this.context;
-      var pool = GroupPool.star(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.star();
       context.addChild(pool);
 
       var i = undefined;
@@ -914,8 +976,8 @@ var Group = (function () {
   }, {
     key: 'cube',
     value: function cube() {
-      var context = this.context;
-      var pool = GroupPool.cube(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.cube();
       context.addChild(pool);
 
       var i = undefined;
@@ -926,8 +988,8 @@ var Group = (function () {
   }, {
     key: 'circle',
     value: function circle() {
-      var context = this.context;
-      var pool = GroupPool.circle(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.circle();
       context.addChild(pool);
 
       var i = undefined;
@@ -938,8 +1000,8 @@ var Group = (function () {
   }, {
     key: 'bullet',
     value: function bullet() {
-      var context = this.context;
-      var pool = GroupPool.bullet(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.bullet();
       context.addChild(pool);
 
       var i = undefined;
@@ -950,8 +1012,8 @@ var Group = (function () {
   }, {
     key: 'cylinder',
     value: function cylinder() {
-      var context = this.context;
-      var pool = GroupPool.cylinder(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.cylinder();
       context.addChild(pool);
 
       var i = undefined;
@@ -962,8 +1024,8 @@ var Group = (function () {
   }, {
     key: 'myUnitSplinter',
     value: function myUnitSplinter() {
-      var context = this.context;
-      var pool = GroupPool.myUnitSplinter(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.myUnitSplinter();
       context.addChild(pool);
 
       var i = undefined;
@@ -974,8 +1036,8 @@ var Group = (function () {
   }, {
     key: 'rhombusSplinter',
     value: function rhombusSplinter() {
-      var context = this.context;
-      var pool = GroupPool.rhombusSplinter(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.rhombusSplinter();
       context.addChild(pool);
 
       var i = undefined;
@@ -986,8 +1048,8 @@ var Group = (function () {
   }, {
     key: 'rhombus',
     value: function rhombus() {
-      var context = this.context;
-      var pool = GroupPool.rhombus(context);
+      var context = GameState.instance.current;
+      var pool = GroupPool.rhombus();
       context.addChild(pool);
 
       var i = undefined;
@@ -998,22 +1060,13 @@ var Group = (function () {
   }, {
     key: 'explosion',
     value: function explosion() {
-      var context = this.context;
+      var context = GameState.instance.current;
       context.addChild(GroupPool.explosion(context));
-    }
-  }, {
-    key: 'context',
-    get: function get() {
-      return this._context;
-    },
-    set: function set(value) {
-      this._context = value;
     }
   }], [{
     key: 'initialize',
-    value: function initialize(context) {
+    value: function initialize() {
       var group = Group.instance;
-      group.context = context;
       group.star();
       group.cube();
       group.circle();
@@ -1056,7 +1109,7 @@ var HUD = (function () {
         return this._velocityBar;
       }
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
       var hud = new Kiwi.HUD.Widget.Bar(context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white');
 
@@ -1071,7 +1124,7 @@ var HUD = (function () {
         return this._hitPointBar;
       }
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
       var hud = new Kiwi.HUD.Widget.Bar(context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5');
 
@@ -1086,7 +1139,7 @@ var HUD = (function () {
         return this._gameScoreCounter;
       }
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
       var hud = new Kiwi.HUD.Widget.TextField(context.game, '', 50, 60);
 
@@ -1102,9 +1155,9 @@ var HUD = (function () {
   }, {
     key: 'update',
     value: function update() {
-      var context = this.context;
+      var context = GameState.instance.current;
+
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       var currentVelocityX = Math.abs(myUnit.sprite.physics.velocity.x);
       var currentVelocityY = Math.abs(myUnit.sprite.physics.velocity.y);
@@ -1112,14 +1165,6 @@ var HUD = (function () {
       this.velocityBar = currentVelocityX + currentVelocityY;
 
       this.gameScoreCounter = GAME_COUNTER.gameScore;
-    }
-  }, {
-    key: 'context',
-    set: function set(value) {
-      this._context = value;
-    },
-    get: function get() {
-      return this._context;
     }
   }, {
     key: 'velocityBar',
@@ -1148,9 +1193,9 @@ var HUD = (function () {
     }
   }], [{
     key: 'initialize',
-    value: function initialize(context) {
+    value: function initialize() {
+      var context = GameState.instance.current;
       var hud = HUD.instance;
-      hud.context = context;
 
       context.game.huds.defaultHUD.addWidget(hud.createVelocityBar());
       context.game.huds.defaultHUD.addWidget(hud.createHitPointBar());
@@ -1158,9 +1203,8 @@ var HUD = (function () {
     }
   }, {
     key: 'update',
-    value: function update(context) {
+    value: function update() {
       var hud = HUD.instance;
-      hud.context = context;
       hud.update();
     }
   }, {
@@ -1191,23 +1235,25 @@ var GameKey = (function () {
 
   _createClass(GameKey, null, [{
     key: 'initializeOfPlay',
-    value: function initializeOfPlay(context) {
-      GameKey.leftKey(context);
-      GameKey.rightKey(context);
-      GameKey.upKey(context);
-      GameKey.shootKey(context);
-      GameKey.exitKey(context);
-      GameKey.restartKey(context);
+    value: function initializeOfPlay() {
+      GameKey.leftKey();
+      GameKey.rightKey();
+      GameKey.upKey();
+      GameKey.shootKey();
+      GameKey.exitKey();
+      GameKey.restartKey();
     }
   }, {
     key: 'initializeOfTitle',
-    value: function initializeOfTitle(context) {
-      GameKey.gameStartKey(context);
-      GameKey.exitKey(context);
+    value: function initializeOfTitle() {
+      GameKey.gameStartKey();
+      GameKey.exitKey();
     }
   }, {
     key: 'gameStartKey',
-    value: function gameStartKey(context) {
+    value: function gameStartKey() {
+      var context = GameState.instance.current;
+
       if (!this[_gameStartKey]) {
         this[_gameStartKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.SPACEBAR);
       }
@@ -1220,7 +1266,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'leftKey',
-    value: function leftKey(context) {
+    value: function leftKey() {
+      var context = GameState.instance.current;
+
       if (!this[_leftKey]) {
         this[_leftKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.LEFT);
       }
@@ -1233,7 +1281,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'rightKey',
-    value: function rightKey(context) {
+    value: function rightKey() {
+      var context = GameState.instance.current;
+
       if (!this[_rightKey]) {
         this[_rightKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.RIGHT);
       }
@@ -1246,7 +1296,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'upKey',
-    value: function upKey(context) {
+    value: function upKey() {
+      var context = GameState.instance.current;
+
       if (!this[_upKey]) {
         this[_upKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.UP);
       }
@@ -1259,7 +1311,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'shootKey',
-    value: function shootKey(context) {
+    value: function shootKey() {
+      var context = GameState.instance.current;
+
       if (!this[_shootKey]) {
         this[_shootKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.Z);
       }
@@ -1272,7 +1326,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'exitKey',
-    value: function exitKey(context) {
+    value: function exitKey() {
+      var context = GameState.instance.current;
+
       if (!this[_exitKey]) {
         this[_exitKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.ESC);
       }
@@ -1285,7 +1341,9 @@ var GameKey = (function () {
     }
   }, {
     key: 'restartKey',
-    value: function restartKey(context) {
+    value: function restartKey() {
+      var context = GameState.instance.current;
+
       if (!this[_restartKey]) {
         this[_restartKey] = context.game.input.keyboard.addKey(Kiwi.Input.Keycodes.R);
       }
@@ -1317,8 +1375,7 @@ var GameMusic = (function () {
 
   _createClass(GameMusic, null, [{
     key: 'initialize',
-    value: function initialize(context) {
-      GameMusic.context = context;
+    value: function initialize() {
       GameMusic.main;
       GameMusic.gameOver;
       GameMusic.soundEffectOfBullet;
@@ -1340,66 +1397,72 @@ var GameMusic = (function () {
       GameMusic.soundEffectOfCautionForSpeed.destroy();
     }
   }, {
-    key: 'context',
-    set: function set(value) {
-      this[gameMusicContext] = value;
-    },
-    get: function get() {
-      return this[gameMusicContext];
-    }
-  }, {
     key: 'main',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[musicMain]) {
-        this[musicMain] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicMain', GAME_CONFIG.BASE_MUSIC_VOLUME_PER, true);
+        this[musicMain] = new Kiwi.Sound.Audio(context.game, 'musicMain', GAME_CONFIG.BASE_MUSIC_VOLUME_PER, true);
       }
       return this[musicMain];
     }
   }, {
     key: 'gameOver',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[musicGameOver]) {
-        this[musicGameOver] = new Kiwi.Sound.Audio(GameMusic.context.game, 'musicGameover', 1, false);
+        this[musicGameOver] = new Kiwi.Sound.Audio(context.game, 'musicGameover', 1, false);
       }
       return this[musicGameOver];
     }
   }, {
     key: 'soundEffectOfBullet',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[soundEffectOfBullet]) {
-        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(GameMusic.context.game, 'bullet-se', GAME_CONFIG.BASE_LASER_VOLUME_PER, false);
+        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(context.game, 'bullet-se', GAME_CONFIG.BASE_LASER_VOLUME_PER, false);
       }
       return this[soundEffectOfBullet];
     }
   }, {
     key: 'soundEffectOfExplosion',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[soundEffectOfExplosion]) {
-        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-se', GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER, false);
+        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(context.game, 'explosion-se', GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER, false);
       }
       return this[soundEffectOfExplosion];
     }
   }, {
     key: 'soundEffectOfCautionForSpeed',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[soundEffectOfCautionForSpeed]) {
-        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(GameMusic.context.game, 'caution-of-speed-se', GAME_CONFIG.BASE_CAUTION_VOLUME_PER, false);
+        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(context.game, 'caution-of-speed-se', GAME_CONFIG.BASE_CAUTION_VOLUME_PER, false);
       }
       return this[soundEffectOfCautionForSpeed];
     }
   }, {
     key: 'soundEffectOfCircle',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[soundEffectOfCircle]) {
-        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(GameMusic.context.game, 'circle-se', GAME_CONFIG.BASE_CIRCLE_VOLUME_PER, false);
+        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(context.game, 'circle-se', GAME_CONFIG.BASE_CIRCLE_VOLUME_PER, false);
       }
       return this[soundEffectOfCircle];
     }
   }, {
     key: 'soundEffectOfMyUnitExplosion',
     get: function get() {
+      var context = GameState.instance.current;
+
       if (!this[soundEffectOfMyUnitExplosion]) {
-        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(GameMusic.context.game, 'explosion-myunit-se', GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
+        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(context.game, 'explosion-myunit-se', GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
       }
       return this[soundEffectOfMyUnitExplosion];
     }
@@ -1423,7 +1486,7 @@ var MyUnit = (function () {
   _createClass(MyUnit, [{
     key: 'create',
     value: function create() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = undefined;
 
       myUnit = new Kiwi.GameObjects.Sprite(context, context.textures.myUnit, 400, 300);
@@ -1441,12 +1504,10 @@ var MyUnit = (function () {
   }, {
     key: 'overlapOnOther',
     value: function overlapOnOther(object) {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
 
       var hud = HUD.instance;
-
-      hud.context = context;
 
       if (!context.contains(myUnit) || context.isGameOver) {
         return;
@@ -1459,7 +1520,7 @@ var MyUnit = (function () {
         Helper.revive(object);
         GAME_COUNTER.hitPoint--;
         hud.hitPointBar.counter.current--;
-        GroupPool.explosion(context).addChild(Explosion.generate(context, myUnit.x, myUnit.y));
+        GroupPool.explosion(context).addChild(Explosion.generate(myUnit.x, myUnit.y));
         GameMusic.soundEffectOfMyUnitExplosion.play();
       }
 
@@ -1472,7 +1533,7 @@ var MyUnit = (function () {
   }, {
     key: 'explosion',
     value: function explosion() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
       if (context.myUnitExplosion === undefined) {
         context.myUnitExplosion = true;
@@ -1489,9 +1550,7 @@ var MyUnit = (function () {
   }, {
     key: 'update',
     value: function update() {
-      var context = this.context;
-
-      if (context.isGameOver) {
+      if (GameOver.status) {
         return;
       }
 
@@ -1508,7 +1567,7 @@ var MyUnit = (function () {
   }, {
     key: '_watchOfStatusForRotationKeys',
     value: function _watchOfStatusForRotationKeys() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
 
       if (context.myUnitExplosion !== undefined) {
@@ -1526,7 +1585,7 @@ var MyUnit = (function () {
   }, {
     key: '_watchOfStatusForVelocityKey',
     value: function _watchOfStatusForVelocityKey() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
 
       if (context.myUnitExplosion !== undefined) {
@@ -1548,7 +1607,7 @@ var MyUnit = (function () {
   }, {
     key: '_checkPosition',
     value: function _checkPosition() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var stageWidth = context.game.stage.width;
       var stageHeight = context.game.stage.height;
       var myUnit = this.sprite;
@@ -1569,7 +1628,7 @@ var MyUnit = (function () {
   }, {
     key: '_updateGravity',
     value: function _updateGravity() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
 
       if (context.myUnitExplosion !== true) {
@@ -1589,9 +1648,9 @@ var MyUnit = (function () {
   }, {
     key: '_createMyUnitSplinter',
     value: function _createMyUnitSplinter() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
-      var myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
+      var myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
       var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
       var myUnitSplinterAngle = 0;
 
@@ -1608,7 +1667,7 @@ var MyUnit = (function () {
   }, {
     key: '_remove',
     value: function _remove() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var myUnit = this.sprite;
 
       context.removeChild(myUnit);
@@ -1623,7 +1682,7 @@ var MyUnit = (function () {
     value: function _startCountUpOfExplosion() {
       var _this = this;
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
       context.game.time.clock.setInterval(function () {
         if (_this.exposionCounter < 2) {
@@ -1654,19 +1713,15 @@ var MyUnit = (function () {
     }
   }], [{
     key: 'initialize',
-    value: function initialize(context) {
-      var myUnit = MyUnit.instance;
-      myUnit.context = context;
+    value: function initialize() {
+      var context = GameState.instance.current;
 
-      context.addChild(myUnit.create());
+      context.addChild(MyUnit.instance.create());
     }
   }, {
     key: 'update',
-    value: function update(context) {
-      var myUnit = MyUnit.instance;
-      myUnit.context = context;
-
-      myUnit.update();
+    value: function update() {
+      MyUnit.instance.update();
     }
   }, {
     key: 'instance',
@@ -1748,7 +1803,7 @@ var Timer = (function () {
   _createClass(Timer, [{
     key: 'setInterval',
     value: function setInterval(callback, milliseconds) {
-      var context = this.context;
+      var context = GameState.instance.current;
 
       return context.game.time.clock.setInterval(callback, milliseconds, context);
     }
@@ -1766,7 +1821,7 @@ var Timer = (function () {
   }, {
     key: 'removeAllTimer',
     value: function removeAllTimer() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
       var timers = [this.starTimer, this.cubeTimer, this.cylinderTimer, this.circleTimer, this.rhombusTimer, this.coutionSpeedSoundEffectTimer, this.overTheLimitVelocityCountTimer];
 
@@ -1777,103 +1832,61 @@ var Timer = (function () {
   }, {
     key: 'createStarTimer',
     value: function createStarTimer() {
-      var context = this.context;
-      var spawnObjects = TimerSpawnObjects.instance;
-      spawnObjects.context = context;
-
       this.starTimer = this.setInterval(function () {
-        spawnObjects.star();
+        TimerSpawnObjects.instance.star();
       }, 100);
     }
   }, {
     key: 'createCubeTimer',
     value: function createCubeTimer() {
-      var context = this.context;
-      var spawnObjects = TimerSpawnObjects.instance;
-      spawnObjects.context = context;
-
       this.cubeTimer = this.setInterval(function () {
-        spawnObjects.cube();
+        TimerSpawnObjects.instance.cube();
       }, 200);
     }
   }, {
     key: 'createCylinderTimer',
     value: function createCylinderTimer() {
-      var context = this.context;
-      var spawnObjects = TimerSpawnObjects.instance;
-      spawnObjects.context = context;
-
       this.cylinderTimer = this.setInterval(function () {
-        spawnObjects.cylinder();
+        TimerSpawnObjects.instance.cylinder();
       }, 100);
     }
   }, {
     key: 'createCircleTimer',
     value: function createCircleTimer() {
-      var context = this.context;
-      var spawnObjects = TimerSpawnObjects.instance;
-      spawnObjects.context = context;
-
       this.circleTimer = this.setInterval(function () {
-        spawnObjects.circle();
+        TimerSpawnObjects.instance.circle();
       }, 500);
     }
   }, {
     key: 'createRhombusTimer',
     value: function createRhombusTimer() {
-      var context = this.context;
-      var spawnObjects = TimerSpawnObjects.instance;
-      spawnObjects.context = context;
-
       this.rhombusTimer = this.setInterval(function () {
-        spawnObjects.rhombus();
+        TimerSpawnObjects.instance.rhombus();
       }, 100);
     }
   }, {
     key: 'createCoutionForSpeedSoundEffectTimer',
     value: function createCoutionForSpeedSoundEffectTimer() {
-      var context = this.context;
-      var timerVelocity = TimerVelocity.instance;
-      timerVelocity.context = context;
-
       this.coutionForSpeedSoundEffectTimer = this.setInterval(function () {
-        timerVelocity.speedLimit();
+        TimerVelocity.instance.speedLimit();
       }, 500);
     }
   }, {
     key: 'createOverTheLimitVelocityCountTimer',
     value: function createOverTheLimitVelocityCountTimer() {
-      var context = this.context;
-      var timerVelocity = TimerVelocity.instance;
-      timerVelocity.context = context;
-
       this.overTheLimitVelocityCountTimer = this.setInterval(function () {
-        timerVelocity.overTheLimitCount();
+        TimerVelocity.instance.overTheLimitCount();
       }, 1000);
-    }
-  }, {
-    key: 'context',
-    get: function get() {
-      return this._context;
-    },
-    set: function set(value) {
-      this._context = value;
     }
   }], [{
     key: 'initialize',
-    value: function initialize(context) {
-      var timer = Timer.instance;
-      timer.context = context;
-
-      timer.createAllTimer();
+    value: function initialize() {
+      Timer.instance.createAllTimer();
     }
   }, {
     key: 'destroy',
-    value: function destroy(context) {
-      var timer = Timer.instance;
-      timer.context = context;
-
-      timer.removeAllTimer();
+    value: function destroy() {
+      Timer.instance.removeAllTimer();
     }
   }, {
     key: 'instance',
@@ -1899,15 +1912,19 @@ var PlayState = (function () {
       Kiwi.State.prototype.create.call(this);
 
       this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
-      GameMusic.initialize(this);
+
+      GameState.instance.current = this;
+
+      GameMusic.initialize();
       GameMusic.main.play();
-      HUD.initialize(this);
-      Group.initialize(this);
-      MyUnit.initialize(this);
-      GameKey.initializeOfPlay(this);
-      Timer.initialize(this);
-      GameText.createSlowDownCount(this);
-      GameText.createSlowDown(this);
+
+      HUD.initialize();
+      Group.initialize();
+      MyUnit.initialize();
+      GameKey.initializeOfPlay();
+      Timer.initialize();
+      GameText.createSlowDownCount();
+      GameText.createSlowDown();
     }
   }, {
     key: 'preload',
@@ -1941,16 +1958,15 @@ var PlayState = (function () {
     value: function update() {
       Kiwi.State.prototype.update.call(this);
       var myUnit = MyUnit.instance;
-      myUnit.context = this;
 
-      MyUnit.update(this);
-      HUD.update(this);
+      MyUnit.update();
+      HUD.update();
 
       if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
-        Bullet.shoot(this);
+        Bullet.shoot();
       }
 
-      GroupPool.forEachAll(this);
+      GroupPool.forEachAll();
 
       if (GameOver.status) {
         if (GameKey.activeExitKey()) {
@@ -1983,11 +1999,10 @@ var TitleState = (function () {
 
       this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
 
-      GameKey.initializeOfTitle(this);
-      this.addChild(GameText.createTitle(this));
-      this.addChild(GameText.createSubTitle(this));
-      this.addChild(GameText.createStart(this));
-      this.addChild(GameText.createQuit(this));
+      GameState.instance.current = this;
+
+      GameKey.initializeOfTitle();
+      GameText.initializeOfTitle();
     }
   }, {
     key: 'preload',
@@ -2000,10 +2015,7 @@ var TitleState = (function () {
       Kiwi.State.prototype.update.call(this);
 
       if (GameKey.activeGameStartKey()) {
-        this.removeChild(GameText.title);
-        this.removeChild(GameText.subTitle);
-        this.removeChild(GameText.start);
-        this.removeChild(GameText.quit);
+        GameText.destroyOfTitle();
         this.game.states.switchState('Play');
       }
 
@@ -2037,39 +2049,39 @@ var TimerSpawnObjects = (function () {
     value: function circle() {
       var _this2 = this;
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
-      Helper.strewnSprite(Helper.getMember(GroupPool.circle(context).members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
+      Helper.strewnSprite(Helper.getMember(GroupPool.circle().members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
         _this2._tweenOfCircle(context, sprite);
       });
     }
   }, {
     key: 'cube',
     value: function cube() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
-      Helper.strewnSprite(Helper.getMember(GroupPool.cube(context).members), { y: context.game.stage.height }, { y: 5 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.cube().members), { y: context.game.stage.height }, { y: 5 });
     }
   }, {
     key: 'cylinder',
     value: function cylinder() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
-      Helper.strewnSprite(Helper.getMember(GroupPool.cylinder(context).members), { y: context.game.stage.height }, { y: 10 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.cylinder().members), { y: context.game.stage.height }, { y: 10 });
     }
   }, {
     key: 'star',
     value: function star() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
-      Helper.strewnSprite(Helper.getMember(GroupPool.star(context).members), { y: context.game.stage.height }, { y: 3 });
+      Helper.strewnSprite(Helper.getMember(GroupPool.star().members), { y: context.game.stage.height }, { y: 3 });
     }
   }, {
     key: 'rhombus',
     value: function rhombus() {
       var _this3 = this;
 
-      var context = this.context;
+      var context = GameState.instance.current;
 
       if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
         context.isSpawnSpriteOfRhombusSplinter = false;
@@ -2080,7 +2092,7 @@ var TimerSpawnObjects = (function () {
       }
 
       if (context.isSpawnSpriteOfRhombusSplinter) {
-        Helper.strewnSprite(Helper.getMember(GroupPool.rhombus(context).members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
+        Helper.strewnSprite(Helper.getMember(GroupPool.rhombus().members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
           _this3._scaleUpRhombus(context, sprite);
         }, { revive: false });
       }
@@ -2109,7 +2121,7 @@ var TimerSpawnObjects = (function () {
   }, {
     key: '_explosionRhombus',
     value: function _explosionRhombus(context, sprite) {
-      var rhombusSplinterMembers = GroupPool.rhombusSplinter(context).members;
+      var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
       var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
       var rhombusSplinterAngle = 0;
       var explosionCounter = 0;
@@ -2137,18 +2149,9 @@ var TimerSpawnObjects = (function () {
     value: function _tweenOfCircle(context, sprite) {
       var tween = context.game.tweens.create(sprite);
       var myUnit = MyUnit.instance;
-      myUnit.context = context;
 
       tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
       tween.start();
-    }
-  }, {
-    key: 'context',
-    get: function get() {
-      return this._context;
-    },
-    set: function set(value) {
-      this._context = value;
     }
   }], [{
     key: 'instance',
@@ -2178,13 +2181,10 @@ var TimerVelocity = (function () {
   _createClass(TimerVelocity, [{
     key: 'overTheLimitCount',
     value: function overTheLimitCount() {
-      var context = this.context;
+      var context = GameState.instance.current;
 
       var myUnit = MyUnit.instance;
       var hud = HUD.instance;
-
-      myUnit.context = context;
-      hud.context = context;
 
       if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY) {
         if (context.contains(GameText.slowDownCount)) {
@@ -2203,10 +2203,8 @@ var TimerVelocity = (function () {
   }, {
     key: 'speedLimit',
     value: function speedLimit() {
-      var context = this.context;
+      var context = GameState.instance.current;
       var hud = HUD.instance;
-
-      hud.context = context;
 
       if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {
         GameMusic.soundEffectOfCautionForSpeed.play();
@@ -2225,14 +2223,6 @@ var TimerVelocity = (function () {
           context.removeChild(GameText.slowDownCount);
         }
       }
-    }
-  }, {
-    key: 'context',
-    get: function get() {
-      return this._context;
-    },
-    set: function set(value) {
-      this._context = value;
     }
   }, {
     key: 'overTheVelocityCounter',
@@ -2257,72 +2247,6 @@ var TimerVelocity = (function () {
 
   return TimerVelocity;
 })();
-
-//GameState.instance.play.create = function() {
-//  Kiwi.State.prototype.create.call(this);
-//
-//  this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
-//  GameMusic.initialize(this);
-//  GameMusic.main.play();
-//  HUD.initialize(this);
-//  Group.initialize(this);
-//  MyUnit.initialize(this);
-//  GameKey.initializeOfPlay(this);
-//  Timer.initialize(this);
-//  GameText.createSlowDownCount(this);
-//  GameText.createSlowDown(this);
-//};
-
-//GameState.instance.play.preload = function() {
-//  Kiwi.State.prototype.preload.call(this);
-//
-//  this.addSpriteSheet('myUnit', './assets/images/unit.png', 32, 32);
-//  this.addSpriteSheet('myUnitSplinter', './assets/images/my-unit-explosion.png', 32, 32);
-//  this.addSpriteSheet('star', './assets/images/star.png', 8, 8);
-//  this.addSpriteSheet('cube', './assets/images/cube.png', 32, 32);
-//  this.addSpriteSheet('cylinder', './assets/images/cylinder.png', 32, 128);
-//  this.addSpriteSheet('bullet', './assets/images/bullet.png', 4, 4);
-//  this.addSpriteSheet('explosion', './assets/images/explosion.png', 256, 256);
-//  this.addSpriteSheet('circle', './assets/images/circle.png', 32, 32);
-//  this.addSpriteSheet('rhombus', './assets/images/rhombus.png', 32, 32);
-//
-//  // PUBLIC DOMAIN
-//  // http://opengameart.org/content/lo-fi-chiptune-glitch-dnb
-//  this.addAudio('musicMain', './assets/media/old-broken-radio.mp3');
-//  // CC-BY 3.0
-//  // http://opengameart.org/content/jump-and-run-8-bit
-//  this.addAudio('musicGameover', './assets/media/random-silly-chip-song.ogg');
-//  this.addAudio('bullet-se', './assets/media/laser.wav');
-//  this.addAudio('explosion-se', './assets/media/explosion.wav');
-//  this.addAudio('explosion-myunit-se', './assets/media/myunit-explosion.wav');
-//  this.addAudio('circle-se', './assets/media/circle.wav');
-//  this.addAudio('caution-of-speed-se', './assets/media/caution-of-speed.wav');
-//};
-
-// GameState.instance.play.update = function() {
-//   Kiwi.State.prototype.update.call(this);
-//   let myUnit = MyUnit.instance;
-//   myUnit.context = this;
-//
-//   MyUnit.update(this);
-//   HUD.update(this);
-//
-//   if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
-//     Bullet.shoot(this);
-//   }
-//
-//   GroupPool.forEachAll(this);
-//
-//   if (GameOver.status) {
-//     if (GameKey.activeExitKey()) {
-//       ipc.sendSync('quit');
-//     }
-//
-//     if (GameKey.activeRestartKey()){
-//       window.location.reload(true);
-//     }
-//   }
-// };
 
 var game = new Kiwi.Game(GAME_CONFIG.CONTAINER_ID, GAME_CONFIG.NAME, null, gameOptions);
 game.states.addState(GameState.instance.title);

@@ -2,6 +2,7 @@ let timerSingleton = Symbol();
 let timerSingletonEnforcer = Symbol();
 
 class Timer {
+
   constructor(enforcer) {
     if (enforcer !== timerSingletonEnforcer) {
       throw "Cannot construct singleton!";
@@ -15,30 +16,16 @@ class Timer {
     return this[timerSingleton];
   }
 
-  static initialize(context) {
-    let timer = Timer.instance;
-    timer.context = context;
-
-    timer.createAllTimer();
+  static initialize() {
+    Timer.instance.createAllTimer();
   }
 
-  static destroy(context) {
-    let timer = Timer.instance;
-    timer.context = context;
-
-    timer.removeAllTimer();
-  }
-
-  get context() {
-    return this._context;
-  }
-
-  set context(value) {
-    this._context = value;
+  static destroy() {
+    Timer.instance.removeAllTimer();
   }
 
   setInterval(callback, milliseconds) {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     return context.game.time.clock.setInterval(
       callback, milliseconds, context
@@ -56,7 +43,7 @@ class Timer {
   }
 
   removeAllTimer() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     const timers = [
       this.starTimer,
@@ -74,76 +61,49 @@ class Timer {
   }
 
   createStarTimer() {
-    const context = this.context;
-    let spawnObjects = TimerSpawnObjects.instance;
-    spawnObjects.context = context;
-
     this.starTimer = this.setInterval(() => {
-      spawnObjects.star();
+      TimerSpawnObjects.instance.star();
     }, 100);
   }
 
   createCubeTimer() {
-    const context = this.context;
-    let spawnObjects = TimerSpawnObjects.instance;
-    spawnObjects.context = context;
-
     this.cubeTimer = this.setInterval(() => {
-      spawnObjects.cube();
+      TimerSpawnObjects.instance.cube();
     }, 200);
   }
 
   createCylinderTimer() {
-    const context = this.context;
-    let spawnObjects = TimerSpawnObjects.instance;
-    spawnObjects.context = context;
-
     this.cylinderTimer = this.setInterval(() => {
-      spawnObjects.cylinder();
+      TimerSpawnObjects.instance.cylinder();
     }, 100);
   }
 
   createCircleTimer() {
-    const context = this.context;
-    let spawnObjects = TimerSpawnObjects.instance;
-    spawnObjects.context = context;
-
     this.circleTimer = this.setInterval(() => {
-      spawnObjects.circle();
+      TimerSpawnObjects.instance.circle();
     }, 500);
   }
 
   createRhombusTimer() {
-    const context = this.context;
-    let spawnObjects = TimerSpawnObjects.instance;
-    spawnObjects.context = context
-
     this.rhombusTimer = this.setInterval(() => {
-      spawnObjects.rhombus();
+      TimerSpawnObjects.instance.rhombus();
     }, 100);
   }
 
   createCoutionForSpeedSoundEffectTimer() {
-    const context = this.context;
-    let timerVelocity = TimerVelocity.instance;
-    timerVelocity.context = context
-
     this.coutionForSpeedSoundEffectTimer = (
       this.setInterval(() => {
-        timerVelocity.speedLimit();
+        TimerVelocity.instance.speedLimit();
       }, 500)
     );
   }
 
   createOverTheLimitVelocityCountTimer() {
-    const context = this.context;
-    let timerVelocity = TimerVelocity.instance;
-    timerVelocity.context = context;
-
     this.overTheLimitVelocityCountTimer = (
       this.setInterval(() => {
-        timerVelocity.overTheLimitCount()
+        TimerVelocity.instance.overTheLimitCount()
       }, 1000)
     );
   }
+
 }

@@ -2,6 +2,7 @@ let hudSingleton = Symbol();
 let hudSingletonEnforcer = Symbol();
 
 class HUD {
+
   constructor(enforcer) {
     if (enforcer !== hudSingletonEnforcer) {
       throw "Cannot construct singleton!";
@@ -15,9 +16,9 @@ class HUD {
     return this[hudSingleton];
   }
 
-  static initialize(context) {
+  static initialize() {
+    const context = GameState.instance.current;
     let hud = HUD.instance;
-    hud.context = context;
 
     context.game.huds.defaultHUD.addWidget(
       hud.createVelocityBar()
@@ -30,18 +31,9 @@ class HUD {
     );
   }
 
-  static update(context) {
+  static update() {
     let hud = HUD.instance;
-    hud.context = context;
     hud.update();
-  }
-
-  set context(value) {
-    this._context = value;
-  }
-
-  get context() {
-    return this._context;
   }
 
   get velocityBar() {
@@ -73,7 +65,7 @@ class HUD {
       return this._velocityBar;
     }
 
-    const context = this.context;
+    const context = GameState.instance.current;
 
     let hud = new Kiwi.HUD.Widget.Bar(
       context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
@@ -89,7 +81,7 @@ class HUD {
       return this._hitPointBar;
     }
 
-    const context = this.context;
+    const context = GameState.instance.current;
 
     let hud = new Kiwi.HUD.Widget.Bar(
       context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
@@ -105,7 +97,7 @@ class HUD {
       return this._gameScoreCounter;
     }
 
-    const context = this.context;
+    const context = GameState.instance.current;
 
     let hud = new Kiwi.HUD.Widget.TextField(
       context.game, '', 50, 60
@@ -122,9 +114,9 @@ class HUD {
   }
 
   update() {
-    const context = this.context;
+    const context = GameState.instance.current;
+
     let myUnit = MyUnit.instance;
-    myUnit.context = context;
 
     let currentVelocityX = Math.abs(
       myUnit.sprite.physics.velocity.x
@@ -139,4 +131,5 @@ class HUD {
 
     this.gameScoreCounter = GAME_COUNTER.gameScore;
   }
+
 }

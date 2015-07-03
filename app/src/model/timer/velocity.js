@@ -16,14 +16,6 @@ class TimerVelocity {
     return this[timerVelocitySingleton];
   }
 
-  get context() {
-    return this._context;
-  }
-
-  set context(value) {
-    this._context = value;
-  }
-
   get overTheVelocityCounter() {
     if (this._overTheVelocityCounter === undefined) {
       this._overTheVelocityCounter = 0;
@@ -36,13 +28,10 @@ class TimerVelocity {
   }
 
   overTheLimitCount() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     let myUnit = MyUnit.instance;
     let hud = HUD.instance;
-
-    myUnit.context = context;
-    hud.context = context;
 
     if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY) {
       if (context.contains(GameText.slowDownCount)) {
@@ -63,10 +52,8 @@ class TimerVelocity {
   }
 
   speedLimit() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let hud = HUD.instance;
-
-    hud.context = context;
 
     if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {
       GameMusic.soundEffectOfCautionForSpeed.play();
@@ -87,4 +74,5 @@ class TimerVelocity {
       }
     }
   }
+
 }

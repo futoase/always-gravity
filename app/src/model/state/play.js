@@ -1,17 +1,22 @@
 class PlayState {
+
   static create() {
     Kiwi.State.prototype.create.call(this);
 
     this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
-    GameMusic.initialize(this);
+
+    GameState.instance.current = this;
+
+    GameMusic.initialize();
     GameMusic.main.play();
-    HUD.initialize(this);
-    Group.initialize(this);
-    MyUnit.initialize(this);
-    GameKey.initializeOfPlay(this);
-    Timer.initialize(this);
-    GameText.createSlowDownCount(this);
-    GameText.createSlowDown(this);
+
+    HUD.initialize();
+    Group.initialize();
+    MyUnit.initialize();
+    GameKey.initializeOfPlay();
+    Timer.initialize();
+    GameText.createSlowDownCount();
+    GameText.createSlowDown();
   }
 
   static preload() {
@@ -43,16 +48,15 @@ class PlayState {
   static update() {
     Kiwi.State.prototype.update.call(this);
     let myUnit = MyUnit.instance;
-    myUnit.context = this;
 
-    MyUnit.update(this);
-    HUD.update(this);
+    MyUnit.update();
+    HUD.update();
 
     if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
-      Bullet.shoot(this);
+      Bullet.shoot();
     }
 
-    GroupPool.forEachAll(this);
+    GroupPool.forEachAll();
 
     if (GameOver.status) {
       if (GameKey.activeExitKey()) {
@@ -64,6 +68,7 @@ class PlayState {
       }
     }
   }
+
 }
 
 GameState.instance.play.create = PlayState.create;

@@ -2,6 +2,7 @@ let groupSingleton = Symbol();
 let groupSingletonEnforcer = Symbol();
 
 class Group {
+
   constructor(enforcer) {
     if (enforcer !== groupSingletonEnforcer) {
       throw "Cannot constructor singleton!";
@@ -15,17 +16,8 @@ class Group {
     return this[groupSingleton];
   }
 
-  get context() {
-    return this._context;
-  }
-
-  set context(value) {
-    this._context = value;
-  }
-
-  static initialize(context) {
+  static initialize() {
     let group = Group.instance;
-    group.context = context;
     group.star();
     group.cube();
     group.circle();
@@ -38,8 +30,8 @@ class Group {
   }
 
   star() {
-    const context = this.context;
-    let pool = GroupPool.star(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.star();
     context.addChild(pool);
 
     let i;
@@ -49,8 +41,8 @@ class Group {
   }
 
   cube() {
-    const context = this.context;
-    let pool = GroupPool.cube(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.cube();
     context.addChild(pool);
 
     let i;
@@ -60,8 +52,8 @@ class Group {
   }
 
   circle() {
-    const context = this.context;
-    let pool = GroupPool.circle(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.circle();
     context.addChild(pool);
 
     let i;
@@ -71,8 +63,8 @@ class Group {
   }
 
   bullet() {
-    const context = this.context;
-    let pool = GroupPool.bullet(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.bullet();
     context.addChild(pool);
 
     let i;
@@ -82,8 +74,8 @@ class Group {
   }
 
   cylinder() {
-    const context = this.context;
-    let pool = GroupPool.cylinder(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.cylinder();
     context.addChild(pool);
 
     let i;
@@ -93,8 +85,8 @@ class Group {
   }
 
   myUnitSplinter() {
-    const context = this.context;
-    let pool = GroupPool.myUnitSplinter(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.myUnitSplinter();
     context.addChild(pool);
 
     let i;
@@ -104,8 +96,8 @@ class Group {
   }
 
   rhombusSplinter() {
-    const context = this.context;
-    let pool = GroupPool.rhombusSplinter(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.rhombusSplinter();
     context.addChild(pool);
 
     let i;
@@ -115,8 +107,8 @@ class Group {
   }
 
   rhombus() {
-    const context = this.context;
-    let pool = GroupPool.rhombus(context);
+    const context = GameState.instance.current;
+    let pool = GroupPool.rhombus();
     context.addChild(pool);
 
     let i;
@@ -126,7 +118,8 @@ class Group {
   }
 
   explosion() {
-    const context = this.context;
+    const context = GameState.instance.current;
     context.addChild(GroupPool.explosion(context));
   }
+
 }

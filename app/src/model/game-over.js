@@ -2,6 +2,7 @@ let gameOverContext = Symbol();
 let gameOverStatus = Symbol();
 
 class GameOver {
+
   static get context() {
     return this[gameOverContext];
   }
@@ -29,10 +30,10 @@ class GameOver {
 
     GameMusic.gameOver.play();
 
-    context.addChild(GameText.createGameOver(context));
-    context.addChild(GameText.createScore(context, GAME_COUNTER.gameScore));
-    context.addChild(GameText.createRestart(context));
-    context.addChild(GameText.createExitGame(context));
+    context.addChild(GameText.createGameOver());
+    context.addChild(GameText.createScore(GAME_COUNTER.gameScore));
+    context.addChild(GameText.createRestart());
+    context.addChild(GameText.createExitGame());
 
     GameOver.status = true;
   }
@@ -41,11 +42,9 @@ class GameOver {
     GroupPool.removeChildrenForAll(context);
     GameMusic.destroy();
     context.game.huds.defaultHUD.removeAllWidgets();
-    Timer.destroy(context);
+    Timer.destroy();
 
-    let myUnit = MyUnit.instance;
-    myUnit.context = context;
-
-    myUnit.sprite.destroy();
+    MyUnit.instance.sprite.destroy();
   }
+
 }

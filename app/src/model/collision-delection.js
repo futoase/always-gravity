@@ -1,6 +1,9 @@
 class CollisionDelection {
-  static BulletCollideWithCube(context, bullet) {
-    let members = GroupPool.cube(context).members;
+
+  static BulletCollideWithCube(bullet) {
+    const context = GameState.instance.current;
+    let members = GroupPool.cube().members;
+
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
         Bullet.overlapOnObject(
@@ -10,8 +13,10 @@ class CollisionDelection {
     });
   }
 
-  static BulletCollideWithCircle(context, bullet) {
-    let members = GroupPool.circle(context).members;
+  static BulletCollideWithCircle(bullet) {
+    const context = GameState.instance.current;
+    let members = GroupPool.circle().members;
+
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
         Bullet.overlapOnObject(
@@ -21,8 +26,10 @@ class CollisionDelection {
     });
   }
 
-  static BulletCollideWithCylinder(context, bullet) {
-    let members = GroupPool.cylinder(context).members;
+  static BulletCollideWithCylinder(bullet) {
+    const context = GameState.instance.current;
+    let members = GroupPool.cylinder().members;
+
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
         Bullet.overlapOnObject(
@@ -31,4 +38,5 @@ class CollisionDelection {
       }
     });
   }
+
 }

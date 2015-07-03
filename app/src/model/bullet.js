@@ -1,7 +1,10 @@
 let lastBulletShootAt = Symbol();
 
 class Bullet {
-  static shoot(context) {
+
+  static shoot() {
+    const context = GameState.instance.current;
+
     if (!this[lastBulletShootAt]) {
       this[lastBulletShootAt] = 0;
     }
@@ -25,7 +28,6 @@ class Bullet {
     bullet.alive = true;
 
     let myUnit = MyUnit.instance;
-    myUnit.context = context;
 
     bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
     bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
@@ -44,7 +46,7 @@ class Bullet {
   }
 
   static getFirstDeadBullet(context) {
-    let bulletMembers = GroupPool.bullet(context).members;
+    let bulletMembers = GroupPool.bullet().members;
     let i;
     for(i = bulletMembers.length - 1; i >= 0; i--) {
       if (bulletMembers[i].alive === false) {
@@ -56,7 +58,7 @@ class Bullet {
 
   static overlapOnObject(context, bullet, object, volume = 1.0) {
     GroupPool.explosion(context).addChild(
-      Explosion.generate(context, bullet.x, bullet.y)
+      Explosion.generate(bullet.x, bullet.y)
     );
     Bullet.deadBullet(bullet);
     Helper.revive(object);
@@ -76,4 +78,5 @@ class Bullet {
     se.volume = volume;
     se.play();
   }
+
 }

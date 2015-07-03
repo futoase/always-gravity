@@ -8,21 +8,23 @@ let restartKey = Symbol();
 
 class GameKey {
 
-  static initializeOfPlay(context) {
-    GameKey.leftKey(context);
-    GameKey.rightKey(context);
-    GameKey.upKey(context);
-    GameKey.shootKey(context);
-    GameKey.exitKey(context);
-    GameKey.restartKey(context);
+  static initializeOfPlay() {
+    GameKey.leftKey();
+    GameKey.rightKey();
+    GameKey.upKey();
+    GameKey.shootKey();
+    GameKey.exitKey();
+    GameKey.restartKey();
   }
 
-  static initializeOfTitle(context) {
-    GameKey.gameStartKey(context);
-    GameKey.exitKey(context);
+  static initializeOfTitle() {
+    GameKey.gameStartKey();
+    GameKey.exitKey();
   }
 
-  static gameStartKey(context) {
+  static gameStartKey() {
+    const context = GameState.instance.current;
+
     if (!this[gameStartKey]) {
       this[gameStartKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.SPACEBAR
@@ -35,7 +37,9 @@ class GameKey {
     return this[gameStartKey].isDown;
   }
 
-  static leftKey(context) {
+  static leftKey() {
+    const context = GameState.instance.current;
+
     if (!this[leftKey]) {
       this[leftKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.LEFT
@@ -48,7 +52,9 @@ class GameKey {
     return this[leftKey].isDown;
   }
 
-  static rightKey(context) {
+  static rightKey() {
+    const context = GameState.instance.current;
+
     if (!this[rightKey]) {
       this[rightKey] = context.game.input.keyboard.addKey(
     Kiwi.Input.Keycodes.RIGHT
@@ -61,7 +67,9 @@ class GameKey {
     return this[rightKey].isDown;
   }
 
-  static upKey(context) {
+  static upKey() {
+    const context = GameState.instance.current;
+
     if (!this[upKey]) {
       this[upKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.UP
@@ -74,7 +82,9 @@ class GameKey {
     return this[upKey].isDown;
   }
 
-  static shootKey(context) {
+  static shootKey() {
+    const context = GameState.instance.current;
+
     if (!this[shootKey]) {
       this[shootKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.Z
@@ -87,7 +97,9 @@ class GameKey {
     return this[shootKey].isDown;
   }
 
-  static exitKey(context) {
+  static exitKey() {
+    const context = GameState.instance.current;
+
     if (!this[exitKey]) {
       this[exitKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.ESC
@@ -100,7 +112,9 @@ class GameKey {
     return this[exitKey].isDown;
   }
 
-  static restartKey(context) {
+  static restartKey() {
+    const context = GameState.instance.current;
+
     if (!this[restartKey]) {
       this[restartKey] = context.game.input.keyboard.addKey(
         Kiwi.Input.Keycodes.R
@@ -112,4 +126,5 @@ class GameKey {
   static activeRestartKey() {
     return this[restartKey].isDown;
   }
+
 }

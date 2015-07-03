@@ -9,16 +9,7 @@ let soundEffectOfMyUnitExplosion = Symbol();
 
 class GameMusic {
 
-  static set context(value) {
-    this[gameMusicContext] = value;
-  }
-
-  static get context() {
-    return this[gameMusicContext];
-  }
-
-  static initialize(context) {
-    GameMusic.context = context;
+  static initialize() {
     GameMusic.main;
     GameMusic.gameOver;
     GameMusic.soundEffectOfBullet;
@@ -40,9 +31,11 @@ class GameMusic {
   }
 
   static get main() {
+    const context = GameState.instance.current;
+
     if (!this[musicMain]) {
       this[musicMain] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'musicMain',
         GAME_CONFIG.BASE_MUSIC_VOLUME_PER,
         true
@@ -52,9 +45,11 @@ class GameMusic {
   }
 
   static get gameOver() {
+    const context = GameState.instance.current;
+
     if (!this[musicGameOver]) {
       this[musicGameOver] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'musicGameover',
         1,
         false
@@ -64,9 +59,11 @@ class GameMusic {
   }
 
   static get soundEffectOfBullet() {
+    const context = GameState.instance.current;
+
     if (!this[soundEffectOfBullet]) {
       this[soundEffectOfBullet] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'bullet-se',
         GAME_CONFIG.BASE_LASER_VOLUME_PER,
         false
@@ -76,9 +73,11 @@ class GameMusic {
   }
 
   static get soundEffectOfExplosion() {
+    const context = GameState.instance.current;
+
     if (!this[soundEffectOfExplosion]) {
       this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'explosion-se',
         GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER,
         false
@@ -88,9 +87,11 @@ class GameMusic {
   }
 
   static get soundEffectOfCautionForSpeed() {
+    const context = GameState.instance.current;
+
     if (!this[soundEffectOfCautionForSpeed]) {
       this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'caution-of-speed-se',
         GAME_CONFIG.BASE_CAUTION_VOLUME_PER,
         false
@@ -100,9 +101,11 @@ class GameMusic {
   }
 
   static get soundEffectOfCircle() {
+    const context = GameState.instance.current;
+
     if (!this[soundEffectOfCircle]) {
       this[soundEffectOfCircle] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'circle-se',
         GAME_CONFIG.BASE_CIRCLE_VOLUME_PER,
         false
@@ -112,9 +115,11 @@ class GameMusic {
   }
 
   static get soundEffectOfMyUnitExplosion() {
+    const context = GameState.instance.current;
+
     if (!this[soundEffectOfMyUnitExplosion]) {
       this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(
-        GameMusic.context.game,
+        context.game,
         'explosion-myunit-se',
         GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
         false
@@ -122,4 +127,5 @@ class GameMusic {
     }
     return this[soundEffectOfMyUnitExplosion];
   }
+
 }

@@ -2,6 +2,7 @@ let myUnitSingleton = Symbol();
 let myUnitSingletonEnforcer = Symbol();
 
 class MyUnit {
+
   constructor(enforcer) {
     if (enforcer !== myUnitSingletonEnforcer) {
       throw "Cannot construct singleton!";
@@ -15,18 +16,14 @@ class MyUnit {
     return this[myUnitSingleton];
   }
 
-  static initialize(context) {
-    let myUnit = MyUnit.instance;
-    myUnit.context = context;
+  static initialize() {
+    const context = GameState.instance.current;
 
-    context.addChild(myUnit.create());
+    context.addChild(MyUnit.instance.create());
   }
 
-  static update(context) {
-    let myUnit = MyUnit.instance;
-    myUnit.context = context;
-
-    myUnit.update();
+  static update() {
+    MyUnit.instance.update();
   }
 
   get sprite() {
@@ -49,7 +46,7 @@ class MyUnit {
   }
 
   create() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let myUnit;
 
     myUnit = new Kiwi.GameObjects.Sprite(
@@ -70,12 +67,10 @@ class MyUnit {
   }
 
   overlapOnOther(object) {
-    const context = this.context;
+    const context = GameState.instance.current;
     const myUnit = this.sprite;
 
     let hud = HUD.instance;
-
-    hud.context = context;
 
     if (!context.contains(myUnit) || context.isGameOver) {
       return;
@@ -89,7 +84,7 @@ class MyUnit {
       GAME_COUNTER.hitPoint--;
       hud.hitPointBar.counter.current--;
       GroupPool.explosion(context).addChild(
-        Explosion.generate(context, myUnit.x, myUnit.y)
+        Explosion.generate(myUnit.x, myUnit.y)
       );
       GameMusic.soundEffectOfMyUnitExplosion.play();
     }
@@ -102,7 +97,7 @@ class MyUnit {
   }
 
   explosion() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     if (context.myUnitExplosion === undefined) {
       context.myUnitExplosion = true;
@@ -119,9 +114,7 @@ class MyUnit {
   }
 
   update() {
-    const context = this.context;
-
-    if (context.isGameOver) {
+    if (GameOver.status) {
       return;
     }
 
@@ -136,7 +129,7 @@ class MyUnit {
   }
 
   _watchOfStatusForRotationKeys() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
@@ -155,7 +148,7 @@ class MyUnit {
   }
 
   _watchOfStatusForVelocityKey() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
@@ -181,7 +174,7 @@ class MyUnit {
   }
 
   _checkPosition() {
-    const context = this.context;
+    const context = GameState.instance.current;
     const stageWidth = context.game.stage.width;
     const stageHeight = context.game.stage.height;
     let myUnit = this.sprite;
@@ -201,7 +194,7 @@ class MyUnit {
   }
 
   _updateGravity() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== true) {
@@ -219,9 +212,9 @@ class MyUnit {
   }
 
   _createMyUnitSplinter() {
-    const context = this.context;
+    const context = GameState.instance.current;
     const myUnit = this.sprite;
-    let myUnitSplinterMembers = GroupPool.myUnitSplinter(context).members;
+    let myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
     let angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
     let myUnitSplinterAngle = 0;
 
@@ -241,7 +234,7 @@ class MyUnit {
   }
 
   _remove() {
-    const context = this.context;
+    const context = GameState.instance.current;
     let myUnit = this.sprite;
 
     context.removeChild(myUnit);
@@ -252,7 +245,7 @@ class MyUnit {
   }
 
   _startCountUpOfExplosion() {
-    const context = this.context;
+    const context = GameState.instance.current;
 
     context.game.time.clock.setInterval(() => {
       if (this.exposionCounter < 2) {
@@ -263,4 +256,5 @@ class MyUnit {
       }
     }, 1000, context);
   }
+
 }
