@@ -19,7 +19,7 @@ class Bullet {
 
     this[lastBulletShootAt] = context.game.time.now();
 
-    var bullet = Bullet.getFirstDeadBullet(context);
+    var bullet = Bullet.getFirstDeadBullet();
 
     if (bullet === null) {
       return;
@@ -45,7 +45,7 @@ class Bullet {
     GameMusic.soundEffectOfBullet.play();
   }
 
-  static getFirstDeadBullet(context) {
+  static getFirstDeadBullet() {
     let bulletMembers = GroupPool.bullet().members;
     let i;
     for(i = bulletMembers.length - 1; i >= 0; i--) {
