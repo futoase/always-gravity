@@ -745,7 +745,7 @@ var GroupPool = (function () {
     value: function star() {
       var context = GameState.instance.current;
 
-      if (!this[starPool]) {
+      if (!this[starPool] || !this._isExistsContextName(this[starPool])) {
         this[starPool] = new Kiwi.Group(context);
       }
       return this[starPool];
@@ -755,7 +755,7 @@ var GroupPool = (function () {
     value: function cube() {
       var context = GameState.instance.current;
 
-      if (!this[cubePool]) {
+      if (!this[cubePool] || !this._isExistsContextName(this[cubePool])) {
         this[cubePool] = new Kiwi.Group(context);
       }
       return this[cubePool];
@@ -765,7 +765,7 @@ var GroupPool = (function () {
     value: function circle() {
       var context = GameState.instance.current;
 
-      if (!this[circlePool]) {
+      if (!this[circlePool] || !this._isExistsContextName(this[circlePool])) {
         this[circlePool] = new Kiwi.Group(context);
       }
       return this[circlePool];
@@ -775,7 +775,7 @@ var GroupPool = (function () {
     value: function bullet() {
       var context = GameState.instance.current;
 
-      if (!this[bulletPool]) {
+      if (!this[bulletPool] || !this._isExistsContextName(this[bulletPool])) {
         this[bulletPool] = new Kiwi.Group(context);
       }
       return this[bulletPool];
@@ -785,7 +785,7 @@ var GroupPool = (function () {
     value: function cylinder() {
       var context = GameState.instance.current;
 
-      if (!this[cylinderPool]) {
+      if (!this[cylinderPool] || !this._isExistsContextName(this[cylinderPool])) {
         this[cylinderPool] = new Kiwi.Group(context);
       }
       return this[cylinderPool];
@@ -795,7 +795,7 @@ var GroupPool = (function () {
     value: function myUnitSplinter() {
       var context = GameState.instance.current;
 
-      if (!this[myUnitSplinterPool]) {
+      if (!this[myUnitSplinterPool] || !this._isExistsContextName(this[myUnitSplinterPool])) {
         this[myUnitSplinterPool] = new Kiwi.Group(context);
       }
       return this[myUnitSplinterPool];
@@ -805,7 +805,7 @@ var GroupPool = (function () {
     value: function rhombusSplinter() {
       var context = GameState.instance.current;
 
-      if (!this[rhombusSplinterPool]) {
+      if (!this[rhombusSplinterPool] || !this._isExistsContextName(this[rhombusSplinterPool])) {
         this[rhombusSplinterPool] = new Kiwi.Group(context);
       }
       return this[rhombusSplinterPool];
@@ -815,7 +815,7 @@ var GroupPool = (function () {
     value: function rhombus() {
       var context = GameState.instance.current;
 
-      if (!this[rhombusPool]) {
+      if (!this[rhombusPool] || !this._isExistsContextName(this[rhombusPool])) {
         this[rhombusPool] = new Kiwi.Group(context);
       }
       return this[rhombusPool];
@@ -825,7 +825,7 @@ var GroupPool = (function () {
     value: function explosion() {
       var context = GameState.instance.current;
 
-      if (!this[explosionPool]) {
+      if (!this[explosionPool] || !this._isExistsContextName(this[explosionPool])) {
         this[explosionPool] = new Kiwi.Group(context);
       }
       return this[explosionPool];
@@ -963,6 +963,21 @@ var GroupPool = (function () {
       pool.members.map(function (member) {
         myUnit.overlapOnOther(member);
       });
+    }
+  }, {
+    key: '_isExistsContextName',
+    value: function _isExistsContextName(group) {
+      var context = GameState.instance.current;
+
+      if (group === undefined || group.state === undefined) {
+        return false;
+      }
+
+      if (group.state.config.name === context.config.name) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }]);
 

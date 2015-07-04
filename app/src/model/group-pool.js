@@ -13,7 +13,8 @@ class GroupPool {
   static star() {
     const context = GameState.instance.current;
 
-    if (!this[starPool]) {
+    if (!this[starPool] ||
+        !this._isExistsContextName(this[starPool])) {
       this[starPool] = new Kiwi.Group(context);
     }
     return this[starPool];
@@ -22,7 +23,8 @@ class GroupPool {
   static cube() {
     const context = GameState.instance.current;
 
-    if (!this[cubePool]) {
+    if (!this[cubePool] ||
+        !this._isExistsContextName(this[cubePool])) {
       this[cubePool] = new Kiwi.Group(context);
     }
     return this[cubePool];
@@ -31,7 +33,8 @@ class GroupPool {
   static circle() {
     const context = GameState.instance.current;
 
-    if (!this[circlePool]) {
+    if (!this[circlePool] ||
+        !this._isExistsContextName(this[circlePool])) {
       this[circlePool] = new Kiwi.Group(context);
     }
     return this[circlePool];
@@ -40,7 +43,8 @@ class GroupPool {
   static bullet() {
     const context = GameState.instance.current;
 
-    if (!this[bulletPool]) {
+    if (!this[bulletPool] ||
+        !this._isExistsContextName(this[bulletPool])) {
       this[bulletPool] = new Kiwi.Group(context);
     }
     return this[bulletPool];
@@ -49,7 +53,8 @@ class GroupPool {
   static cylinder() {
     const context = GameState.instance.current;
 
-    if (!this[cylinderPool]) {
+    if (!this[cylinderPool] ||
+        !this._isExistsContextName(this[cylinderPool])) {
       this[cylinderPool] = new Kiwi.Group(context);
     }
     return this[cylinderPool];
@@ -58,7 +63,8 @@ class GroupPool {
   static myUnitSplinter() {
     const context = GameState.instance.current;
 
-    if (!this[myUnitSplinterPool]) {
+    if (!this[myUnitSplinterPool] ||
+        !this._isExistsContextName(this[myUnitSplinterPool])) {
       this[myUnitSplinterPool] = new Kiwi.Group(context);
     }
     return this[myUnitSplinterPool];
@@ -67,7 +73,8 @@ class GroupPool {
   static rhombusSplinter() {
     const context = GameState.instance.current;
 
-    if (!this[rhombusSplinterPool]) {
+    if (!this[rhombusSplinterPool] ||
+        !this._isExistsContextName(this[rhombusSplinterPool])) {
       this[rhombusSplinterPool] = new Kiwi.Group(context);
     }
     return this[rhombusSplinterPool];
@@ -76,7 +83,8 @@ class GroupPool {
   static rhombus() {
     const context = GameState.instance.current;
 
-    if (!this[rhombusPool]) {
+    if (!this[rhombusPool] ||
+        !this._isExistsContextName(this[rhombusPool])) {
       this[rhombusPool] = new Kiwi.Group(context);
     }
     return this[rhombusPool];
@@ -85,7 +93,8 @@ class GroupPool {
   static explosion() {
     const context = GameState.instance.current;
 
-    if (!this[explosionPool]) {
+    if (!this[explosionPool] ||
+        !this._isExistsContextName(this[explosionPool])) {
       this[explosionPool] = new Kiwi.Group(context);
     }
     return this[explosionPool];
@@ -212,6 +221,21 @@ class GroupPool {
     pool.members.map((member) => {
       myUnit.overlapOnOther(member);
     });
+  }
+
+  static _isExistsContextName(group) {
+    const context = GameState.instance.current;
+
+    if (group === undefined || group.state === undefined) {
+      return false;
+    }
+
+    if (group.state.config.name === context.config.name) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }
