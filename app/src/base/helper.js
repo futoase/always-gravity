@@ -1,4 +1,5 @@
 class Helper {
+
   static getMember(members) {
     return members[parseInt(Math.random() * (members.length - 1))];
   }
@@ -60,4 +61,5 @@ class Helper {
   static radian(angle) {
     return parseInt(angle) * Math.PI / 180;
   }
+
 }
