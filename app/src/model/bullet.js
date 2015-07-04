@@ -57,7 +57,7 @@ class Bullet {
   }
 
   static overlapOnObject(context, bullet, object, volume = 1.0) {
-    GroupPool.explosion(context).addChild(
+    GroupPool.explosion().addChild(
       Explosion.generate(bullet.x, bullet.y)
     );
     Bullet.deadBullet(bullet);

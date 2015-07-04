@@ -369,7 +369,7 @@ var Bullet = (function () {
     value: function overlapOnObject(context, bullet, object) {
       var volume = arguments[3] === undefined ? 1.0 : arguments[3];
 
-      GroupPool.explosion(context).addChild(Explosion.generate(bullet.x, bullet.y));
+      GroupPool.explosion().addChild(Explosion.generate(bullet.x, bullet.y));
       Bullet.deadBullet(bullet);
       Helper.revive(object);
       Bullet.playSoundEffectOfExplosion(context, volume);
@@ -725,6 +725,16 @@ var GameText = (function () {
   return GameText;
 })();
 
+var starPool = Symbol();
+var cubePool = Symbol();
+var circlePool = Symbol();
+var bulletPool = Symbol();
+var cylinderPool = Symbol();
+var myUnitSplinterPool = Symbol();
+var rhombusSplinterPool = Symbol();
+var rhombusPool = Symbol();
+var explosionPool = Symbol();
+
 var GroupPool = (function () {
   function GroupPool() {
     _classCallCheck(this, GroupPool);
@@ -734,81 +744,91 @@ var GroupPool = (function () {
     key: 'star',
     value: function star() {
       var context = GameState.instance.current;
-      if (context.starPool === undefined) {
-        context.starPool = new Kiwi.Group(context);
+
+      if (!this[starPool]) {
+        this[starPool] = new Kiwi.Group(context);
       }
-      return context.starPool;
+      return this[starPool];
     }
   }, {
     key: 'cube',
     value: function cube() {
       var context = GameState.instance.current;
-      if (context.cubePool === undefined) {
-        context.cubePool = new Kiwi.Group(context);
+
+      if (!this[cubePool]) {
+        this[cubePool] = new Kiwi.Group(context);
       }
-      return context.cubePool;
+      return this[cubePool];
     }
   }, {
     key: 'circle',
     value: function circle() {
       var context = GameState.instance.current;
-      if (context.circlePool === undefined) {
-        context.circlePool = new Kiwi.Group(context);
+
+      if (!this[circlePool]) {
+        this[circlePool] = new Kiwi.Group(context);
       }
-      return context.circlePool;
+      return this[circlePool];
     }
   }, {
     key: 'bullet',
     value: function bullet() {
       var context = GameState.instance.current;
-      if (context.bulletPool === undefined) {
-        context.bulletPool = new Kiwi.Group(context);
+
+      if (!this[bulletPool]) {
+        this[bulletPool] = new Kiwi.Group(context);
       }
-      return context.bulletPool;
+      return this[bulletPool];
     }
   }, {
     key: 'cylinder',
     value: function cylinder() {
       var context = GameState.instance.current;
-      if (context.cylinderPool === undefined) {
-        context.cylinderPool = new Kiwi.Group(context);
+
+      if (!this[cylinderPool]) {
+        this[cylinderPool] = new Kiwi.Group(context);
       }
-      return context.cylinderPool;
+      return this[cylinderPool];
     }
   }, {
     key: 'myUnitSplinter',
     value: function myUnitSplinter() {
       var context = GameState.instance.current;
-      if (context.myUnitSplinterPool === undefined) {
-        context.myUnitSplinterPool = new Kiwi.Group(context);
+
+      if (!this[myUnitSplinterPool]) {
+        this[myUnitSplinterPool] = new Kiwi.Group(context);
       }
-      return context.myUnitSplinterPool;
+      return this[myUnitSplinterPool];
     }
   }, {
     key: 'rhombusSplinter',
     value: function rhombusSplinter() {
       var context = GameState.instance.current;
-      if (context.rhombusSplinterPool === undefined) {
-        context.rhombusSplinterPool = new Kiwi.Group(context);
+
+      if (!this[rhombusSplinterPool]) {
+        this[rhombusSplinterPool] = new Kiwi.Group(context);
       }
-      return context.rhombusSplinterPool;
+      return this[rhombusSplinterPool];
     }
   }, {
     key: 'rhombus',
     value: function rhombus() {
       var context = GameState.instance.current;
-      if (context.rhombusPool === undefined) {
-        context.rhombusPool = new Kiwi.Group(context);
+
+      if (!this[rhombusPool]) {
+        this[rhombusPool] = new Kiwi.Group(context);
       }
-      return context.rhombusPool;
+      return this[rhombusPool];
     }
   }, {
     key: 'explosion',
-    value: function explosion(context) {
-      if (context.explosionPool === undefined) {
-        context.explosionPool = new Kiwi.Group(context);
+    value: function explosion() {
+      var context = GameState.instance.current;
+
+      if (!this[explosionPool]) {
+        this[explosionPool] = new Kiwi.Group(context);
       }
-      return context.explosionPool;
+      return this[explosionPool];
     }
   }, {
     key: 'removeChildrenForAll',
@@ -818,7 +838,7 @@ var GroupPool = (function () {
       var circle = GroupPool.circle();
       var cylinder = GroupPool.cylinder();
       var bullet = GroupPool.bullet();
-      var explosion = GroupPool.explosion(context);
+      var explosion = GroupPool.explosion();
       var rhombus = GroupPool.rhombus();
 
       star.removeChildren(0, star.members.length);
@@ -915,7 +935,7 @@ var GroupPool = (function () {
     key: 'forEachExplosion',
     value: function forEachExplosion() {
       var context = GameState.instance.current;
-      var pool = GroupPool.explosion(context);
+      var pool = GroupPool.explosion();
 
       pool.members.map(function (member) {
         Explosion.isLastOfCellIndex(member);
@@ -1061,7 +1081,7 @@ var Group = (function () {
     key: 'explosion',
     value: function explosion() {
       var context = GameState.instance.current;
-      context.addChild(GroupPool.explosion(context));
+      context.addChild(GroupPool.explosion());
     }
   }], [{
     key: 'initialize',
@@ -1520,7 +1540,7 @@ var MyUnit = (function () {
         Helper.revive(object);
         GAME_COUNTER.hitPoint--;
         hud.hitPointBar.counter.current--;
-        GroupPool.explosion(context).addChild(Explosion.generate(myUnit.x, myUnit.y));
+        GroupPool.explosion().addChild(Explosion.generate(myUnit.x, myUnit.y));
         GameMusic.soundEffectOfMyUnitExplosion.play();
       }
 

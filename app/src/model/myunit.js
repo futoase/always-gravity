@@ -83,7 +83,7 @@ class MyUnit {
       Helper.revive(object);
       GAME_COUNTER.hitPoint--;
       hud.hitPointBar.counter.current--;
-      GroupPool.explosion(context).addChild(
+      GroupPool.explosion().addChild(
         Explosion.generate(myUnit.x, myUnit.y)
       );
       GameMusic.soundEffectOfMyUnitExplosion.play();

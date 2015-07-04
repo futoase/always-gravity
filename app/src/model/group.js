@@ -119,7 +119,7 @@ class Group {
 
   explosion() {
     const context = GameState.instance.current;
-    context.addChild(GroupPool.explosion(context));
+    context.addChild(GroupPool.explosion());
   }
 
 }
