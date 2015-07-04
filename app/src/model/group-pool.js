@@ -11,91 +11,73 @@ let explosionPool = Symbol();
 class GroupPool {
 
   static star() {
-    const context = GameState.instance.current;
-
     if (!this[starPool] ||
         !this._isExistsContextName(this[starPool])) {
-      this[starPool] = new Kiwi.Group(context);
+      this[starPool] = this._createNewGroup();
     }
     return this[starPool];
   }
 
   static cube() {
-    const context = GameState.instance.current;
-
     if (!this[cubePool] ||
         !this._isExistsContextName(this[cubePool])) {
-      this[cubePool] = new Kiwi.Group(context);
+      this[cubePool] = this._createNewGroup();
     }
     return this[cubePool];
   }
 
   static circle() {
-    const context = GameState.instance.current;
-
     if (!this[circlePool] ||
         !this._isExistsContextName(this[circlePool])) {
-      this[circlePool] = new Kiwi.Group(context);
+      this[circlePool] = this._createNewGroup();
     }
     return this[circlePool];
   }
 
   static bullet() {
-    const context = GameState.instance.current;
-
     if (!this[bulletPool] ||
         !this._isExistsContextName(this[bulletPool])) {
-      this[bulletPool] = new Kiwi.Group(context);
+      this[bulletPool] = this._createNewGroup();
     }
     return this[bulletPool];
   }
 
   static cylinder() {
-    const context = GameState.instance.current;
-
     if (!this[cylinderPool] ||
         !this._isExistsContextName(this[cylinderPool])) {
-      this[cylinderPool] = new Kiwi.Group(context);
+      this[cylinderPool] = this._createNewGroup();
     }
     return this[cylinderPool];
   }
 
   static myUnitSplinter() {
-    const context = GameState.instance.current;
-
     if (!this[myUnitSplinterPool] ||
         !this._isExistsContextName(this[myUnitSplinterPool])) {
-      this[myUnitSplinterPool] = new Kiwi.Group(context);
+      this[myUnitSplinterPool] = this._createNewGroup();
     }
     return this[myUnitSplinterPool];
   }
 
   static rhombusSplinter() {
-    const context = GameState.instance.current;
-
     if (!this[rhombusSplinterPool] ||
         !this._isExistsContextName(this[rhombusSplinterPool])) {
-      this[rhombusSplinterPool] = new Kiwi.Group(context);
+      this[rhombusSplinterPool] = this._createNewGroup();
     }
     return this[rhombusSplinterPool];
   }
 
   static rhombus() {
-    const context = GameState.instance.current;
-
     if (!this[rhombusPool] ||
         !this._isExistsContextName(this[rhombusPool])) {
-      this[rhombusPool] = new Kiwi.Group(context);
+      this[rhombusPool] = this._createNewGroup();
     }
     return this[rhombusPool];
   }
 
   static explosion() {
-    const context = GameState.instance.current;
-
     if (!this[explosionPool] ||
         !this._isExistsContextName(this[explosionPool])) {
-      this[explosionPool] = new Kiwi.Group(context);
+      this[explosionPool] = this._createNewGroup();
     }
     return this[explosionPool];
   }
@@ -236,6 +218,11 @@ class GroupPool {
     else {
       return false;
     }
+  }
+
+  static _createNewGroup() {
+    const context = GameState.instance.current;
+    return (new Kiwi.Group(context));
   }
 
 }
