@@ -1,15 +1,6 @@
-let gameOverContext = Symbol();
 let gameOverStatus = Symbol();
 
 class GameOver {
-
-  static get context() {
-    return this[gameOverContext];
-  }
-
-  static set context(value) {
-    this[gameOverContext] = value;
-  }
 
   static get status() {
     return this[gameOverStatus];
@@ -21,12 +12,14 @@ class GameOver {
     }
   }
 
-  static execute(context) {
+  static execute() {
+    const context = GameState.instance.current;
+
     if (GameOver.status) {
       return;
     }
 
-    GameOver.destroyObjects(context);
+    this._destroyObjects();
 
     GameMusic.gameOver.play();
 
@@ -35,11 +28,13 @@ class GameOver {
     context.addChild(GameText.createRestart());
     context.addChild(GameText.createExitGame());
 
-    GameOver.status = true;
+    this.status = true;
   }
 
-  static destroyObjects(context) {
-    GroupPool.removeChildrenForAll(context);
+  static _destroyObjects() {
+    const context = GameState.instance.current;
+
+    GroupPool.removeChildrenForAll();
     GameMusic.destroy();
     context.game.huds.defaultHUD.removeAllWidgets();
     Timer.destroy();

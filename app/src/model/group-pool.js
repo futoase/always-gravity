@@ -82,7 +82,7 @@ class GroupPool {
     return this[explosionPool];
   }
 
-  static removeChildrenForAll(context) {
+  static removeChildrenForAll() {
     let star = GroupPool.star();
     let cube = GroupPool.cube();
     let circle = GroupPool.circle();

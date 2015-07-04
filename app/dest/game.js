@@ -469,7 +469,6 @@ var Explosion = (function () {
   return Explosion;
 })();
 
-var gameOverContext = Symbol();
 var gameOverStatus = Symbol();
 
 var GameOver = (function () {
@@ -479,12 +478,14 @@ var GameOver = (function () {
 
   _createClass(GameOver, null, [{
     key: 'execute',
-    value: function execute(context) {
+    value: function execute() {
+      var context = GameState.instance.current;
+
       if (GameOver.status) {
         return;
       }
 
-      GameOver.destroyObjects(context);
+      this._destroyObjects();
 
       GameMusic.gameOver.play();
 
@@ -493,25 +494,19 @@ var GameOver = (function () {
       context.addChild(GameText.createRestart());
       context.addChild(GameText.createExitGame());
 
-      GameOver.status = true;
+      this.status = true;
     }
   }, {
-    key: 'destroyObjects',
-    value: function destroyObjects(context) {
-      GroupPool.removeChildrenForAll(context);
+    key: '_destroyObjects',
+    value: function _destroyObjects() {
+      var context = GameState.instance.current;
+
+      GroupPool.removeChildrenForAll();
       GameMusic.destroy();
       context.game.huds.defaultHUD.removeAllWidgets();
       Timer.destroy();
 
       MyUnit.instance.sprite.destroy();
-    }
-  }, {
-    key: 'context',
-    get: function get() {
-      return this[gameOverContext];
-    },
-    set: function set(value) {
-      this[gameOverContext] = value;
     }
   }, {
     key: 'status',
@@ -811,7 +806,7 @@ var GroupPool = (function () {
     }
   }, {
     key: 'removeChildrenForAll',
-    value: function removeChildrenForAll(context) {
+    value: function removeChildrenForAll() {
       var star = GroupPool.star();
       var cube = GroupPool.cube();
       var circle = GroupPool.circle();
@@ -1708,7 +1703,7 @@ var MyUnit = (function () {
         if (_this.exposionCounter < 2) {
           _this.explosionCounter += 1;
         } else {
-          GameOver.execute(context);
+          GameOver.execute();
         }
       }, 1000, context);
     }
