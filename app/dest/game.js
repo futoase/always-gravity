@@ -366,13 +366,13 @@ var Bullet = (function () {
     }
   }, {
     key: 'overlapOnObject',
-    value: function overlapOnObject(context, bullet, object) {
-      var volume = arguments[3] === undefined ? 1.0 : arguments[3];
+    value: function overlapOnObject(bullet, object) {
+      var volume = arguments[2] === undefined ? 1.0 : arguments[2];
 
       GroupPool.explosion().addChild(Explosion.generate(bullet.x, bullet.y));
       Bullet.deadBullet(bullet);
       Helper.revive(object);
-      Bullet.playSoundEffectOfExplosion(context, volume);
+      Bullet.playSoundEffectOfExplosion(volume);
       GAME_COUNTER.gameScore += object.score;
     }
   }, {
@@ -384,7 +384,7 @@ var Bullet = (function () {
     }
   }, {
     key: 'playSoundEffectOfExplosion',
-    value: function playSoundEffectOfExplosion(context, volume) {
+    value: function playSoundEffectOfExplosion(volume) {
       var se = GameMusic.soundEffectOfExplosion;
       se.stop();
       se.volume = volume;
@@ -403,36 +403,33 @@ var CollisionDelection = (function () {
   _createClass(CollisionDelection, null, [{
     key: 'BulletCollideWithCube',
     value: function BulletCollideWithCube(bullet) {
-      var context = GameState.instance.current;
       var members = GroupPool.cube().members;
 
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
-          Bullet.overlapOnObject(context, bullet, member, 0.3);
+          Bullet.overlapOnObject(bullet, member, 0.5);
         }
       });
     }
   }, {
     key: 'BulletCollideWithCircle',
     value: function BulletCollideWithCircle(bullet) {
-      var context = GameState.instance.current;
       var members = GroupPool.circle().members;
 
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
-          Bullet.overlapOnObject(context, bullet, member, 0.3);
+          Bullet.overlapOnObject(bullet, member, 0.5);
         }
       });
     }
   }, {
     key: 'BulletCollideWithCylinder',
     value: function BulletCollideWithCylinder(bullet) {
-      var context = GameState.instance.current;
       var members = GroupPool.cylinder().members;
 
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
-          Bullet.overlapOnObject(context, bullet, member, 0.3);
+          Bullet.overlapOnObject(bullet, member, 0.6);
         }
       });
     }

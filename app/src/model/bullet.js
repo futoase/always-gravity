@@ -56,13 +56,13 @@ class Bullet {
     return null;
   }
 
-  static overlapOnObject(context, bullet, object, volume = 1.0) {
+  static overlapOnObject(bullet, object, volume = 1.0) {
     GroupPool.explosion().addChild(
       Explosion.generate(bullet.x, bullet.y)
     );
     Bullet.deadBullet(bullet);
     Helper.revive(object);
-    Bullet.playSoundEffectOfExplosion(context, volume);
+    Bullet.playSoundEffectOfExplosion(volume);
     GAME_COUNTER.gameScore += object.score;
   }
 
@@ -72,7 +72,7 @@ class Bullet {
     bullet.alive = false;
   }
 
-  static playSoundEffectOfExplosion(context, volume) {
+  static playSoundEffectOfExplosion(volume) {
     let se = GameMusic.soundEffectOfExplosion;
     se.stop();
     se.volume = volume;
