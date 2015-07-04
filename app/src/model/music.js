@@ -51,7 +51,7 @@ class GameMusic {
       this[musicGameOver] = new Kiwi.Sound.Audio(
         context.game,
         'musicGameover',
-        1,
+        GAME_CONFIG.BASE_GAME_OVER_MUSIC_VOLUME_PER,
         false
       );
     }

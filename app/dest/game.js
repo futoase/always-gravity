@@ -107,6 +107,7 @@ var GAME_CONFIG = {
   GRAVITY: 5,
   DRAG: 2.5,
   BASE_MUSIC_VOLUME_PER: 1.0,
+  BASE_GAME_OVER_MUSIC_VOLUME_PER: 1.0,
   BASE_LASER_VOLUME_PER: 0.6,
   BASE_EXPLOSION_VOLUME_PER: 1.0,
   BASE_CAUTION_VOLUME_PER: 2.0,
@@ -1423,7 +1424,7 @@ var GameMusic = (function () {
       var context = GameState.instance.current;
 
       if (!this[musicGameOver]) {
-        this[musicGameOver] = new Kiwi.Sound.Audio(context.game, 'musicGameover', 1, false);
+        this[musicGameOver] = new Kiwi.Sound.Audio(context.game, 'musicGameover', GAME_CONFIG.BASE_GAME_OVER_MUSIC_VOLUME_PER, false);
       }
       return this[musicGameOver];
     }
