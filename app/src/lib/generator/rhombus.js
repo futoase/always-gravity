@@ -1,5 +1,8 @@
 class RhombusGenerator {
-  static create(context, index) {
+
+  static create(index) {
+    const context = GameState.instance.current;
+
     let rhombus = new Kiwi.GameObjects.Sprite(
       context, context.textures.rhombus, -100, -100
     );
@@ -12,4 +15,5 @@ class RhombusGenerator {
 
     return rhombus;
   }
+
 }

@@ -1,5 +1,8 @@
 class MyUnitSplinterGenerator {
-  static create(context, index) {
+
+  static create(index) {
+    const context = GameState.instance.current;
+
     let myUnitSplinter = new Kiwi.GameObjects.Sprite(
       context, context.textures.myUnitSplinter, -100, -100
     );
@@ -11,4 +14,5 @@ class MyUnitSplinterGenerator {
 
     return myUnitSplinter;
   }
+
 }

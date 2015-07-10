@@ -1,5 +1,8 @@
 class CubeGenerator {
-  static create(context, index) {
+
+  static create(index) {
+    const context = GameState.instance.current;
+
     let cube = new Kiwi.GameObjects.Sprite(
       context, context.textures.cube, -100, -100
     );
@@ -15,4 +18,5 @@ class CubeGenerator {
 
     return cube;
   }
+
 }

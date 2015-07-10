@@ -1,5 +1,8 @@
 class RhombusSplinterGenerator {
-  static create(context, index) {
+
+  static create(index) {
+    const context = GameState.instance.current;
+
     let rhombusSplinter = new Kiwi.GameObjects.Sprite(
       context, context.textures.rhombus, -100, -100
     );
@@ -10,4 +13,5 @@ class RhombusSplinterGenerator {
 
     return rhombusSplinter;
   }
+
 }

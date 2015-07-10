@@ -129,7 +129,9 @@ var BulletGenerator = (function () {
 
   _createClass(BulletGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, -100, -100);
       bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
       bullet.anchorPointX = bullet.width * 0.5;
@@ -152,7 +154,9 @@ var CircleGenerator = (function () {
 
   _createClass(CircleGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var circle = new Kiwi.GameObjects.Sprite(context, context.textures.circle, -100, -100);
       circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
       circle.anchorPointX = circle.width * 0.5;
@@ -176,7 +180,9 @@ var CubeGenerator = (function () {
 
   _createClass(CubeGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var cube = new Kiwi.GameObjects.Sprite(context, context.textures.cube, -100, -100);
       cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);
       cube.anchorPointX = cube.width * 0.5;
@@ -200,7 +206,9 @@ var CylinderGenerator = (function () {
 
   _createClass(CylinderGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var cylinder = new Kiwi.GameObjects.Sprite(context, context.textures.cylinder, -100, -100);
       cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
       cylinder.animation.play('cycle');
@@ -227,7 +235,9 @@ var MyUnitSplinterGenerator = (function () {
 
   _createClass(MyUnitSplinterGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var myUnitSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.myUnitSplinter, -100, -100);
       myUnitSplinter.animation.add('explosion', [0, 1, 2, 3, 4, 5], 0.05, true);
       myUnitSplinter.physics = myUnitSplinter.components.add(new Kiwi.Components.ArcadePhysics(myUnitSplinter, myUnitSplinter.box));
@@ -247,7 +257,9 @@ var RhombusSplinterGenerator = (function () {
 
   _createClass(RhombusSplinterGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var rhombusSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
       rhombusSplinter.physics = rhombusSplinter.components.add(new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox));
       rhombusSplinter.index = index;
@@ -266,7 +278,9 @@ var RhombusGenerator = (function () {
 
   _createClass(RhombusGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var rhombus = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
       rhombus.physics = rhombus.components.add(new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box));
       rhombus.x = context.game.stage.width / 2 - rhombus.width;
@@ -287,7 +301,9 @@ var StarGenerator = (function () {
 
   _createClass(StarGenerator, null, [{
     key: 'create',
-    value: function create(context, index) {
+    value: function create(index) {
+      var context = GameState.instance.current;
+
       var star = new Kiwi.GameObjects.Sprite(context, context.textures.star, -100, -100);
       star.anchorPointX = star.width * 0.5;
       star.anchorPointY = star.height * 0.5;

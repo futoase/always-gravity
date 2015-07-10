@@ -1,5 +1,8 @@
 class CylinderGenerator {
-  static create(context, index) {
+
+  static create(index) {
+    const context = GameState.instance.current;
+
     let cylinder = new Kiwi.GameObjects.Sprite(
       context, context.textures.cylinder, -100, -100
     );
@@ -18,4 +21,5 @@ class CylinderGenerator {
 
     return cylinder;
   }
+
 }
