@@ -12,10 +12,18 @@
     "gulp-babel": "^5.1.0",
     "gulp-concat": "^2.5.2",
     "gulp-eslint": "^0.14.0",
-    "gulp-watch": "^4.2.4"
+    "gulp-espower": "^0.10.1",
+    "gulp-watch": "^4.2.4",
+    "karma": "^0.12.37",
+    "karma-babel-preprocessor": "^5.2.1",
+    "karma-electron-launcher": "0.0.2",
+    "karma-espower-preprocessor": "0.0.4",
+    "karma-mocha": "^0.2.0",
+    "mocha": "^2.2.5",
+    "power-assert": "^0.11.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./script/electron-path-for-darwin.fish && ./node_modules/karma/bin/karma start",
     "start": "electron ./app",
     "watch": "gulp",
     "concat": "gulp concat"
