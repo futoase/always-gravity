@@ -3,6 +3,8 @@ const gameOptions = {
   height: 600
 };
 
+Kiwi.Log.display = false;
+
 const GAME_CONFIG = {
   CONTAINER_ID: 'game-container',
   NAME: 'Always Glavity',
