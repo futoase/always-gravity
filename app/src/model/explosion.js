@@ -1,7 +1,8 @@
 class Explosion {
 
   static generate(baseX, baseY) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
+
     let explosion = new Kiwi.GameObjects.Sprite(
       context, context.textures.explosion, baseX, baseY
     );

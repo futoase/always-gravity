@@ -1,7 +1,7 @@
 class BulletGenerator {
 
   static create(index) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let bullet = new Kiwi.GameObjects.Sprite(
       context, context.textures.bullet, -100, -100

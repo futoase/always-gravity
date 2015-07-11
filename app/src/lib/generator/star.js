@@ -1,7 +1,7 @@
 class StarGenerator {
 
   static create(index) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let star = new Kiwi.GameObjects.Sprite(
       context, context.textures.star, -100, -100

@@ -17,7 +17,7 @@ class MyUnit {
   }
 
   static initialize() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     context.addChild(MyUnit.instance.create());
   }
@@ -46,7 +46,7 @@ class MyUnit {
   }
 
   create() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let myUnit;
 
     myUnit = new Kiwi.GameObjects.Sprite(
@@ -67,7 +67,7 @@ class MyUnit {
   }
 
   overlapOnOther(object) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     const myUnit = this.sprite;
 
     let hud = HUD.instance;
@@ -97,7 +97,7 @@ class MyUnit {
   }
 
   explosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (context.myUnitExplosion === undefined) {
       context.myUnitExplosion = true;
@@ -129,7 +129,7 @@ class MyUnit {
   }
 
   _watchOfStatusForRotationKeys() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
@@ -148,7 +148,7 @@ class MyUnit {
   }
 
   _watchOfStatusForVelocityKey() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
@@ -174,7 +174,7 @@ class MyUnit {
   }
 
   _checkPosition() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     const stageWidth = context.game.stage.width;
     const stageHeight = context.game.stage.height;
     let myUnit = this.sprite;
@@ -194,7 +194,7 @@ class MyUnit {
   }
 
   _updateGravity() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let myUnit = this.sprite;
 
     if (context.myUnitExplosion !== true) {
@@ -212,7 +212,7 @@ class MyUnit {
   }
 
   _createMyUnitSplinter() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     const myUnit = this.sprite;
     let myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
     let angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
@@ -234,7 +234,7 @@ class MyUnit {
   }
 
   _remove() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let myUnit = this.sprite;
 
     context.removeChild(myUnit);
@@ -245,7 +245,7 @@ class MyUnit {
   }
 
   _startCountUpOfExplosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     context.game.time.clock.setInterval(() => {
       if (this.exposionCounter < 2) {

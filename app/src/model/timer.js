@@ -25,7 +25,7 @@ class Timer {
   }
 
   setInterval(callback, milliseconds) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     return context.game.time.clock.setInterval(
       callback, milliseconds, context
@@ -43,7 +43,7 @@ class Timer {
   }
 
   removeAllTimer() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     const timers = [
       this.starTimer,

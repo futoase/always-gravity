@@ -12,7 +12,7 @@ let textSlowDown = Symbol();
 class GameText {
 
   static initializeOfTitle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     context.addChild(GameText.createTitle());
     context.addChild(GameText.createSubTitle());
@@ -21,7 +21,7 @@ class GameText {
   }
 
   static destroyOfTitle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     context.removeChild(GameText.title);
     context.removeChild(GameText.subTitle);
@@ -30,7 +30,7 @@ class GameText {
   }
 
   static createTitle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textTitle]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -47,7 +47,7 @@ class GameText {
   }
 
   static createSubTitle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textSubTitle]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -64,7 +64,7 @@ class GameText {
   }
 
   static createStart() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textStart]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -81,7 +81,7 @@ class GameText {
   }
 
   static createQuit() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textQuit]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -98,7 +98,7 @@ class GameText {
   }
 
   static createExitGame(){
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textExitGame]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -111,7 +111,7 @@ class GameText {
   }
 
   static createGameOver() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textGameOver]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -124,7 +124,7 @@ class GameText {
   }
 
   static createRestart() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textRestart]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -137,7 +137,7 @@ class GameText {
   }
 
   static createScore(score) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textScore]) {
       let text= new Kiwi.GameObjects.TextField(
@@ -150,7 +150,7 @@ class GameText {
   }
 
   static createSlowDownCount() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textSlowDownCount]) {
       let text = new Kiwi.GameObjects.TextField(
@@ -171,7 +171,7 @@ class GameText {
   }
 
   static createSlowDown() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[textSlowDown]) {
       let text = new Kiwi.GameObjects.TextField(

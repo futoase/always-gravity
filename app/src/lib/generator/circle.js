@@ -1,7 +1,7 @@
 class CircleGenerator {
 
   static create(index) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let circle = new Kiwi.GameObjects.Sprite(
       context, context.textures.circle, -100, -100

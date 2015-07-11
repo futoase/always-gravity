@@ -17,7 +17,7 @@ class TimerSpawnObjects {
   }
 
   circle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     Helper.strewnSprite(
       Helper.getMember(GroupPool.circle().members),
@@ -30,7 +30,7 @@ class TimerSpawnObjects {
   }
 
   cube() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     Helper.strewnSprite(
       Helper.getMember(GroupPool.cube().members),
@@ -40,7 +40,7 @@ class TimerSpawnObjects {
   }
 
   cylinder() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     Helper.strewnSprite(
       Helper.getMember(GroupPool.cylinder().members),
@@ -50,7 +50,7 @@ class TimerSpawnObjects {
   }
 
   star() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     Helper.strewnSprite(
       Helper.getMember(GroupPool.star().members),
@@ -60,7 +60,7 @@ class TimerSpawnObjects {
   }
 
   rhombus() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
       context.isSpawnSpriteOfRhombusSplinter = false;

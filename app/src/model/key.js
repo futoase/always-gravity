@@ -58,7 +58,7 @@ class GameKey {
   }
 
   static upKey() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[upKey]) {
       this[upKey] = this._getGameKey(Kiwi.Input.Keycodes.UP);
@@ -71,7 +71,7 @@ class GameKey {
   }
 
   static shootKey() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[shootKey]) {
       this[shootKey] = this._getGameKey(Kiwi.Input.Keycodes.Z);
@@ -106,7 +106,7 @@ class GameKey {
   }
 
   static _getGameKey(keycode) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     return context.game.input.keyboard.addKey(keycode);
   }
 

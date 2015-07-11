@@ -19,6 +19,10 @@ class GameState {
     return this[gameStateSingleton];
   }
 
+  static get current() {
+    return GameState.instance.current;
+  }
+
   get current() {
     return this[gameStateCurrent];
   }

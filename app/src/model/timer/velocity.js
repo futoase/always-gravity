@@ -28,7 +28,7 @@ class TimerVelocity {
   }
 
   overTheLimitCount() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let myUnit = MyUnit.instance;
     let hud = HUD.instance;
@@ -52,7 +52,7 @@ class TimerVelocity {
   }
 
   speedLimit() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let hud = HUD.instance;
 
     if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {

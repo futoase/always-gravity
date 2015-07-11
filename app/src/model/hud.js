@@ -17,7 +17,7 @@ class HUD {
   }
 
   static initialize() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let hud = HUD.instance;
 
     context.game.huds.defaultHUD.addWidget(
@@ -65,7 +65,7 @@ class HUD {
       return this._velocityBar;
     }
 
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let hud = new Kiwi.HUD.Widget.Bar(
       context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
@@ -81,7 +81,7 @@ class HUD {
       return this._hitPointBar;
     }
 
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let hud = new Kiwi.HUD.Widget.Bar(
       context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
@@ -97,7 +97,7 @@ class HUD {
       return this._gameScoreCounter;
     }
 
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let hud = new Kiwi.HUD.Widget.TextField(
       context.game, '', 50, 60
@@ -114,7 +114,7 @@ class HUD {
   }
 
   update() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     let myUnit = MyUnit.instance;
 

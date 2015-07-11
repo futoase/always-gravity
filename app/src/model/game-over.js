@@ -13,7 +13,7 @@ class GameOver {
   }
 
   static execute() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (GameOver.status) {
       return;
@@ -32,7 +32,7 @@ class GameOver {
   }
 
   static _destroyObjects() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     GroupPool.removeChildrenForAll();
     GameMusic.destroy();

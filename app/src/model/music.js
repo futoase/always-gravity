@@ -31,7 +31,7 @@ class GameMusic {
   }
 
   static get main() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[musicMain]) {
       this[musicMain] = new Kiwi.Sound.Audio(
@@ -45,7 +45,7 @@ class GameMusic {
   }
 
   static get gameOver() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[musicGameOver]) {
       this[musicGameOver] = new Kiwi.Sound.Audio(
@@ -59,7 +59,7 @@ class GameMusic {
   }
 
   static get soundEffectOfBullet() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[soundEffectOfBullet]) {
       this[soundEffectOfBullet] = new Kiwi.Sound.Audio(
@@ -73,7 +73,7 @@ class GameMusic {
   }
 
   static get soundEffectOfExplosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[soundEffectOfExplosion]) {
       this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(
@@ -87,7 +87,7 @@ class GameMusic {
   }
 
   static get soundEffectOfCautionForSpeed() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[soundEffectOfCautionForSpeed]) {
       this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(
@@ -101,7 +101,7 @@ class GameMusic {
   }
 
   static get soundEffectOfCircle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[soundEffectOfCircle]) {
       this[soundEffectOfCircle] = new Kiwi.Sound.Audio(
@@ -115,7 +115,7 @@ class GameMusic {
   }
 
   static get soundEffectOfMyUnitExplosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[soundEffectOfMyUnitExplosion]) {
       this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(

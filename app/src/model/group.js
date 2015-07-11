@@ -30,7 +30,7 @@ class Group {
   }
 
   star() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.star();
     context.addChild(pool);
 
@@ -41,7 +41,7 @@ class Group {
   }
 
   cube() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.cube();
     context.addChild(pool);
 
@@ -52,7 +52,7 @@ class Group {
   }
 
   circle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.circle();
     context.addChild(pool);
 
@@ -63,7 +63,7 @@ class Group {
   }
 
   bullet() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.bullet();
     context.addChild(pool);
 
@@ -74,7 +74,7 @@ class Group {
   }
 
   cylinder() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.cylinder();
     context.addChild(pool);
 
@@ -85,7 +85,7 @@ class Group {
   }
 
   myUnitSplinter() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.myUnitSplinter();
     context.addChild(pool);
 
@@ -96,7 +96,7 @@ class Group {
   }
 
   rhombusSplinter() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.rhombusSplinter();
     context.addChild(pool);
 
@@ -107,7 +107,7 @@ class Group {
   }
 
   rhombus() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.rhombus();
     context.addChild(pool);
 
@@ -118,7 +118,7 @@ class Group {
   }
 
   explosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     context.addChild(GroupPool.explosion());
   }
 

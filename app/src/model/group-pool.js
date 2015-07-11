@@ -112,14 +112,14 @@ class GroupPool {
   }
 
   static forEachStar() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.star();
 
     pool.forEach(context, Helper.checkSpritePosition);
   }
 
   static forEachCube() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.cube();
 
     pool.forEach(context, (cube) => {
@@ -129,14 +129,14 @@ class GroupPool {
   }
 
   static forEachCylinder() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.cylinder();
 
     pool.forEach(context, Helper.checkSpritePosition);
   }
 
   static forEachCircle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.circle();
     let myUnit = MyUnit.instance;
 
@@ -150,7 +150,7 @@ class GroupPool {
   }
 
   static forEachCircle() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.circle();
     let myUnit = MyUnit.instance;
 
@@ -164,7 +164,7 @@ class GroupPool {
   }
 
   static forEachBullet() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.bullet();
 
     pool.forEach(context, Helper.checkSpritePosition);
@@ -176,7 +176,7 @@ class GroupPool {
   }
 
   static forEachExplosion() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.explosion();
 
     pool.members.map((member) => {
@@ -185,7 +185,7 @@ class GroupPool {
   }
 
   static forEachRhombusSplinter() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.rhombusSplinter();
     let myUnit = MyUnit.instance;
 
@@ -196,7 +196,7 @@ class GroupPool {
   }
 
   static forEachRhombus() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     let pool = GroupPool.rhombus();
     let myUnit = MyUnit.instance;
 
@@ -206,7 +206,7 @@ class GroupPool {
   }
 
   static _isExistsContextName(group) {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (group === undefined || group.state === undefined) {
       return false;
@@ -221,7 +221,7 @@ class GroupPool {
   }
 
   static _createNewGroup() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
     return (new Kiwi.Group(context));
   }
 

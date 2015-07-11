@@ -3,7 +3,7 @@ let lastBulletShootAt = Symbol();
 class Bullet {
 
   static shoot() {
-    const context = GameState.instance.current;
+    const context = GameState.current;
 
     if (!this[lastBulletShootAt]) {
       this[lastBulletShootAt] = 0;
