@@ -3,7 +3,14 @@ var concat = require('gulp-concat');
 var electron = require('gulp-electron');
 var watch = require('gulp-watch');
 var babel = require('gulp-babel');
+var eslint = require('gulp-eslint');
 var packageJson = require('./app/package.json');
+
+gulp.task('eslint', function() {
+  return gulp.src(['app/src/**/*.js'])
+         .pipe(eslint({ useEslintrc: true }))
+         .pipe(eslint.failOnError());
+});
 
 gulp.task('electron', function() {
   gulp.src('')
@@ -42,7 +49,7 @@ gulp.task('concat', function(cb){
 });
 
 gulp.task('watch', function() {
-  gulp.watch('app/src/**/**.js', ['concat']);
+  gulp.watch('app/src/**/**.js', ['eslint', 'concat']);
 });
 
 gulp.task('default', ['watch']);
