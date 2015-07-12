@@ -1,5 +1,11 @@
 class StarGenerator {
 
+  /**
+   * create() is return of new sprite for Star.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Star
+   */
   static create(index) {
     const context = GameState.current;
 

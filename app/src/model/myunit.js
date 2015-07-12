@@ -3,12 +3,22 @@ let myUnitSingletonEnforcer = Symbol();
 
 class MyUnit {
 
+  /**
+   * constructor for MyUnit.
+   *
+   * @param {Symbol} enforcer
+   */
   constructor(enforcer) {
     if (enforcer !== myUnitSingletonEnforcer) {
       throw "Cannot construct singleton!";
     }
   }
 
+  /**
+   * get() is return a instance of MyUnit.
+   *
+   * @return {MyUnit}
+   */
   static get instance() {
     if (!this[myUnitSingleton]) {
       this[myUnitSingleton] = new MyUnit(myUnitSingletonEnforcer);
@@ -16,24 +26,45 @@ class MyUnit {
     return this[myUnitSingleton];
   }
 
+  /**
+   * initialize() is setting the MyUnit for current state.
+   */
   static initialize() {
     const context = GameState.current;
 
     context.addChild(MyUnit.instance.create());
   }
 
+  /**
+   * update() is call update method of MyUnit.
+   */
   static update() {
     MyUnit.instance.update();
   }
 
+  /**
+   * Getter of Sprite for MyUnit.
+   *
+   * @return {Kiwi.GameObjects.Sprite}
+   */
   get sprite() {
     return this._sprite;
   }
 
+  /**
+   * Getter of Sprite for MyUnit.
+   *
+   * @param {Kiwi.GameObjects.Sprite} value
+   */
   set sprite(value) {
     this._sprite = value;
   }
 
+  /**
+   * Getter of counter for Explosion.
+   *
+   * @return {Number}
+   */
   get explosionCounter() {
     if (this._explosionCounter === undefined) {
       this._explosionCounter = 0;
@@ -41,10 +72,20 @@ class MyUnit {
     return this._explosionCounter;
   }
 
+  /**
+   * Setter of counter for Explosion.
+   *
+   * @param {Number} value
+   */
   set explosionCounter(value) {
     this._explosionCounter = value;
   }
 
+  /**
+   * create() is return a new sprite of MyUnit.
+   *
+   * @return {Kiwi.GameObjects.Sprite} MyUnit
+   */
   create() {
     const context = GameState.current;
     let myUnit;
@@ -66,6 +107,11 @@ class MyUnit {
     return myUnit;
   }
 
+  /**
+   * overlapOnOther() is observe of collision for sprite onto MyUnit.
+   *
+   * @param {Kiwi.GameObjects.Sprite} object
+   */
   overlapOnOther(object) {
     const context = GameState.current;
     const myUnit = this.sprite;
@@ -96,6 +142,9 @@ class MyUnit {
     }
   }
 
+  /**
+   * explosion() is explode the MyUnit.
+   */
   explosion() {
     const context = GameState.current;
 
@@ -113,6 +162,9 @@ class MyUnit {
     this._startCountUpOfExplosion();
   }
 
+  /**
+   * update() is update of method for MyUnit.
+   */
   update() {
     if (GameOver.status) {
       return;
@@ -123,11 +175,17 @@ class MyUnit {
     this._updateGravity();
   }
 
+  /**
+   * _watchOfStatusForKeys() is observe of status for keys.
+   */
   _watchOfStatusForKeys() {
     this._watchOfStatusForRotationKeys();
     this._watchOfStatusForVelocityKey();
   }
 
+  /**
+   * _watchOfStatusForRotationKeys() is update of rotation for the MyUnit.
+   */
   _watchOfStatusForRotationKeys() {
     const context = GameState.current;
     let myUnit = this.sprite;
@@ -147,6 +205,9 @@ class MyUnit {
     }
   }
 
+  /**
+   * _watchOfStatusForRotationKeys() is update of velocity for the MyUnit.
+   */
   _watchOfStatusForVelocityKey() {
     const context = GameState.current;
     let myUnit = this.sprite;
@@ -173,6 +234,10 @@ class MyUnit {
     }
   }
 
+  /**
+   * checkPosition() is watching of current position for MyUnit.
+   * if over limit of position on stage, then initialize the position of MyUnit.
+   */
   _checkPosition() {
     const context = GameState.current;
     const stageWidth = context.game.stage.width;
@@ -193,6 +258,9 @@ class MyUnit {
     }
   }
 
+  /**
+   * _updateGravity() is each time the update acceleration of MyUnit.
+   */
   _updateGravity() {
     const context = GameState.current;
     let myUnit = this.sprite;
@@ -202,6 +270,9 @@ class MyUnit {
     }
   }
 
+  /**
+   * _prop() is initialize position of MyUnit.
+   */
   _prop() {
     let myUnit = this.sprite;
 
@@ -211,6 +282,9 @@ class MyUnit {
     myUnit.physics.velocity.y = 0;
   }
 
+  /**
+   * _createMyUnitSplinter() is create the new sprite of MyUnitSplinter.
+   */
   _createMyUnitSplinter() {
     const context = GameState.current;
     const myUnit = this.sprite;
@@ -233,6 +307,9 @@ class MyUnit {
     });
   }
 
+  /**
+   * _remove() is remove of MyUnit from the stage.
+   */
   _remove() {
     const context = GameState.current;
     let myUnit = this.sprite;
@@ -240,10 +317,16 @@ class MyUnit {
     context.removeChild(myUnit);
   }
 
+  /**
+   * _explosionSoundEffect() is play of sound effect for explosion.
+   */
   _explosionSoundEffect() {
     GameMusic.soundEffectOfMyUnitExplosion.play();
   }
 
+  /**
+   * _startCountUpOfExplosion() is create animation ticker of explosion.
+   */
   _startCountUpOfExplosion() {
     const context = GameState.current;
 

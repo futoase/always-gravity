@@ -1,5 +1,11 @@
 class BulletGenerator {
 
+  /**
+   * create() is return of new sprite for Bullet.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Bullet
+   */
   static create(index) {
     const context = GameState.current;
 

@@ -11,6 +11,9 @@ let textSlowDown = Symbol();
 
 class GameText {
 
+  /**
+   * initializeOfTitle() is settings of text for TitleState.
+   */
   static initializeOfTitle() {
     const context = GameState.current;
 
@@ -20,6 +23,9 @@ class GameText {
     context.addChild(GameText.createQuit());
   }
 
+  /**
+   * destroyOfTitle() is remove of text for TitleState.
+   */
   static destroyOfTitle() {
     const context = GameState.current;
 
@@ -29,6 +35,11 @@ class GameText {
     context.removeChild(GameText.quit);
   }
 
+  /**
+   * createTitle() is create text of Game Title.
+   *
+   * @return {Kiwi.GameObjects.TextField} textTitle
+   */
   static createTitle() {
     const context = GameState.current;
 
@@ -42,10 +53,20 @@ class GameText {
     return this[textTitle];
   }
 
+  /**
+   * Getter of Title.
+   *
+   * @return {Kiwi.GameObjects.TextField} textTitle
+   */
   static get title() {
     return this[textTitle];
   }
 
+  /**
+   * createSubTitle() is create text of Game Sub-Title.
+   *
+   * @return {Kiwi.GameObjects.TextField} textSubTitle
+   */
   static createSubTitle() {
     const context = GameState.current;
 
@@ -59,10 +80,20 @@ class GameText {
     return this[textSubTitle];
   }
 
+  /**
+   * Getter of Sub-Title.
+   *
+   * @return {Kiwi.GameObjects.TextField} textSubTitle
+   */
   static get subTitle() {
     return this[textSubTitle];
   }
 
+  /**
+   * createStart() is create text of Start.
+   *
+   * @return {Kiwi.GameObjects.TextField} textStart
+   */
   static createStart() {
     const context = GameState.current;
 
@@ -76,10 +107,20 @@ class GameText {
     return this[textStart];
   }
 
+  /**
+   * Getter of Start.
+   *
+   * @return {Kiwi.GameObjects.TextField} textStart
+   */
   static get start() {
     return this[textStart];
   }
 
+  /**
+   * createQuit() is create text of Quit.
+   *
+   * @return {Kiwi.GameObjects.TextField} textQuit
+   */
   static createQuit() {
     const context = GameState.current;
 
@@ -93,10 +134,20 @@ class GameText {
     return this[textQuit];
   }
 
+  /**
+   * Getter of Quit.
+   *
+   * @return {Kiwi.GameObjects.TextField} textQuit
+   */
   static get quit() {
     return this[textQuit];
   }
 
+  /**
+   * createQuit() is create text of Quit.
+   *
+   * @return {Kiwi.GameObjects.TextField} textQuit
+   */
   static createExitGame(){
     const context = GameState.current;
 
@@ -110,6 +161,11 @@ class GameText {
     return this[textExitGame];
   }
 
+  /**
+   * createGameOver() is create text of GAMEOVER.
+   *
+   * @return {Kiwi.GameObjects.TextField} textGameOver
+   */
   static createGameOver() {
     const context = GameState.current;
 
@@ -123,6 +179,11 @@ class GameText {
     return this[textGameOver];
   }
 
+  /**
+   * createRestart() is create text of Restart.
+   *
+   * @return {Kiwi.GameObjects.TextField} textRestart
+   */
   static createRestart() {
     const context = GameState.current;
 
@@ -136,6 +197,11 @@ class GameText {
     return this[textRestart];
   }
 
+  /**
+   * createScore() is create text of score.
+   *
+   * @return {Kiwi.GameObjects.TextField} textScore
+   */
   static createScore(score) {
     const context = GameState.current;
 
@@ -149,6 +215,11 @@ class GameText {
     return this[textScore];
   }
 
+  /**
+   * createSlowDownCount() is create text of counter for SlowDown.
+   *
+   * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+   */
   static createSlowDownCount() {
     const context = GameState.current;
 
@@ -162,14 +233,29 @@ class GameText {
     return this[textSlowDownCount];
   }
 
+  /**
+   * Getter of slowDownCount.
+   *
+   * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+   */
   static get slowDownCount() {
     return this[textSlowDownCount];
   }
 
+  /**
+   * Setter of slowDownCount.
+   *
+   * @param {String} text
+   */
   static set slowDownCount(text) {
     this[textSlowDownCount].text = text;
   }
 
+  /**
+   * createSlowDown() is create text of warning for the SlowDown!
+   *
+   * @return {Kiwi.GameObjects.TextField} textSlowDown
+   */
   static createSlowDown() {
     const context = GameState.current;
 
@@ -183,6 +269,11 @@ class GameText {
     return this[textSlowDown];
   }
 
+  /**
+   * Getter of slowDown.
+   *
+   * @return {Kiwi.GameObjects.TextField} textSlowDown
+   */
   static get slowDown() {
     return this[textSlowDown];
   }

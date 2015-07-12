@@ -9,6 +9,9 @@ let soundEffectOfMyUnitExplosion = Symbol();
 
 class GameMusic {
 
+  /**
+   * initialize() is initialize settings of musics for Always-Gravity.
+   */
   static initialize() {
     GameMusic.main;
     GameMusic.gameOver;
@@ -19,6 +22,9 @@ class GameMusic {
     GameMusic.soundEffectOfMyUnitExplosion;
   }
 
+  /**
+   * destroy() is remove all of musics for PlayState.
+   */
   static destroy() {
     GameMusic.main.stop();
     GameMusic.main.destroy();
@@ -30,6 +36,11 @@ class GameMusic {
     GameMusic.soundEffectOfCautionForSpeed.destroy();
   }
 
+  /**
+   * Getter of main game music.
+   *
+   * @return {Kiwi.Sound.Audio} musicMain
+   */
   static get main() {
     const context = GameState.current;
 
@@ -44,6 +55,11 @@ class GameMusic {
     return this[musicMain];
   }
 
+  /**
+   * Getter of game over music.
+   *
+   * @return {Kiwi.Sound.Audio} musicGameOver
+   */
   static get gameOver() {
     const context = GameState.current;
 
@@ -58,6 +74,11 @@ class GameMusic {
     return this[musicGameOver];
   }
 
+  /**
+   * Getter of sound effect for bullet.
+   *
+   * @return {Kiwi.Sound.Audio} soundEffectOfBullet
+   */
   static get soundEffectOfBullet() {
     const context = GameState.current;
 
@@ -72,6 +93,11 @@ class GameMusic {
     return this[soundEffectOfBullet];
   }
 
+  /**
+   * Getter of sound effect for explosion.
+   *
+   * @return {Kiwi.Sound.Audio} soundEffectOfExplosion
+   */
   static get soundEffectOfExplosion() {
     const context = GameState.current;
 
@@ -86,6 +112,11 @@ class GameMusic {
     return this[soundEffectOfExplosion];
   }
 
+  /**
+   * Getter of sound effect for caution for speed.
+   *
+   * @return {Kiwi.Sound.Audio} soundEffectOfCautionForSpeed
+   */
   static get soundEffectOfCautionForSpeed() {
     const context = GameState.current;
 
@@ -100,6 +131,11 @@ class GameMusic {
     return this[soundEffectOfCautionForSpeed];
   }
 
+  /**
+   * Getter of sound effect for circle.
+   *
+   * @return {Kiwi.Sound.Audio} soundEffectOfCircle
+   */
   static get soundEffectOfCircle() {
     const context = GameState.current;
 
@@ -114,6 +150,11 @@ class GameMusic {
     return this[soundEffectOfCircle];
   }
 
+  /**
+   * Getter of sound effect for my unit explosion.
+   *
+   * @return {Kiwi.Sound.Audio} soundEffectOfMyUnitExplosion
+   */
   static get soundEffectOfMyUnitExplosion() {
     const context = GameState.current;
 

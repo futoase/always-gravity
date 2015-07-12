@@ -1,5 +1,11 @@
 class CubeGenerator {
 
+  /**
+   * create() is return of new sprite for Cube.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Cube
+   */
   static create(index) {
     const context = GameState.current;
 

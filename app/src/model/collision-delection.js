@@ -1,5 +1,11 @@
 class CollisionDelection {
 
+  /**
+   * BulletCollideWithCube()
+   * Observe the collision bullet and cube.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
   static BulletCollideWithCube(bullet) {
     let members = GroupPool.cube().members;
 
@@ -10,6 +16,12 @@ class CollisionDelection {
     });
   }
 
+  /**
+   * BulletCollideWithCircle()
+   * Observe the collision bullet and circle.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
   static BulletCollideWithCircle(bullet) {
     let members = GroupPool.circle().members;
 
@@ -20,6 +32,12 @@ class CollisionDelection {
     });
   }
 
+  /**
+   * BulletCollideWithCylinder()
+   * Observe the collision bullet and cylinder.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
   static BulletCollideWithCylinder(bullet) {
     let members = GroupPool.cylinder().members;
 

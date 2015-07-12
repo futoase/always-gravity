@@ -1,5 +1,11 @@
 class CircleGenerator {
 
+  /**
+   * create() is return of new sprite for Circle.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Circle
+   */
   static create(index) {
     const context = GameState.current;
 

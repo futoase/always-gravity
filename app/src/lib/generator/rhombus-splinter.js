@@ -1,5 +1,11 @@
 class RhombusSplinterGenerator {
 
+  /**
+   * create() is return of new sprite for RhombusSplinter.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} RhombusSplinter
+   */
   static create(index) {
     const context = GameState.current;
 

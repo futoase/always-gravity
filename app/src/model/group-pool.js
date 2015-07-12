@@ -10,6 +10,11 @@ let explosionPool = Symbol();
 
 class GroupPool {
 
+  /**
+   * star() is create of GameGroup for star.
+   *
+   * @return {Kiwi.Group} starPool
+   */
   static star() {
     if (!this[starPool] ||
         !this._isExistsContextName(this[starPool])) {
@@ -18,6 +23,11 @@ class GroupPool {
     return this[starPool];
   }
 
+  /**
+   * cube() is create of GameGroup for cube.
+   *
+   * @return {Kiwi.Group} cubePool
+   */
   static cube() {
     if (!this[cubePool] ||
         !this._isExistsContextName(this[cubePool])) {
@@ -26,6 +36,11 @@ class GroupPool {
     return this[cubePool];
   }
 
+  /**
+   * circle() is create of GameGroup for circle.
+   *
+   * @return {Kiwi.Group} circlePool
+   */
   static circle() {
     if (!this[circlePool] ||
         !this._isExistsContextName(this[circlePool])) {
@@ -34,6 +49,11 @@ class GroupPool {
     return this[circlePool];
   }
 
+  /**
+   * bullet() is create of GameGroup for bullet.
+   *
+   * @return {Kiwi.Group} bulletPool
+   */
   static bullet() {
     if (!this[bulletPool] ||
         !this._isExistsContextName(this[bulletPool])) {
@@ -42,6 +62,11 @@ class GroupPool {
     return this[bulletPool];
   }
 
+  /**
+   * cylinder() is create of GameGroup for cylinder.
+   *
+   * @return {Kiwi.Group} cylinderPool
+   */
   static cylinder() {
     if (!this[cylinderPool] ||
         !this._isExistsContextName(this[cylinderPool])) {
@@ -50,6 +75,11 @@ class GroupPool {
     return this[cylinderPool];
   }
 
+  /**
+   * myUnitSplinter() is create of GameGroup for myUnitSplinter.
+   *
+   * @return {Kiwi.Group} myUnitSplinterPool
+   */
   static myUnitSplinter() {
     if (!this[myUnitSplinterPool] ||
         !this._isExistsContextName(this[myUnitSplinterPool])) {
@@ -58,6 +88,11 @@ class GroupPool {
     return this[myUnitSplinterPool];
   }
 
+  /**
+   * rhombusSplinter() is create of GameGroup for rhombusSplinter.
+   *
+   * @return {Kiwi.Group} rhombusSplinterPool
+   */
   static rhombusSplinter() {
     if (!this[rhombusSplinterPool] ||
         !this._isExistsContextName(this[rhombusSplinterPool])) {
@@ -66,6 +101,11 @@ class GroupPool {
     return this[rhombusSplinterPool];
   }
 
+  /**
+   * rhombus() is create of GameGroup for rhombus.
+   *
+   * @return {Kiwi.Group} rhombusPool
+   */
   static rhombus() {
     if (!this[rhombusPool] ||
         !this._isExistsContextName(this[rhombusPool])) {
@@ -74,6 +114,11 @@ class GroupPool {
     return this[rhombusPool];
   }
 
+  /**
+   * explosion() is create of GameGroup for explosion.
+   *
+   * @return {Kiwi.Group} explosionPool
+   */
   static explosion() {
     if (!this[explosionPool] ||
         !this._isExistsContextName(this[explosionPool])) {
@@ -82,6 +127,9 @@ class GroupPool {
     return this[explosionPool];
   }
 
+  /**
+   * removeChildrenForAll() is remove children on the Pools.
+   */
   static removeChildrenForAll() {
     let star = GroupPool.star();
     let cube = GroupPool.cube();
@@ -100,6 +148,9 @@ class GroupPool {
     rhombus.removeChildren(0, rhombus.members.length);
   }
 
+  /**
+   * forEachAll() is settings of the forEach on member for Pools.
+   */
   static forEachAll() {
     GroupPool.forEachStar();
     GroupPool.forEachCube();
@@ -111,6 +162,9 @@ class GroupPool {
     GroupPool.forEachRhombus();
   }
 
+  /**
+   * forEachStar() is function of forEach for starPool.
+   */
   static forEachStar() {
     const context = GameState.current;
     let pool = GroupPool.star();
@@ -118,6 +172,9 @@ class GroupPool {
     pool.forEach(context, Helper.checkSpritePosition);
   }
 
+  /**
+   * forEachCube() is function of forEach for cubePool.
+   */
   static forEachCube() {
     const context = GameState.current;
     let pool = GroupPool.cube();
@@ -128,6 +185,9 @@ class GroupPool {
     pool.forEach(context, Helper.checkSpritePosition);
   }
 
+  /**
+   * forEachCylinder() is function of forEach for cylinderPool.
+   */
   static forEachCylinder() {
     const context = GameState.current;
     let pool = GroupPool.cylinder();
@@ -135,6 +195,9 @@ class GroupPool {
     pool.forEach(context, Helper.checkSpritePosition);
   }
 
+  /**
+   * forEachCircle() is function of forEach for circlePool.
+   */
   static forEachCircle() {
     const context = GameState.current;
     let pool = GroupPool.circle();
@@ -149,6 +212,7 @@ class GroupPool {
     });
   }
 
+  // TODO: !!!!! REMOVE !!!!!
   static forEachCircle() {
     const context = GameState.current;
     let pool = GroupPool.circle();
@@ -163,6 +227,9 @@ class GroupPool {
     });
   }
 
+  /**
+   * forEachBullet() is function of forEach for bulletPool.
+   */
   static forEachBullet() {
     const context = GameState.current;
     let pool = GroupPool.bullet();
@@ -175,6 +242,9 @@ class GroupPool {
     });
   }
 
+  /**
+   * forEachExplosion() is function of forEach for explosionPool.
+   */
   static forEachExplosion() {
     const context = GameState.current;
     let pool = GroupPool.explosion();
@@ -184,6 +254,9 @@ class GroupPool {
     });
   }
 
+  /**
+   * forEachRhombusSplinter() is function of forEach for rhombusSplinterPool.
+   */
   static forEachRhombusSplinter() {
     const context = GameState.current;
     let pool = GroupPool.rhombusSplinter();
@@ -195,6 +268,9 @@ class GroupPool {
     });
   }
 
+  /**
+   * forEachRhombus() is function of forEach for rhombusPool.
+   */
   static forEachRhombus() {
     const context = GameState.current;
     let pool = GroupPool.rhombus();
@@ -205,6 +281,9 @@ class GroupPool {
     });
   }
 
+  /**
+   * _isExistsContextName() is checked to be the existing group.
+   */
   static _isExistsContextName(group) {
     const context = GameState.current;
 
@@ -220,6 +299,11 @@ class GroupPool {
     }
   }
 
+  /**
+   * _createNewGroup() is return of new group for current context.
+   *
+   * @return {Kiwi.Group} group
+   */
   static _createNewGroup() {
     const context = GameState.current;
     return (new Kiwi.Group(context));

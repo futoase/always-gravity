@@ -2,6 +2,9 @@ let lastBulletShootAt = Symbol();
 
 class Bullet {
 
+  /**
+   * shoot() is create bullet.
+   */
   static shoot() {
     const context = GameState.current;
 
@@ -45,6 +48,12 @@ class Bullet {
     GameMusic.soundEffectOfBullet.play();
   }
 
+  /**
+   * getFirstDeadBullet() a return is dead of bullet.
+   *
+   * @return {Kiwi.Sprite} bullet
+   * @return {null} null
+   */
   static getFirstDeadBullet() {
     let bulletMembers = GroupPool.bullet().members;
     let i;
@@ -56,6 +65,10 @@ class Bullet {
     return null;
   }
 
+  /**
+   * overlapOnObject()
+   * Emit event will be collision of bullet from other sprite.
+   */
   static overlapOnObject(bullet, object, volume = 1.0) {
     GroupPool.explosion().addChild(
       Explosion.generate(bullet.x, bullet.y)
@@ -66,12 +79,23 @@ class Bullet {
     GAME_COUNTER.gameScore += object.score;
   }
 
+  /**
+   * deadBullet() is initialize of position for bullet.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
   static deadBullet(bullet) {
     bullet.x = -1000;
     bullet.y = -1000;
     bullet.alive = false;
   }
 
+  /**
+   * playSoundEffectOfExplosion()
+   * Play of Sound effect for the Explosion.
+   *
+   * @param {Number} volume
+   */
   static playSoundEffectOfExplosion(volume) {
     let se = GameMusic.soundEffectOfExplosion;
     se.stop();

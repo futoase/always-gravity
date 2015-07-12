@@ -1,9 +1,27 @@
 class Helper {
 
+  /**
+   * getMember() is return member from Pool.
+   *
+   * @return {Kiwi.GameObjects.Sprite}
+   */
   static getMember(members) {
     return members[parseInt(Math.random() * (members.length - 1))];
   }
 
+  /**
+   * strewnSprite() is set action to sprite.
+   * option: if set of callback then running after main action.
+   *
+   * @param {Kiwi.GameObjects.Sprite} sprite
+   * @param {Object} limit
+   *   @param {Number} limit.y
+   * @param {Object} acceleration
+   *   @param {Number} acceleration.y
+   * @param {function} cb
+   * @param {Object} option
+   *   @param {Boolean} option.revive
+   */
   static strewnSprite(sprite, limit, acceleration, cb, option) {
     if (acceleration === null || acceleration === undefined) {
       return;
@@ -32,6 +50,9 @@ class Helper {
     }
   }
 
+  /**
+   * revive() is revive function of sprite.
+   */
   static revive(sprite) {
     sprite.y = -sprite.height;
     sprite.x = parseInt(Math.random() * 800);
@@ -40,6 +61,12 @@ class Helper {
     sprite.alive = true;
   }
 
+  /**
+   * checkSpritePosition() is observe of position the sprite.
+   * Set the value of false against the sprite when of over limit of position.
+   *
+   * @param {Kiwi.GameState.Sprite} sprite
+   */
   static checkSpritePosition(sprite) {
     if (sprite.x > this.game.stage.width ||
         sprite.y > this.game.stage.height ||
@@ -49,6 +76,12 @@ class Helper {
     }
   }
 
+  /**
+   * updateSpriteRotation() is update of rotation the sprite.
+   *
+   * @param {Kiwi.GameObjects.Sprite} sprite
+   * @param {Number} rotate
+   */
   static updateSpriteRotation(sprite, rotate) {
     if (rotate === null) {
       rotate = 1;
@@ -58,6 +91,12 @@ class Helper {
     );
   }
 
+  /**
+   * radian() is return a value of Radian.
+   *
+   * @param {Number} angle
+   * @return {Number} Radian
+   */
   static radian(angle) {
     return parseInt(angle) * Math.PI / 180;
   }

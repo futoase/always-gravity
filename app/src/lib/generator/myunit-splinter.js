@@ -1,5 +1,11 @@
 class MyUnitSplinterGenerator {
 
+  /**
+   * create() is return of new sprite for MyUnitSplinter.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} MyUnitSplinter
+   */
   static create(index) {
     const context = GameState.current;
 

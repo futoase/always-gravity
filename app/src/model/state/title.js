@@ -1,5 +1,8 @@
 class TitleState {
 
+  /**
+   * create() a setup of TitleState.
+   */
   static create() {
     Kiwi.State.prototype.create.call(this);
 
@@ -11,10 +14,16 @@ class TitleState {
     GameText.initializeOfTitle();
   }
 
+  /**
+   * preload() a loading of asserts for TitleState.
+   */
   static preload() {
     Kiwi.State.prototype.preload.call(this);
   }
 
+  /**
+   * update() is main loop of game in TitleState.
+   */
   static update() {
     Kiwi.State.prototype.update.call(this);
 

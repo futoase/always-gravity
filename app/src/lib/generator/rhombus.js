@@ -1,5 +1,11 @@
 class RhombusGenerator {
 
+  /**
+   * create() is return of new sprite for Rhombus.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Rhombus
+   */
   static create(index) {
     const context = GameState.current;
 

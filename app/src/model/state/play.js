@@ -1,5 +1,8 @@
 class PlayState {
 
+  /**
+   * create() a setup of PlayState.
+   */
   static create() {
     Kiwi.State.prototype.create.call(this);
 
@@ -19,6 +22,9 @@ class PlayState {
     GameText.createSlowDown();
   }
 
+  /**
+   * preload() a loading of asserts for PlayState.
+   */
   static preload() {
     Kiwi.State.prototype.preload.call(this);
 
@@ -45,6 +51,9 @@ class PlayState {
     this.addAudio('caution-of-speed-se', './assets/media/caution-of-speed.wav');
   }
 
+  /**
+   * update() is main loop of game in PlayState.
+   */
   static update() {
     Kiwi.State.prototype.update.call(this);
     let myUnit = MyUnit.instance;

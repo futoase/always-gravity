@@ -2,16 +2,29 @@ let gameOverStatus = Symbol();
 
 class GameOver {
 
+  /**
+   * Getter of GameOverStatus.
+   *
+   * @return {Boolean} GameOverStatus
+   */
   static get status() {
     return this[gameOverStatus];
   }
 
+  /**
+   * Setter of GameOverStatus.
+   *
+   * @param {Boolean} value
+   */
   static set status(value) {
     if (typeof value === "boolean") {
       this[gameOverStatus] = value;
     }
   }
 
+  /**
+   * execute() is execute of event for the GameOver!
+   */
   static execute() {
     const context = GameState.current;
 
@@ -31,6 +44,9 @@ class GameOver {
     this.status = true;
   }
 
+  /**
+   * _destroyObjects() is remove objects of the PlayState.
+   */
   static _destroyObjects() {
     const context = GameState.current;
 

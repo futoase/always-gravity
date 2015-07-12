@@ -1,5 +1,11 @@
 class CylinderGenerator {
 
+  /**
+   * create() is return of new sprite for Cylinder.
+   *
+   * @param {Number} index
+   * @return {Kiwi.GameObjects.Sprite} Cylinder
+   */
   static create(index) {
     const context = GameState.current;
 

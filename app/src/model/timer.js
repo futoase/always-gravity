@@ -3,12 +3,22 @@ let timerSingletonEnforcer = Symbol();
 
 class Timer {
 
+  /**
+   * constructor for Timer.
+   *
+   * @param {Symbol} enforcer
+   */
   constructor(enforcer) {
     if (enforcer !== timerSingletonEnforcer) {
       throw "Cannot construct singleton!";
     }
   }
 
+  /**
+   * get() is return a instance of Timer.
+   *
+   * @return {Timer}
+   */
   static get instance() {
     if (!this[timerSingleton]) {
       this[timerSingleton] = new Timer(timerSingletonEnforcer);
@@ -16,14 +26,25 @@ class Timer {
     return this[timerSingleton];
   }
 
+  /**
+   * initialize() is initialize of all timer for game.
+   */
   static initialize() {
     Timer.instance.createAllTimer();
   }
 
+  /**
+   * destroy() is destroy of all timer for game.
+   */
   static destroy() {
     Timer.instance.removeAllTimer();
   }
 
+  /**
+   * setInterval() is wrap method of game.time.clock.setInterval.
+   *
+   * @return {Kiwi.Time.Timer}
+   */
   setInterval(callback, milliseconds) {
     const context = GameState.current;
 
@@ -32,6 +53,9 @@ class Timer {
     );
   }
 
+  /**
+   * createAllTimer() is call of methods the create of all timer for game.
+   */
   createAllTimer() {
     this.createStarTimer();
     this.createCubeTimer();
@@ -42,6 +66,9 @@ class Timer {
     this.createOverTheLimitVelocityCountTimer();
   }
 
+  /**
+   * removeAllTimer() is call of methods the remove of all timer for game.
+   */
   removeAllTimer() {
     const context = GameState.current;
 
@@ -60,36 +87,55 @@ class Timer {
     );
   }
 
+  /**
+   * createStarTimer() is create of new timer for star.
+   */
   createStarTimer() {
     this.starTimer = this.setInterval(() => {
       TimerSpawnObjects.instance.star();
     }, 100);
   }
 
+  /**
+   * createCubeTimer() is create of new timer for cube.
+   */
   createCubeTimer() {
     this.cubeTimer = this.setInterval(() => {
       TimerSpawnObjects.instance.cube();
     }, 200);
   }
 
+  /**
+   * createCylinderTimer() is create of new timer for cylinder.
+   */
   createCylinderTimer() {
     this.cylinderTimer = this.setInterval(() => {
       TimerSpawnObjects.instance.cylinder();
     }, 100);
   }
 
+  /**
+   * createCircleTimer() is create of new timer for circle.
+   */
   createCircleTimer() {
     this.circleTimer = this.setInterval(() => {
       TimerSpawnObjects.instance.circle();
     }, 500);
   }
 
+  /**
+   * createRhombusTimer() is create of new timer for rhombus.
+   */
   createRhombusTimer() {
     this.rhombusTimer = this.setInterval(() => {
       TimerSpawnObjects.instance.rhombus();
     }, 100);
   }
 
+  /**
+   * createCoutionForSpeedSoundEffectTimer()
+   * is create of new timer for sound effect of caution.
+   */
   createCoutionForSpeedSoundEffectTimer() {
     this.coutionForSpeedSoundEffectTimer = (
       this.setInterval(() => {
@@ -98,6 +144,10 @@ class Timer {
     );
   }
 
+  /**
+   * createOverTheLimitVelocityCountTimer()
+   * is create of new timer for sound effect of over the limit the velocity.
+   */
   createOverTheLimitVelocityCountTimer() {
     this.overTheLimitVelocityCountTimer = (
       this.setInterval(() => {

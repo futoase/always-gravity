@@ -11,11 +11,31 @@ var Helper = (function () {
 
   _createClass(Helper, null, [{
     key: 'getMember',
+
+    /**
+     * getMember() is return member from Pool.
+     *
+     * @return {Kiwi.GameObjects.Sprite}
+     */
     value: function getMember(members) {
       return members[parseInt(Math.random() * (members.length - 1))];
     }
   }, {
     key: 'strewnSprite',
+
+    /**
+     * strewnSprite() is set action to sprite.
+     * option: if set of callback then running after main action.
+     *
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     * @param {Object} limit
+     *   @param {Number} limit.y
+     * @param {Object} acceleration
+     *   @param {Number} acceleration.y
+     * @param {function} cb
+     * @param {Object} option
+     *   @param {Boolean} option.revive
+     */
     value: function strewnSprite(sprite, limit, acceleration, cb, option) {
       if (acceleration === null || acceleration === undefined) {
         return;
@@ -43,6 +63,10 @@ var Helper = (function () {
     }
   }, {
     key: 'revive',
+
+    /**
+     * revive() is revive function of sprite.
+     */
     value: function revive(sprite) {
       sprite.y = -sprite.height;
       sprite.x = parseInt(Math.random() * 800);
@@ -52,6 +76,13 @@ var Helper = (function () {
     }
   }, {
     key: 'checkSpritePosition',
+
+    /**
+     * checkSpritePosition() is observe of position the sprite.
+     * Set the value of false against the sprite when of over limit of position.
+     *
+     * @param {Kiwi.GameState.Sprite} sprite
+     */
     value: function checkSpritePosition(sprite) {
       if (sprite.x > this.game.stage.width || sprite.y > this.game.stage.height || sprite.x < 0 || sprite.y < 0) {
         sprite.alive = false;
@@ -59,6 +90,13 @@ var Helper = (function () {
     }
   }, {
     key: 'updateSpriteRotation',
+
+    /**
+     * updateSpriteRotation() is update of rotation the sprite.
+     *
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     * @param {Number} rotate
+     */
     value: function updateSpriteRotation(sprite, rotate) {
       if (rotate === null) {
         rotate = 1;
@@ -67,6 +105,13 @@ var Helper = (function () {
     }
   }, {
     key: 'radian',
+
+    /**
+     * radian() is return a value of Radian.
+     *
+     * @param {Number} angle
+     * @return {Number} Radian
+     */
     value: function radian(angle) {
       return parseInt(angle) * Math.PI / 180;
     }
@@ -131,6 +176,13 @@ var BulletGenerator = (function () {
 
   _createClass(BulletGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Bullet.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Bullet
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -156,6 +208,13 @@ var CircleGenerator = (function () {
 
   _createClass(CircleGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Circle.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Circle
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -182,6 +241,13 @@ var CubeGenerator = (function () {
 
   _createClass(CubeGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Cube.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Cube
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -208,6 +274,13 @@ var CylinderGenerator = (function () {
 
   _createClass(CylinderGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Cylinder.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Cylinder
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -237,6 +310,13 @@ var MyUnitSplinterGenerator = (function () {
 
   _createClass(MyUnitSplinterGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for MyUnitSplinter.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} MyUnitSplinter
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -259,6 +339,13 @@ var RhombusSplinterGenerator = (function () {
 
   _createClass(RhombusSplinterGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for RhombusSplinter.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} RhombusSplinter
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -280,6 +367,13 @@ var RhombusGenerator = (function () {
 
   _createClass(RhombusGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Rhombus.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Rhombus
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -303,6 +397,13 @@ var StarGenerator = (function () {
 
   _createClass(StarGenerator, null, [{
     key: 'create',
+
+    /**
+     * create() is return of new sprite for Star.
+     *
+     * @param {Number} index
+     * @return {Kiwi.GameObjects.Sprite} Star
+     */
     value: function create(index) {
       var context = GameState.current;
 
@@ -335,6 +436,10 @@ var Bullet = (function () {
 
   _createClass(Bullet, null, [{
     key: 'shoot',
+
+    /**
+     * shoot() is create bullet.
+     */
     value: function shoot() {
       var context = GameState.current;
 
@@ -373,6 +478,13 @@ var Bullet = (function () {
     }
   }, {
     key: 'getFirstDeadBullet',
+
+    /**
+     * getFirstDeadBullet() a return is dead of bullet.
+     *
+     * @return {Kiwi.Sprite} bullet
+     * @return {null} null
+     */
     value: function getFirstDeadBullet() {
       var bulletMembers = GroupPool.bullet().members;
       var i = undefined;
@@ -385,6 +497,11 @@ var Bullet = (function () {
     }
   }, {
     key: 'overlapOnObject',
+
+    /**
+     * overlapOnObject()
+     * Emit event will be collision of bullet from other sprite.
+     */
     value: function overlapOnObject(bullet, object) {
       var volume = arguments[2] === undefined ? 1.0 : arguments[2];
 
@@ -396,6 +513,12 @@ var Bullet = (function () {
     }
   }, {
     key: 'deadBullet',
+
+    /**
+     * deadBullet() is initialize of position for bullet.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
     value: function deadBullet(bullet) {
       bullet.x = -1000;
       bullet.y = -1000;
@@ -403,6 +526,13 @@ var Bullet = (function () {
     }
   }, {
     key: 'playSoundEffectOfExplosion',
+
+    /**
+     * playSoundEffectOfExplosion()
+     * Play of Sound effect for the Explosion.
+     *
+     * @param {Number} volume
+     */
     value: function playSoundEffectOfExplosion(volume) {
       var se = GameMusic.soundEffectOfExplosion;
       se.stop();
@@ -421,6 +551,13 @@ var CollisionDelection = (function () {
 
   _createClass(CollisionDelection, null, [{
     key: 'BulletCollideWithCube',
+
+    /**
+     * BulletCollideWithCube()
+     * Observe the collision bullet and cube.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
     value: function BulletCollideWithCube(bullet) {
       var members = GroupPool.cube().members;
 
@@ -432,6 +569,13 @@ var CollisionDelection = (function () {
     }
   }, {
     key: 'BulletCollideWithCircle',
+
+    /**
+     * BulletCollideWithCircle()
+     * Observe the collision bullet and circle.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
     value: function BulletCollideWithCircle(bullet) {
       var members = GroupPool.circle().members;
 
@@ -443,6 +587,13 @@ var CollisionDelection = (function () {
     }
   }, {
     key: 'BulletCollideWithCylinder',
+
+    /**
+     * BulletCollideWithCylinder()
+     * Observe the collision bullet and cylinder.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
     value: function BulletCollideWithCylinder(bullet) {
       var members = GroupPool.cylinder().members;
 
@@ -464,6 +615,14 @@ var Explosion = (function () {
 
   _createClass(Explosion, null, [{
     key: 'generate',
+
+    /**
+     * generate() is generate sprite of Explosion.
+     *
+     * @param {Number} baseX
+     * @param {Number} baseY
+     * @return {Kiwi.GameObjects.Sprite} explosion
+     */
     value: function generate(baseX, baseY) {
       var context = GameState.current;
 
@@ -479,6 +638,14 @@ var Explosion = (function () {
     }
   }, {
     key: 'isLastOfCellIndex',
+
+    /**
+     * isLastOfCellIndex()
+     * Observe of last cell for sprite.
+     * Destroy sprite when is over the cell index limit.
+     *
+     * @param {Kiwi.Gameobjects.Sprite} sprite
+     */
     value: function isLastOfCellIndex(sprite) {
       if (sprite.cellIndex >= 3) {
         sprite.destroy();
@@ -498,6 +665,10 @@ var GameOver = (function () {
 
   _createClass(GameOver, null, [{
     key: 'execute',
+
+    /**
+     * execute() is execute of event for the GameOver!
+     */
     value: function execute() {
       var context = GameState.current;
 
@@ -518,6 +689,10 @@ var GameOver = (function () {
     }
   }, {
     key: '_destroyObjects',
+
+    /**
+     * _destroyObjects() is remove objects of the PlayState.
+     */
     value: function _destroyObjects() {
       var context = GameState.current;
 
@@ -530,9 +705,21 @@ var GameOver = (function () {
     }
   }, {
     key: 'status',
+
+    /**
+     * Getter of GameOverStatus.
+     *
+     * @return {Boolean} GameOverStatus
+     */
     get: function get() {
       return this[gameOverStatus];
     },
+
+    /**
+     * Setter of GameOverStatus.
+     *
+     * @param {Boolean} value
+     */
     set: function set(value) {
       if (typeof value === 'boolean') {
         this[gameOverStatus] = value;
@@ -561,6 +748,10 @@ var GameText = (function () {
 
   _createClass(GameText, null, [{
     key: 'initializeOfTitle',
+
+    /**
+     * initializeOfTitle() is settings of text for TitleState.
+     */
     value: function initializeOfTitle() {
       var context = GameState.current;
 
@@ -571,6 +762,10 @@ var GameText = (function () {
     }
   }, {
     key: 'destroyOfTitle',
+
+    /**
+     * destroyOfTitle() is remove of text for TitleState.
+     */
     value: function destroyOfTitle() {
       var context = GameState.current;
 
@@ -581,6 +776,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createTitle',
+
+    /**
+     * createTitle() is create text of Game Title.
+     *
+     * @return {Kiwi.GameObjects.TextField} textTitle
+     */
     value: function createTitle() {
       var context = GameState.current;
 
@@ -593,6 +794,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createSubTitle',
+
+    /**
+     * createSubTitle() is create text of Game Sub-Title.
+     *
+     * @return {Kiwi.GameObjects.TextField} textSubTitle
+     */
     value: function createSubTitle() {
       var context = GameState.current;
 
@@ -605,6 +812,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createStart',
+
+    /**
+     * createStart() is create text of Start.
+     *
+     * @return {Kiwi.GameObjects.TextField} textStart
+     */
     value: function createStart() {
       var context = GameState.current;
 
@@ -617,6 +830,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createQuit',
+
+    /**
+     * createQuit() is create text of Quit.
+     *
+     * @return {Kiwi.GameObjects.TextField} textQuit
+     */
     value: function createQuit() {
       var context = GameState.current;
 
@@ -629,6 +848,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createExitGame',
+
+    /**
+     * createQuit() is create text of Quit.
+     *
+     * @return {Kiwi.GameObjects.TextField} textQuit
+     */
     value: function createExitGame() {
       var context = GameState.current;
 
@@ -641,6 +866,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createGameOver',
+
+    /**
+     * createGameOver() is create text of GAMEOVER.
+     *
+     * @return {Kiwi.GameObjects.TextField} textGameOver
+     */
     value: function createGameOver() {
       var context = GameState.current;
 
@@ -653,6 +884,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createRestart',
+
+    /**
+     * createRestart() is create text of Restart.
+     *
+     * @return {Kiwi.GameObjects.TextField} textRestart
+     */
     value: function createRestart() {
       var context = GameState.current;
 
@@ -665,6 +902,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createScore',
+
+    /**
+     * createScore() is create text of score.
+     *
+     * @return {Kiwi.GameObjects.TextField} textScore
+     */
     value: function createScore(score) {
       var context = GameState.current;
 
@@ -677,6 +920,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createSlowDownCount',
+
+    /**
+     * createSlowDownCount() is create text of counter for SlowDown.
+     *
+     * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+     */
     value: function createSlowDownCount() {
       var context = GameState.current;
 
@@ -689,6 +938,12 @@ var GameText = (function () {
     }
   }, {
     key: 'createSlowDown',
+
+    /**
+     * createSlowDown() is create text of warning for the SlowDown!
+     *
+     * @return {Kiwi.GameObjects.TextField} textSlowDown
+     */
     value: function createSlowDown() {
       var context = GameState.current;
 
@@ -701,34 +956,76 @@ var GameText = (function () {
     }
   }, {
     key: 'title',
+
+    /**
+     * Getter of Title.
+     *
+     * @return {Kiwi.GameObjects.TextField} textTitle
+     */
     get: function get() {
       return this[textTitle];
     }
   }, {
     key: 'subTitle',
+
+    /**
+     * Getter of Sub-Title.
+     *
+     * @return {Kiwi.GameObjects.TextField} textSubTitle
+     */
     get: function get() {
       return this[textSubTitle];
     }
   }, {
     key: 'start',
+
+    /**
+     * Getter of Start.
+     *
+     * @return {Kiwi.GameObjects.TextField} textStart
+     */
     get: function get() {
       return this[textStart];
     }
   }, {
     key: 'quit',
+
+    /**
+     * Getter of Quit.
+     *
+     * @return {Kiwi.GameObjects.TextField} textQuit
+     */
     get: function get() {
       return this[textQuit];
     }
   }, {
     key: 'slowDownCount',
+
+    /**
+     * Getter of slowDownCount.
+     *
+     * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+     */
     get: function get() {
       return this[textSlowDownCount];
     },
+
+    /**
+     * Setter of slowDownCount.
+     *
+     * @param {String} text
+     */
     set: function set(text) {
       this[textSlowDownCount].text = text;
     }
   }, {
     key: 'slowDown',
+
+    /**
+     * Getter of slowDown.
+     *
+     * @return {Kiwi.GameObjects.TextField} textSlowDown
+     */
     get: function get() {
       return this[textSlowDown];
     }
@@ -754,6 +1051,12 @@ var GroupPool = (function () {
 
   _createClass(GroupPool, null, [{
     key: 'star',
+
+    /**
+     * star() is create of GameGroup for star.
+     *
+     * @return {Kiwi.Group} starPool
+     */
     value: function star() {
       if (!this[starPool] || !this._isExistsContextName(this[starPool])) {
         this[starPool] = this._createNewGroup();
@@ -762,6 +1065,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'cube',
+
+    /**
+     * cube() is create of GameGroup for cube.
+     *
+     * @return {Kiwi.Group} cubePool
+     */
     value: function cube() {
       if (!this[cubePool] || !this._isExistsContextName(this[cubePool])) {
         this[cubePool] = this._createNewGroup();
@@ -770,6 +1079,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'circle',
+
+    /**
+     * circle() is create of GameGroup for circle.
+     *
+     * @return {Kiwi.Group} circlePool
+     */
     value: function circle() {
       if (!this[circlePool] || !this._isExistsContextName(this[circlePool])) {
         this[circlePool] = this._createNewGroup();
@@ -778,6 +1093,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'bullet',
+
+    /**
+     * bullet() is create of GameGroup for bullet.
+     *
+     * @return {Kiwi.Group} bulletPool
+     */
     value: function bullet() {
       if (!this[bulletPool] || !this._isExistsContextName(this[bulletPool])) {
         this[bulletPool] = this._createNewGroup();
@@ -786,6 +1107,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'cylinder',
+
+    /**
+     * cylinder() is create of GameGroup for cylinder.
+     *
+     * @return {Kiwi.Group} cylinderPool
+     */
     value: function cylinder() {
       if (!this[cylinderPool] || !this._isExistsContextName(this[cylinderPool])) {
         this[cylinderPool] = this._createNewGroup();
@@ -794,6 +1121,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'myUnitSplinter',
+
+    /**
+     * myUnitSplinter() is create of GameGroup for myUnitSplinter.
+     *
+     * @return {Kiwi.Group} myUnitSplinterPool
+     */
     value: function myUnitSplinter() {
       if (!this[myUnitSplinterPool] || !this._isExistsContextName(this[myUnitSplinterPool])) {
         this[myUnitSplinterPool] = this._createNewGroup();
@@ -802,6 +1135,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'rhombusSplinter',
+
+    /**
+     * rhombusSplinter() is create of GameGroup for rhombusSplinter.
+     *
+     * @return {Kiwi.Group} rhombusSplinterPool
+     */
     value: function rhombusSplinter() {
       if (!this[rhombusSplinterPool] || !this._isExistsContextName(this[rhombusSplinterPool])) {
         this[rhombusSplinterPool] = this._createNewGroup();
@@ -810,6 +1149,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'rhombus',
+
+    /**
+     * rhombus() is create of GameGroup for rhombus.
+     *
+     * @return {Kiwi.Group} rhombusPool
+     */
     value: function rhombus() {
       if (!this[rhombusPool] || !this._isExistsContextName(this[rhombusPool])) {
         this[rhombusPool] = this._createNewGroup();
@@ -818,6 +1163,12 @@ var GroupPool = (function () {
     }
   }, {
     key: 'explosion',
+
+    /**
+     * explosion() is create of GameGroup for explosion.
+     *
+     * @return {Kiwi.Group} explosionPool
+     */
     value: function explosion() {
       if (!this[explosionPool] || !this._isExistsContextName(this[explosionPool])) {
         this[explosionPool] = this._createNewGroup();
@@ -826,6 +1177,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'removeChildrenForAll',
+
+    /**
+     * removeChildrenForAll() is remove children on the Pools.
+     */
     value: function removeChildrenForAll() {
       var star = GroupPool.star();
       var cube = GroupPool.cube();
@@ -845,6 +1200,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachAll',
+
+    /**
+     * forEachAll() is settings of the forEach on member for Pools.
+     */
     value: function forEachAll() {
       GroupPool.forEachStar();
       GroupPool.forEachCube();
@@ -857,6 +1216,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachStar',
+
+    /**
+     * forEachStar() is function of forEach for starPool.
+     */
     value: function forEachStar() {
       var context = GameState.current;
       var pool = GroupPool.star();
@@ -865,6 +1228,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCube',
+
+    /**
+     * forEachCube() is function of forEach for cubePool.
+     */
     value: function forEachCube() {
       var context = GameState.current;
       var pool = GroupPool.cube();
@@ -876,6 +1243,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCylinder',
+
+    /**
+     * forEachCylinder() is function of forEach for cylinderPool.
+     */
     value: function forEachCylinder() {
       var context = GameState.current;
       var pool = GroupPool.cylinder();
@@ -884,6 +1255,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCircle',
+
+    /**
+     * forEachCircle() is function of forEach for circlePool.
+     */
     value: function forEachCircle() {
       var context = GameState.current;
       var pool = GroupPool.circle();
@@ -899,6 +1274,8 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachCircle',
+
+    // TODO: !!!!! REMOVE !!!!!
     value: function forEachCircle() {
       var context = GameState.current;
       var pool = GroupPool.circle();
@@ -914,6 +1291,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachBullet',
+
+    /**
+     * forEachBullet() is function of forEach for bulletPool.
+     */
     value: function forEachBullet() {
       var context = GameState.current;
       var pool = GroupPool.bullet();
@@ -927,6 +1308,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachExplosion',
+
+    /**
+     * forEachExplosion() is function of forEach for explosionPool.
+     */
     value: function forEachExplosion() {
       var context = GameState.current;
       var pool = GroupPool.explosion();
@@ -937,6 +1322,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachRhombusSplinter',
+
+    /**
+     * forEachRhombusSplinter() is function of forEach for rhombusSplinterPool.
+     */
     value: function forEachRhombusSplinter() {
       var context = GameState.current;
       var pool = GroupPool.rhombusSplinter();
@@ -949,6 +1338,10 @@ var GroupPool = (function () {
     }
   }, {
     key: 'forEachRhombus',
+
+    /**
+     * forEachRhombus() is function of forEach for rhombusPool.
+     */
     value: function forEachRhombus() {
       var context = GameState.current;
       var pool = GroupPool.rhombus();
@@ -960,6 +1353,10 @@ var GroupPool = (function () {
     }
   }, {
     key: '_isExistsContextName',
+
+    /**
+     * _isExistsContextName() is checked to be the existing group.
+     */
     value: function _isExistsContextName(group) {
       var context = GameState.current;
 
@@ -975,6 +1372,12 @@ var GroupPool = (function () {
     }
   }, {
     key: '_createNewGroup',
+
+    /**
+     * _createNewGroup() is return of new group for current context.
+     *
+     * @return {Kiwi.Group} group
+     */
     value: function _createNewGroup() {
       var context = GameState.current;
       return new Kiwi.Group(context);
@@ -1129,6 +1532,13 @@ var hudSingleton = Symbol();
 var hudSingletonEnforcer = Symbol();
 
 var HUD = (function () {
+
+  /**
+   * constructor for HUD.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function HUD(enforcer) {
     _classCallCheck(this, HUD);
 
@@ -1139,6 +1549,12 @@ var HUD = (function () {
 
   _createClass(HUD, [{
     key: 'createVelocityBar',
+
+    /**
+     * createVelocityBar() is return of VelocityBar.
+     *
+     * @return {Kiwi.HUD.Widget.Bar} VelocityBar.
+     */
     value: function createVelocityBar() {
       if (this._velocityBar) {
         return this._velocityBar;
@@ -1154,6 +1570,12 @@ var HUD = (function () {
     }
   }, {
     key: 'createHitPointBar',
+
+    /**
+     * createHitPointBar() is return of HitPointBar.
+     *
+     * @return {Kiwi.HUD.Widget.Bar} HitPointBar.
+     */
     value: function createHitPointBar() {
       if (this._hitPointBar) {
         return this._hitPointBar;
@@ -1169,6 +1591,12 @@ var HUD = (function () {
     }
   }, {
     key: 'createGameScoreCounter',
+
+    /**
+     * createGameScoreCounter() is return of GameScoreCounter.
+     *
+     * @return {Kiwi.HUD.Widget.TextField} GameScoreCounter.
+     */
     value: function createGameScoreCounter() {
       if (this._gameScoreCounter) {
         return this._gameScoreCounter;
@@ -1189,6 +1617,10 @@ var HUD = (function () {
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is update of current value for HUD widgets.
+     */
     value: function update() {
       var context = GameState.current;
 
@@ -1203,9 +1635,21 @@ var HUD = (function () {
     }
   }, {
     key: 'velocityBar',
+
+    /**
+     * Getter of VelocityBar.
+     *
+     * return {Kiwi.HUD.Widget.Bar} this._velocityBar
+     */
     get: function get() {
       return this._velocityBar;
     },
+
+    /**
+     * Setter of VelocityBar.
+     *
+     * @param {Number} value
+     */
     set: function set(value) {
       if (this._velocityBar) {
         this._velocityBar.counter.current = value;
@@ -1213,14 +1657,32 @@ var HUD = (function () {
     }
   }, {
     key: 'hitPointBar',
+
+    /**
+     * Getter of HitPointBar.
+     *
+     * return {Kiwi.HUD.Widget.Bar} this._hitPointBar
+     */
     get: function get() {
       return this._hitPointBar;
     }
   }, {
     key: 'gameScoreCounter',
+
+    /**
+     * Getter of GameScoreCounter.
+     *
+     * return {Kiwi.HUD.Widget.TextField} this._gameScoreCounter
+     */
     get: function get() {
       return this._gameScoreCounter;
     },
+
+    /**
+     * Getter of HitPointBar.
+     *
+     * return {Kiwi.HUD.Widget.TextField} this._hitPointBar
+     */
     set: function set(value) {
       if (this._gameScoreCounter) {
         this._gameScoreCounter.text = value;
@@ -1228,6 +1690,10 @@ var HUD = (function () {
     }
   }], [{
     key: 'initialize',
+
+    /**
+     * initialize() is create of HUD for the Game.
+     */
     value: function initialize() {
       var context = GameState.current;
       var hud = HUD.instance;
@@ -1238,12 +1704,22 @@ var HUD = (function () {
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is function of update for the HUD.
+     */
     value: function update() {
       var hud = HUD.instance;
       hud.update();
     }
   }, {
     key: 'instance',
+
+    /**
+     * get() is return a instance of HUD.
+     *
+     * @return {HUD}
+     */
     get: function get() {
       if (!this[hudSingleton]) {
         this[hudSingleton] = new HUD(hudSingletonEnforcer);
@@ -1270,6 +1746,10 @@ var GameKey = (function () {
 
   _createClass(GameKey, null, [{
     key: 'initializeOfPlay',
+
+    /**
+     * initializeOfPlay() is initialize of keys for PlayState.
+     */
     value: function initializeOfPlay() {
       GameKey.leftKey();
       GameKey.rightKey();
@@ -1280,12 +1760,22 @@ var GameKey = (function () {
     }
   }, {
     key: 'initializeOfTitle',
+
+    /**
+     * initializeOfTitle() is initialize of keys for TitleState.
+     */
     value: function initializeOfTitle() {
       GameKey.gameStartKey();
       GameKey.exitKey();
     }
   }, {
     key: 'gameStartKey',
+
+    /**
+     * gameStartKey() is return new Game key for the Start.
+     *
+     * @return {Kiwi.Input.Key} gameStartKey
+     */
     value: function gameStartKey() {
       if (!this[_gameStartKey]) {
         this[_gameStartKey] = this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR);
@@ -1294,11 +1784,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeGameStartKey',
+
+    /**
+     * activeGameStartKey() is be check an active of gameStartKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeGameStartKey() {
       return this[_gameStartKey].isDown;
     }
   }, {
     key: 'leftKey',
+
+    /**
+     * leftKey() is return new Game key for the Left.
+     *
+     * @return {Kiwi.Input.Key} leftKey
+     */
     value: function leftKey() {
       if (!this[_leftKey]) {
         this[_leftKey] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
@@ -1307,11 +1809,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeLeftKey',
+
+    /**
+     * activeLeftKey() is be check an active of leftKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeLeftKey() {
       return this[_leftKey].isDown;
     }
   }, {
     key: 'rightKey',
+
+    /**
+     * rightKey() is return new Game key for the Right.
+     *
+     * @return {Kiwi.Input.Key} rightKey
+     */
     value: function rightKey() {
       if (!this[_rightKey]) {
         this[_rightKey] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
@@ -1320,11 +1834,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeRightKey',
+
+    /**
+     * activeRightKey() is be check an active of rightKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeRightKey() {
       return this[_rightKey].isDown;
     }
   }, {
     key: 'upKey',
+
+    /**
+     * upKey() is return new Game key for the Up.
+     *
+     * @return {Kiwi.Input.Key} upKey
+     */
     value: function upKey() {
       var context = GameState.current;
 
@@ -1335,11 +1861,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeUpKey',
+
+    /**
+     * activeUpKey() is be check an active of upKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeUpKey() {
       return this[_upKey].isDown;
     }
   }, {
     key: 'shootKey',
+
+    /**
+     * shootKey() is return new Game key for the Shoot.
+     *
+     * @return {Kiwi.Input.Key} shootKey
+     */
     value: function shootKey() {
       var context = GameState.current;
 
@@ -1350,11 +1888,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeShootKey',
+
+    /**
+     * activeShootKey() is be check an active of shootKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeShootKey() {
       return this[_shootKey].isDown;
     }
   }, {
     key: 'exitKey',
+
+    /**
+     * exitKey() is return new Game key for the Exit.
+     *
+     * @return {Kiwi.Input.Key} exitKey
+     */
     value: function exitKey() {
       if (!this[_exitKey]) {
         this[_exitKey] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
@@ -1363,11 +1913,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeExitKey',
+
+    /**
+     * activeExitKey() is be check an active of exitKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeExitKey() {
       return this[_exitKey].isDown;
     }
   }, {
     key: 'restartKey',
+
+    /**
+     * restartKey() is return new Game key for the Restart.
+     *
+     * @return {Kiwi.Input.Key} restartKey
+     */
     value: function restartKey() {
       if (!this[_restartKey]) {
         this[_restartKey] = this._getGameKey(Kiwi.Input.Keycodes.R);
@@ -1376,11 +1938,23 @@ var GameKey = (function () {
     }
   }, {
     key: 'activeRestartKey',
+
+    /**
+     * activeExitKey() is be check an active of exitKey.
+     *
+     * @return {Boolean} isDown
+     */
     value: function activeRestartKey() {
       return this[_restartKey].isDown;
     }
   }, {
     key: '_getGameKey',
+
+    /**
+     * _getGameKey() is return new object of Kiwi.Input.Key.
+     *
+     * @return {Kiwi.Input.Key}
+     */
     value: function _getGameKey(keycode) {
       var context = GameState.current;
       return context.game.input.keyboard.addKey(keycode);
@@ -1406,6 +1980,10 @@ var GameMusic = (function () {
 
   _createClass(GameMusic, null, [{
     key: 'initialize',
+
+    /**
+     * initialize() is initialize settings of musics for Always-Gravity.
+     */
     value: function initialize() {
       GameMusic.main;
       GameMusic.gameOver;
@@ -1417,6 +1995,10 @@ var GameMusic = (function () {
     }
   }, {
     key: 'destroy',
+
+    /**
+     * destroy() is remove all of musics for PlayState.
+     */
     value: function destroy() {
       GameMusic.main.stop();
       GameMusic.main.destroy();
@@ -1429,6 +2011,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'main',
+
+    /**
+     * Getter of main game music.
+     *
+     * @return {Kiwi.Sound.Audio} musicMain
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1439,6 +2027,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'gameOver',
+
+    /**
+     * Getter of game over music.
+     *
+     * @return {Kiwi.Sound.Audio} musicGameOver
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1449,6 +2043,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'soundEffectOfBullet',
+
+    /**
+     * Getter of sound effect for bullet.
+     *
+     * @return {Kiwi.Sound.Audio} soundEffectOfBullet
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1459,6 +2059,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'soundEffectOfExplosion',
+
+    /**
+     * Getter of sound effect for explosion.
+     *
+     * @return {Kiwi.Sound.Audio} soundEffectOfExplosion
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1469,6 +2075,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'soundEffectOfCautionForSpeed',
+
+    /**
+     * Getter of sound effect for caution for speed.
+     *
+     * @return {Kiwi.Sound.Audio} soundEffectOfCautionForSpeed
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1479,6 +2091,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'soundEffectOfCircle',
+
+    /**
+     * Getter of sound effect for circle.
+     *
+     * @return {Kiwi.Sound.Audio} soundEffectOfCircle
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1489,6 +2107,12 @@ var GameMusic = (function () {
     }
   }, {
     key: 'soundEffectOfMyUnitExplosion',
+
+    /**
+     * Getter of sound effect for my unit explosion.
+     *
+     * @return {Kiwi.Sound.Audio} soundEffectOfMyUnitExplosion
+     */
     get: function get() {
       var context = GameState.current;
 
@@ -1506,6 +2130,13 @@ var myUnitSingleton = Symbol();
 var myUnitSingletonEnforcer = Symbol();
 
 var MyUnit = (function () {
+
+  /**
+   * constructor for MyUnit.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function MyUnit(enforcer) {
     _classCallCheck(this, MyUnit);
 
@@ -1516,6 +2147,12 @@ var MyUnit = (function () {
 
   _createClass(MyUnit, [{
     key: 'create',
+
+    /**
+     * create() is return a new sprite of MyUnit.
+     *
+     * @return {Kiwi.GameObjects.Sprite} MyUnit
+     */
     value: function create() {
       var context = GameState.current;
       var myUnit = undefined;
@@ -1534,6 +2171,12 @@ var MyUnit = (function () {
     }
   }, {
     key: 'overlapOnOther',
+
+    /**
+     * overlapOnOther() is observe of collision for sprite onto MyUnit.
+     *
+     * @param {Kiwi.GameObjects.Sprite} object
+     */
     value: function overlapOnOther(object) {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1563,6 +2206,10 @@ var MyUnit = (function () {
     }
   }, {
     key: 'explosion',
+
+    /**
+     * explosion() is explode the MyUnit.
+     */
     value: function explosion() {
       var context = GameState.current;
 
@@ -1580,6 +2227,10 @@ var MyUnit = (function () {
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is update of method for MyUnit.
+     */
     value: function update() {
       if (GameOver.status) {
         return;
@@ -1591,12 +2242,20 @@ var MyUnit = (function () {
     }
   }, {
     key: '_watchOfStatusForKeys',
+
+    /**
+     * _watchOfStatusForKeys() is observe of status for keys.
+     */
     value: function _watchOfStatusForKeys() {
       this._watchOfStatusForRotationKeys();
       this._watchOfStatusForVelocityKey();
     }
   }, {
     key: '_watchOfStatusForRotationKeys',
+
+    /**
+     * _watchOfStatusForRotationKeys() is update of rotation for the MyUnit.
+     */
     value: function _watchOfStatusForRotationKeys() {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1615,6 +2274,10 @@ var MyUnit = (function () {
     }
   }, {
     key: '_watchOfStatusForVelocityKey',
+
+    /**
+     * _watchOfStatusForRotationKeys() is update of velocity for the MyUnit.
+     */
     value: function _watchOfStatusForVelocityKey() {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1637,6 +2300,11 @@ var MyUnit = (function () {
     }
   }, {
     key: '_checkPosition',
+
+    /**
+     * checkPosition() is watching of current position for MyUnit.
+     * if over limit of position on stage, then initialize the position of MyUnit.
+     */
     value: function _checkPosition() {
       var context = GameState.current;
       var stageWidth = context.game.stage.width;
@@ -1658,6 +2326,10 @@ var MyUnit = (function () {
     }
   }, {
     key: '_updateGravity',
+
+    /**
+     * _updateGravity() is each time the update acceleration of MyUnit.
+     */
     value: function _updateGravity() {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1668,6 +2340,10 @@ var MyUnit = (function () {
     }
   }, {
     key: '_prop',
+
+    /**
+     * _prop() is initialize position of MyUnit.
+     */
     value: function _prop() {
       var myUnit = this.sprite;
 
@@ -1678,6 +2354,10 @@ var MyUnit = (function () {
     }
   }, {
     key: '_createMyUnitSplinter',
+
+    /**
+     * _createMyUnitSplinter() is create the new sprite of MyUnitSplinter.
+     */
     value: function _createMyUnitSplinter() {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1697,6 +2377,10 @@ var MyUnit = (function () {
     }
   }, {
     key: '_remove',
+
+    /**
+     * _remove() is remove of MyUnit from the stage.
+     */
     value: function _remove() {
       var context = GameState.current;
       var myUnit = this.sprite;
@@ -1705,11 +2389,19 @@ var MyUnit = (function () {
     }
   }, {
     key: '_explosionSoundEffect',
+
+    /**
+     * _explosionSoundEffect() is play of sound effect for explosion.
+     */
     value: function _explosionSoundEffect() {
       GameMusic.soundEffectOfMyUnitExplosion.play();
     }
   }, {
     key: '_startCountUpOfExplosion',
+
+    /**
+     * _startCountUpOfExplosion() is create animation ticker of explosion.
+     */
     value: function _startCountUpOfExplosion() {
       var _this = this;
 
@@ -1725,25 +2417,53 @@ var MyUnit = (function () {
     }
   }, {
     key: 'sprite',
+
+    /**
+     * Getter of Sprite for MyUnit.
+     *
+     * @return {Kiwi.GameObjects.Sprite}
+     */
     get: function get() {
       return this._sprite;
     },
+
+    /**
+     * Getter of Sprite for MyUnit.
+     *
+     * @param {Kiwi.GameObjects.Sprite} value
+     */
     set: function set(value) {
       this._sprite = value;
     }
   }, {
     key: 'explosionCounter',
+
+    /**
+     * Getter of counter for Explosion.
+     *
+     * @return {Number}
+     */
     get: function get() {
       if (this._explosionCounter === undefined) {
         this._explosionCounter = 0;
       }
       return this._explosionCounter;
     },
+
+    /**
+     * Setter of counter for Explosion.
+     *
+     * @param {Number} value
+     */
     set: function set(value) {
       this._explosionCounter = value;
     }
   }], [{
     key: 'initialize',
+
+    /**
+     * initialize() is setting the MyUnit for current state.
+     */
     value: function initialize() {
       var context = GameState.current;
 
@@ -1751,11 +2471,21 @@ var MyUnit = (function () {
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is call update method of MyUnit.
+     */
     value: function update() {
       MyUnit.instance.update();
     }
   }, {
     key: 'instance',
+
+    /**
+     * get() is return a instance of MyUnit.
+     *
+     * @return {MyUnit}
+     */
     get: function get() {
       if (!this[myUnitSingleton]) {
         this[myUnitSingleton] = new MyUnit(myUnitSingletonEnforcer);
@@ -1774,6 +2504,13 @@ var gameStateTitle = Symbol();
 var gameStatePlay = Symbol();
 
 var GameState = (function () {
+
+  /**
+   * constructor for GameState.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function GameState(enforcer) {
     _classCallCheck(this, GameState);
 
@@ -1784,14 +2521,32 @@ var GameState = (function () {
 
   _createClass(GameState, [{
     key: 'current',
+
+    /**
+     * Getter of current GameState
+     *
+     * @return {Kiwi.State} gameStateCurrent
+     */
     get: function get() {
       return this[gameStateCurrent];
     },
+
+    /**
+     * Setter of current GameState
+     *
+     * @param {Kiwi.State} value
+     */
     set: function set(value) {
       this[gameStateCurrent] = value;
     }
   }, {
     key: 'title',
+
+    /**
+     * Getter of TitleState.
+     *
+     * @return {Kiwi.State} TitleState
+     */
     get: function get() {
       if (!this[gameStateTitle]) {
         this[gameStateTitle] = new Kiwi.State('Title');
@@ -1800,6 +2555,12 @@ var GameState = (function () {
     }
   }, {
     key: 'play',
+
+    /**
+     * Getter of PlayState.
+     *
+     * @return {Kiwi.State} PlayState
+     */
     get: function get() {
       if (!this[gameStatePlay]) {
         this[gameStatePlay] = new Kiwi.State('Play');
@@ -1808,6 +2569,12 @@ var GameState = (function () {
     }
   }], [{
     key: 'instance',
+
+    /**
+     * get() is return a instance of GameState.
+     *
+     * @return {GameState}
+     */
     get: function get() {
       if (!this[gameStateSingleton]) {
         this[gameStateSingleton] = new GameState(gameStateSingletonEnforcer);
@@ -1816,6 +2583,10 @@ var GameState = (function () {
     }
   }, {
     key: 'current',
+
+    /**
+     * current() is return of GameState.instance.current.
+     */
     get: function get() {
       return GameState.instance.current;
     }
@@ -1828,6 +2599,13 @@ var timerSingleton = Symbol();
 var timerSingletonEnforcer = Symbol();
 
 var Timer = (function () {
+
+  /**
+   * constructor for Timer.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function Timer(enforcer) {
     _classCallCheck(this, Timer);
 
@@ -1838,6 +2616,12 @@ var Timer = (function () {
 
   _createClass(Timer, [{
     key: 'setInterval',
+
+    /**
+     * setInterval() is wrap method of game.time.clock.setInterval.
+     *
+     * @return {Kiwi.Time.Timer}
+     */
     value: function setInterval(callback, milliseconds) {
       var context = GameState.current;
 
@@ -1845,6 +2629,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createAllTimer',
+
+    /**
+     * createAllTimer() is call of methods the create of all timer for game.
+     */
     value: function createAllTimer() {
       this.createStarTimer();
       this.createCubeTimer();
@@ -1856,6 +2644,10 @@ var Timer = (function () {
     }
   }, {
     key: 'removeAllTimer',
+
+    /**
+     * removeAllTimer() is call of methods the remove of all timer for game.
+     */
     value: function removeAllTimer() {
       var context = GameState.current;
 
@@ -1867,6 +2659,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createStarTimer',
+
+    /**
+     * createStarTimer() is create of new timer for star.
+     */
     value: function createStarTimer() {
       this.starTimer = this.setInterval(function () {
         TimerSpawnObjects.instance.star();
@@ -1874,6 +2670,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createCubeTimer',
+
+    /**
+     * createCubeTimer() is create of new timer for cube.
+     */
     value: function createCubeTimer() {
       this.cubeTimer = this.setInterval(function () {
         TimerSpawnObjects.instance.cube();
@@ -1881,6 +2681,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createCylinderTimer',
+
+    /**
+     * createCylinderTimer() is create of new timer for cylinder.
+     */
     value: function createCylinderTimer() {
       this.cylinderTimer = this.setInterval(function () {
         TimerSpawnObjects.instance.cylinder();
@@ -1888,6 +2692,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createCircleTimer',
+
+    /**
+     * createCircleTimer() is create of new timer for circle.
+     */
     value: function createCircleTimer() {
       this.circleTimer = this.setInterval(function () {
         TimerSpawnObjects.instance.circle();
@@ -1895,6 +2703,10 @@ var Timer = (function () {
     }
   }, {
     key: 'createRhombusTimer',
+
+    /**
+     * createRhombusTimer() is create of new timer for rhombus.
+     */
     value: function createRhombusTimer() {
       this.rhombusTimer = this.setInterval(function () {
         TimerSpawnObjects.instance.rhombus();
@@ -1902,6 +2714,11 @@ var Timer = (function () {
     }
   }, {
     key: 'createCoutionForSpeedSoundEffectTimer',
+
+    /**
+     * createCoutionForSpeedSoundEffectTimer()
+     * is create of new timer for sound effect of caution.
+     */
     value: function createCoutionForSpeedSoundEffectTimer() {
       this.coutionForSpeedSoundEffectTimer = this.setInterval(function () {
         TimerVelocity.instance.speedLimit();
@@ -1909,6 +2726,11 @@ var Timer = (function () {
     }
   }, {
     key: 'createOverTheLimitVelocityCountTimer',
+
+    /**
+     * createOverTheLimitVelocityCountTimer()
+     * is create of new timer for sound effect of over the limit the velocity.
+     */
     value: function createOverTheLimitVelocityCountTimer() {
       this.overTheLimitVelocityCountTimer = this.setInterval(function () {
         TimerVelocity.instance.overTheLimitCount();
@@ -1916,16 +2738,30 @@ var Timer = (function () {
     }
   }], [{
     key: 'initialize',
+
+    /**
+     * initialize() is initialize of all timer for game.
+     */
     value: function initialize() {
       Timer.instance.createAllTimer();
     }
   }, {
     key: 'destroy',
+
+    /**
+     * destroy() is destroy of all timer for game.
+     */
     value: function destroy() {
       Timer.instance.removeAllTimer();
     }
   }, {
     key: 'instance',
+
+    /**
+     * get() is return a instance of Timer.
+     *
+     * @return {Timer}
+     */
     get: function get() {
       if (!this[timerSingleton]) {
         this[timerSingleton] = new Timer(timerSingletonEnforcer);
@@ -1944,6 +2780,10 @@ var PlayState = (function () {
 
   _createClass(PlayState, null, [{
     key: 'create',
+
+    /**
+     * create() a setup of PlayState.
+     */
     value: function create() {
       Kiwi.State.prototype.create.call(this);
 
@@ -1964,6 +2804,10 @@ var PlayState = (function () {
     }
   }, {
     key: 'preload',
+
+    /**
+     * preload() a loading of asserts for PlayState.
+     */
     value: function preload() {
       Kiwi.State.prototype.preload.call(this);
 
@@ -1991,6 +2835,10 @@ var PlayState = (function () {
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is main loop of game in PlayState.
+     */
     value: function update() {
       Kiwi.State.prototype.update.call(this);
       var myUnit = MyUnit.instance;
@@ -2030,6 +2878,10 @@ var TitleState = (function () {
 
   _createClass(TitleState, null, [{
     key: 'create',
+
+    /**
+     * create() a setup of TitleState.
+     */
     value: function create() {
       Kiwi.State.prototype.create.call(this);
 
@@ -2042,11 +2894,19 @@ var TitleState = (function () {
     }
   }, {
     key: 'preload',
+
+    /**
+     * preload() a loading of asserts for TitleState.
+     */
     value: function preload() {
       Kiwi.State.prototype.preload.call(this);
     }
   }, {
     key: 'update',
+
+    /**
+     * update() is main loop of game in TitleState.
+     */
     value: function update() {
       Kiwi.State.prototype.update.call(this);
 
@@ -2072,6 +2932,13 @@ var timerSpawnObjectsSingleton = Symbol();
 var timerSpawnObjectsSingletonEnforcer = Symbol();
 
 var TimerSpawnObjects = (function () {
+
+  /**
+   * constructor for TimerSpawnObjects.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function TimerSpawnObjects(enforcer) {
     _classCallCheck(this, TimerSpawnObjects);
 
@@ -2082,6 +2949,10 @@ var TimerSpawnObjects = (function () {
 
   _createClass(TimerSpawnObjects, [{
     key: 'circle',
+
+    /**
+     * circle() is spawn object of circle.
+     */
     value: function circle() {
       var _this2 = this;
 
@@ -2093,6 +2964,10 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: 'cube',
+
+    /**
+     * cube() is spawn object of cube.
+     */
     value: function cube() {
       var context = GameState.current;
 
@@ -2100,6 +2975,10 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: 'cylinder',
+
+    /**
+     * cylinder() is spawn object of cylinder.
+     */
     value: function cylinder() {
       var context = GameState.current;
 
@@ -2107,6 +2986,10 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: 'star',
+
+    /**
+     * star() is spawn object of star.
+     */
     value: function star() {
       var context = GameState.current;
 
@@ -2114,6 +2997,10 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: 'rhombus',
+
+    /**
+     * rhombus() is spawn object of rhombus.
+     */
     value: function rhombus() {
       var _this3 = this;
 
@@ -2135,6 +3022,13 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: '_scaleUpRhombus',
+
+    /**
+     * _scaleUpRhombus a scale up of size for rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
     value: function _scaleUpRhombus(context, sprite) {
       var spriteBottomLeftPoint = sprite.y + sprite.height;
       var standingPoint = context.game.stage.height / 2 - sprite.height;
@@ -2156,6 +3050,13 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: '_explosionRhombus',
+
+    /**
+     * _explosionRhombus a new create of rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
     value: function _explosionRhombus(context, sprite) {
       var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
       var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
@@ -2174,6 +3075,13 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: '_scaleDownRhombus',
+
+    /**
+     * _scaleDownRhombus a scale down of size for rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
     value: function _scaleDownRhombus(context, sprite) {
       sprite.scaleX = 1;
       sprite.scaleY = 1;
@@ -2182,6 +3090,13 @@ var TimerSpawnObjects = (function () {
     }
   }, {
     key: '_tweenOfCircle',
+
+    /**
+     * _tweenOfCircle is added of tween action to the circle.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
     value: function _tweenOfCircle(context, sprite) {
       var tween = context.game.tweens.create(sprite);
       var myUnit = MyUnit.instance;
@@ -2191,6 +3106,12 @@ var TimerSpawnObjects = (function () {
     }
   }], [{
     key: 'instance',
+
+    /**
+     * get() is return a instance of TimerSpawnObjects.
+     *
+     * @return {TimerSpawnObjects}
+     */
     get: function get() {
       if (!this[timerSpawnObjectsSingleton]) {
         this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
@@ -2206,6 +3127,13 @@ var timerVelocitySingleton = Symbol();
 var timerVelocitySingletonEnforcer = Symbol();
 
 var TimerVelocity = (function () {
+
+  /**
+   * constructor for TimerVelocity.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function TimerVelocity(enforcer) {
     _classCallCheck(this, TimerVelocity);
 
@@ -2216,6 +3144,10 @@ var TimerVelocity = (function () {
 
   _createClass(TimerVelocity, [{
     key: 'overTheLimitCount',
+
+    /**
+     * overTheLimitCount() is observe of speed for myunit.
+     */
     value: function overTheLimitCount() {
       var context = GameState.current;
 
@@ -2238,6 +3170,10 @@ var TimerVelocity = (function () {
     }
   }, {
     key: 'speedLimit',
+
+    /**
+     * speedLimit() is over the limit of speed when display of slow-down.
+     */
     value: function speedLimit() {
       var context = GameState.current;
       var hud = HUD.instance;
@@ -2262,17 +3198,35 @@ var TimerVelocity = (function () {
     }
   }, {
     key: 'overTheVelocityCounter',
+
+    /**
+     * Getter for overTheVelocityCounter.
+     *
+     * @return {Number} this._overTheVelocityCounter
+     */
     get: function get() {
       if (this._overTheVelocityCounter === undefined) {
         this._overTheVelocityCounter = 0;
       }
       return this._overTheVelocityCounter;
     },
+
+    /**
+     * Setter for overTheVelocityCounter.
+     *
+     * @param {Number} value
+     */
     set: function set(value) {
       this._overTheVelocityCounter = value;
     }
   }], [{
     key: 'instance',
+
+    /**
+     * get() is return a instance of TimerVelocity.
+     *
+     * @return {TimerVelocity}
+     */
     get: function get() {
       if (!this[timerVelocitySingleton]) {
         this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);

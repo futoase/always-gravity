@@ -1,5 +1,12 @@
 class Explosion {
 
+  /**
+   * generate() is generate sprite of Explosion.
+   *
+   * @param {Number} baseX
+   * @param {Number} baseY
+   * @return {Kiwi.GameObjects.Sprite} explosion
+   */
   static generate(baseX, baseY) {
     const context = GameState.current;
 
@@ -16,6 +23,13 @@ class Explosion {
     return explosion;
   }
 
+  /**
+   * isLastOfCellIndex()
+   * Observe of last cell for sprite.
+   * Destroy sprite when is over the cell index limit.
+   *
+   * @param {Kiwi.Gameobjects.Sprite} sprite
+   */
   static isLastOfCellIndex(sprite) {
     if (sprite.cellIndex >= 3) {
       sprite.destroy();
