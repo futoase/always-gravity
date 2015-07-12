@@ -18,7 +18,7 @@ class CircleGenerator {
     circle.physics = circle.components.add(
       new Kiwi.Components.ArcadePhysics(circle, circle.box)
     );
-    circle.x = parseInt(Math.random() * 800);
+    circle.x = Number(Math.random() * 800);
     circle.index = index;
     circle.score = 500;
 

@@ -18,12 +18,12 @@ class StarGenerator {
       new Kiwi.Components.ArcadePhysics(star, star.box)
     );
     star.physics.acceleration.y = 1;
-    star.x = parseInt(Math.random() * 800);
-    if (index < parseInt(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
-      star.y = parseInt(Math.random() * 600);
+    star.x = Number(Math.random() * 800);
+    if (index < Number(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
+      star.y = Number(Math.random() * 600);
     }
     else {
-      star.y = -1 * parseInt(Math.random() * 200);
+      star.y = -1 * Number(Math.random() * 200);
     }
     star.index = index;
 

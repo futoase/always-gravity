@@ -91,7 +91,7 @@ class TimerSpawnObjects {
       context.isSpawnSpriteOfRhombusSplinter = false;
     }
 
-    if (parseInt(Math.random() * 100) === 0) {
+    if (Number(Math.random() * 100) === 0) {
       context.isSpawnSpriteOfRhombusSplinter = true;
     }
 
@@ -144,7 +144,7 @@ class TimerSpawnObjects {
    */
   _explosionRhombus(context, sprite) {
     const rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
-    const angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
+    const angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
     let rhombusSplinterAngle = 0;
     let explosionCounter = 0;
 

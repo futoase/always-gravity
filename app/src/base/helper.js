@@ -6,7 +6,7 @@ class Helper {
    * @return {Kiwi.GameObjects.Sprite}
    */
   static getMember(members) {
-    return members[parseInt(Math.random() * (members.length - 1))];
+    return members[Number(Math.random() * (members.length - 1))];
   }
 
   /**
@@ -55,7 +55,7 @@ class Helper {
    */
   static revive(sprite) {
     sprite.y = -sprite.height;
-    sprite.x = parseInt(Math.random() * 800);
+    sprite.x = Number(Math.random() * 800);
     sprite.physics.velocity.y = 0;
     sprite.physics.acceleration.y = 0;
     sprite.alive = true;
@@ -98,7 +98,7 @@ class Helper {
    * @return {Number} Radian
    */
   static radian(angle) {
-    return parseInt(angle) * Math.PI / 180;
+    return Number(angle) * Math.PI / 180;
   }
 
 }

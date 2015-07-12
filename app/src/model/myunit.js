@@ -289,7 +289,7 @@ class MyUnit {
     const context = GameState.current;
     const myUnit = this.sprite;
     let myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
-    let angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
+    let angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
     let myUnitSplinterAngle = 0;
 
     myUnitSplinterMembers.forEach((splinterMember) => {

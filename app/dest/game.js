@@ -18,7 +18,7 @@ var Helper = (function () {
      * @return {Kiwi.GameObjects.Sprite}
      */
     value: function getMember(members) {
-      return members[parseInt(Math.random() * (members.length - 1))];
+      return members[Number(Math.random() * (members.length - 1))];
     }
   }, {
     key: 'strewnSprite',
@@ -69,7 +69,7 @@ var Helper = (function () {
      */
     value: function revive(sprite) {
       sprite.y = -sprite.height;
-      sprite.x = parseInt(Math.random() * 800);
+      sprite.x = Number(Math.random() * 800);
       sprite.physics.velocity.y = 0;
       sprite.physics.acceleration.y = 0;
       sprite.alive = true;
@@ -113,7 +113,7 @@ var Helper = (function () {
      * @return {Number} Radian
      */
     value: function radian(angle) {
-      return parseInt(angle) * Math.PI / 180;
+      return Number(angle) * Math.PI / 180;
     }
   }]);
 
@@ -223,7 +223,7 @@ var CircleGenerator = (function () {
       circle.anchorPointX = circle.width * 0.5;
       circle.anchorPointY = circle.height * 0.5;
       circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
-      circle.x = parseInt(Math.random() * 800);
+      circle.x = Number(Math.random() * 800);
       circle.index = index;
       circle.score = 500;
 
@@ -256,7 +256,7 @@ var CubeGenerator = (function () {
       cube.anchorPointX = cube.width * 0.5;
       cube.anchorPointY = cube.height * 0.5;
       cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
-      cube.x = parseInt(Math.random() * 800);
+      cube.x = Number(Math.random() * 800);
       cube.index = index;
       cube.score = 100;
 
@@ -291,7 +291,7 @@ var CylinderGenerator = (function () {
       cylinder.anchorPointX = cylinder.x * 0.5;
       cylinder.anchorPointY = cylinder.y * 0.5;
       cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
-      cylinder.x = parseInt(Math.random() * 800);
+      cylinder.x = Number(Math.random() * 800);
       cylinder.y = -cylinder.height;
       cylinder.index = index;
       cylinder.score = 200;
@@ -412,11 +412,11 @@ var StarGenerator = (function () {
       star.anchorPointY = star.height * 0.5;
       star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
       star.physics.acceleration.y = 1;
-      star.x = parseInt(Math.random() * 800);
-      if (index < parseInt(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
-        star.y = parseInt(Math.random() * 600);
+      star.x = Number(Math.random() * 800);
+      if (index < Number(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
+        star.y = Number(Math.random() * 600);
       } else {
-        star.y = -1 * parseInt(Math.random() * 200);
+        star.y = -1 * Number(Math.random() * 200);
       }
       star.index = index;
 
@@ -628,8 +628,8 @@ var Explosion = (function () {
 
       var explosion = new Kiwi.GameObjects.Sprite(context, context.textures.explosion, baseX, baseY);
 
-      explosion.x = parseInt(baseX - explosion.width * 0.5);
-      explosion.y = parseInt(baseY - explosion.height * 0.5);
+      explosion.x = Number(baseX - explosion.width * 0.5);
+      explosion.y = Number(baseY - explosion.height * 0.5);
 
       explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
       explosion.animation.play('explosion');
@@ -2362,7 +2362,7 @@ var MyUnit = (function () {
       var context = GameState.current;
       var myUnit = this.sprite;
       var myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
-      var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
+      var angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
       var myUnitSplinterAngle = 0;
 
       myUnitSplinterMembers.forEach(function (splinterMember) {
@@ -3010,7 +3010,7 @@ var TimerSpawnObjects = (function () {
         context.isSpawnSpriteOfRhombusSplinter = false;
       }
 
-      if (parseInt(Math.random() * 100) === 0) {
+      if (Number(Math.random() * 100) === 0) {
         context.isSpawnSpriteOfRhombusSplinter = true;
       }
 
@@ -3059,7 +3059,7 @@ var TimerSpawnObjects = (function () {
      */
     value: function _explosionRhombus(context, sprite) {
       var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
-      var angleBase = parseInt(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
+      var angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
       var rhombusSplinterAngle = 0;
       var explosionCounter = 0;
 
