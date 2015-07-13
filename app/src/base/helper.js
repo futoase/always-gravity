@@ -31,21 +31,19 @@ class Helper {
 
     if (option !== null && option !== undefined) {
       isRevive = option.revive;
-    }
-    else {
+    } else {
       isRevive = true;
     }
 
     if (sprite.y < limit.y) {
       sprite.physics.acceleration.y += acceleration.y;
-    }
-    else {
+    } else {
       if (isRevive) {
         Helper.revive(sprite);
       }
     }
 
-    if (typeof(cb) === 'function') {
+    if (typeof cb === 'function') {
       cb(sprite);
     }
   }
@@ -83,11 +81,16 @@ class Helper {
    * @param {Number} rotate
    */
   static updateSpriteRotation(sprite, rotate) {
+    let setRotate;
+
     if (rotate === null) {
-      rotate = 1;
+      setRotate = 1;
+    } else {
+      setRotate = rotate;
     }
+
     sprite.transform.rotation += (
-      Kiwi.Utils.GameMath.degreesToRadians(rotate)
+      Kiwi.Utils.GameMath.degreesToRadians(setRotate)
     );
   }
 

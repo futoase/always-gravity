@@ -1,5 +1,5 @@
-let hudSingleton = Symbol();
-let hudSingletonEnforcer = Symbol();
+const hudSingleton = Symbol();
+const hudSingletonEnforcer = Symbol();
 
 class HUD {
 
@@ -10,7 +10,7 @@ class HUD {
    */
   constructor(enforcer) {
     if (enforcer !== hudSingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 
@@ -31,7 +31,7 @@ class HUD {
    */
   static initialize() {
     const context = GameState.current;
-    let hud = HUD.instance;
+    const hud = HUD.instance;
 
     context.game.huds.defaultHUD.addWidget(
       hud.createVelocityBar()
@@ -48,8 +48,7 @@ class HUD {
    * update() is function of update for the HUD.
    */
   static update() {
-    let hud = HUD.instance;
-    hud.update();
+    HUD.instance.update();
   }
 
   /**
@@ -113,8 +112,8 @@ class HUD {
 
     const context = GameState.current;
 
-    let hud = new Kiwi.HUD.Widget.Bar(
-      context.game, 0, GAME_CONFIG.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
+    const hud = new Kiwi.HUD.Widget.Bar(
+      context.game, 0, GameConfig.setting.LIMIT_VELOCITY, 50, 15, 700, 15, 'white'
     );
 
     this._velocityBar = hud;
@@ -134,8 +133,8 @@ class HUD {
 
     const context = GameState.current;
 
-    let hud = new Kiwi.HUD.Widget.Bar(
-      context.game, GAME_COUNTER.hitPoint, GAME_CONFIG.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
+    const hud = new Kiwi.HUD.Widget.Bar(
+      context.game, GameCounter.hitPoint, GameConfig.setting.LIMIT_HITPOINT, 50, 40, 700, 15, '#A9D0F5'
     );
 
     this._hitPointBar = hud;
@@ -155,7 +154,7 @@ class HUD {
 
     const context = GameState.current;
 
-    let hud = new Kiwi.HUD.Widget.TextField(
+    const hud = new Kiwi.HUD.Widget.TextField(
       context.game, '', 50, 60
     );
 
@@ -173,14 +172,12 @@ class HUD {
    * update() is update of current value for HUD widgets.
    */
   update() {
-    const context = GameState.current;
+    const myUnit = MyUnit.instance;
 
-    let myUnit = MyUnit.instance;
-
-    let currentVelocityX = Math.abs(
+    const currentVelocityX = Math.abs(
       myUnit.sprite.physics.velocity.x
     );
-    let currentVelocityY = Math.abs(
+    const currentVelocityY = Math.abs(
       myUnit.sprite.physics.velocity.y
     );
 
@@ -188,7 +185,7 @@ class HUD {
       currentVelocityX + currentVelocityY
     );
 
-    this.gameScoreCounter = GAME_COUNTER.gameScore;
+    this.gameScoreCounter = GameCounter.gameScore;
   }
 
 }

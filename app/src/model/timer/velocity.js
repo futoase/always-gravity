@@ -1,5 +1,5 @@
-let timerVelocitySingleton = Symbol();
-let timerVelocitySingletonEnforcer = Symbol();
+const timerVelocitySingleton = Symbol();
+const timerVelocitySingletonEnforcer = Symbol();
 
 class TimerVelocity {
 
@@ -10,7 +10,7 @@ class TimerVelocity {
    */
   constructor(enforcer) {
     if (enforcer !== timerVelocitySingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 
@@ -53,23 +53,22 @@ class TimerVelocity {
   overTheLimitCount() {
     const context = GameState.current;
 
-    let myUnit = MyUnit.instance;
-    let hud = HUD.instance;
+    const myUnit = MyUnit.instance;
+    const hud = HUD.instance;
 
-    if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY) {
+    if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY) {
       if (context.contains(GameText.slowDownCount)) {
         GameText.slowDownCount = (
-          GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
+          GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter
         );
       }
       this.overTheLimitVelocityCounter += 1;
-    }
-    else {
+    } else {
       this.overTheLimitVelocityCounter = 0;
-      GameText.slowDownCount = GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT;
+      GameText.slowDownCount = GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT;
     }
 
-    if (this.overTheLimitVelocityCounter > GAME_CONFIG.LIMIT_VELOCITY_MAX_COUNT) {
+    if (this.overTheLimitVelocityCounter > GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT) {
       myUnit.explosion();
     }
   }
@@ -79,9 +78,9 @@ class TimerVelocity {
    */
   speedLimit() {
     const context = GameState.current;
-    let hud = HUD.instance;
+    const hud = HUD.instance;
 
-    if (hud.velocityBar.counter.current >= GAME_CONFIG.LIMIT_VELOCITY * 0.95) {
+    if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY * 0.95) {
       GameMusic.soundEffectOfCautionForSpeed.play();
       if (!context.contains(GameText.slowDown)) {
         context.addChild(GameText.slowDown);
@@ -89,8 +88,7 @@ class TimerVelocity {
       if (!context.contains(GameText.slowDownCount)) {
         context.addChild(GameText.slowDownCount);
       }
-    }
-    else{
+    } else {
       GameMusic.soundEffectOfCautionForSpeed.stop();
       if (context.contains(GameText.slowDown)) {
         context.removeChild(GameText.slowDown);

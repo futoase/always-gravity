@@ -1,8 +1,8 @@
-let gameStateSingleton = Symbol();
-let gameStateSingletonEnforcer = Symbol();
-let gameStateCurrent = Symbol();
-let gameStateTitle = Symbol();
-let gameStatePlay = Symbol();
+const gameStateSingleton = Symbol();
+const gameStateSingletonEnforcer = Symbol();
+const gameStateCurrent = Symbol();
+const gameStateTitle = Symbol();
+const gameStatePlay = Symbol();
 
 class GameState {
 
@@ -13,7 +13,7 @@ class GameState {
    */
   constructor(enforcer) {
     if (enforcer !== gameStateSingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 

@@ -1,12 +1,12 @@
-let starPool = Symbol();
-let cubePool = Symbol();
-let circlePool = Symbol();
-let bulletPool = Symbol();
-let cylinderPool = Symbol();
-let myUnitSplinterPool = Symbol();
-let rhombusSplinterPool = Symbol();
-let rhombusPool = Symbol();
-let explosionPool = Symbol();
+const starPool = Symbol();
+const cubePool = Symbol();
+const circlePool = Symbol();
+const bulletPool = Symbol();
+const cylinderPool = Symbol();
+const myUnitSplinterPool = Symbol();
+const rhombusSplinterPool = Symbol();
+const rhombusPool = Symbol();
+const explosionPool = Symbol();
 
 class GroupPool {
 
@@ -131,13 +131,13 @@ class GroupPool {
    * removeChildrenForAll() is remove children on the Pools.
    */
   static removeChildrenForAll() {
-    let star = GroupPool.star();
-    let cube = GroupPool.cube();
-    let circle = GroupPool.circle();
-    let cylinder = GroupPool.cylinder();
-    let bullet = GroupPool.bullet();
-    let explosion = GroupPool.explosion();
-    let rhombus = GroupPool.rhombus();
+    const star = GroupPool.star();
+    const cube = GroupPool.cube();
+    const circle = GroupPool.circle();
+    const cylinder = GroupPool.cylinder();
+    const bullet = GroupPool.bullet();
+    const explosion = GroupPool.explosion();
+    const rhombus = GroupPool.rhombus();
 
     star.removeChildren(0, star.members.length);
     cube.removeChildren(0, cube.members.length);
@@ -167,7 +167,7 @@ class GroupPool {
    */
   static forEachStar() {
     const context = GameState.current;
-    let pool = GroupPool.star();
+    const pool = GroupPool.star();
 
     pool.forEach(context, Helper.checkSpritePosition);
   }
@@ -177,7 +177,7 @@ class GroupPool {
    */
   static forEachCube() {
     const context = GameState.current;
-    let pool = GroupPool.cube();
+    const pool = GroupPool.cube();
 
     pool.forEach(context, (cube) => {
       Helper.updateSpriteRotation(cube, 5);
@@ -190,7 +190,7 @@ class GroupPool {
    */
   static forEachCylinder() {
     const context = GameState.current;
-    let pool = GroupPool.cylinder();
+    const pool = GroupPool.cylinder();
 
     pool.forEach(context, Helper.checkSpritePosition);
   }
@@ -200,8 +200,8 @@ class GroupPool {
    */
   static forEachCircle() {
     const context = GameState.current;
-    let pool = GroupPool.circle();
-    let myUnit = MyUnit.instance;
+    const pool = GroupPool.circle();
+    const myUnit = MyUnit.instance;
 
     pool.forEach(context, Helper.checkSpritePosition);
     pool.forEach(context, (circle) => {
@@ -215,8 +215,8 @@ class GroupPool {
   // TODO: !!!!! REMOVE !!!!!
   static forEachCircle() {
     const context = GameState.current;
-    let pool = GroupPool.circle();
-    let myUnit = MyUnit.instance;
+    const pool = GroupPool.circle();
+    const myUnit = MyUnit.instance;
 
     pool.forEach(context, Helper.checkSpritePosition);
     pool.forEach(context, (circle) => {
@@ -232,13 +232,13 @@ class GroupPool {
    */
   static forEachBullet() {
     const context = GameState.current;
-    let pool = GroupPool.bullet();
+    const pool = GroupPool.bullet();
 
     pool.forEach(context, Helper.checkSpritePosition);
     pool.members.map((member) => {
-      CollisionDelection.BulletCollideWithCube(member);
-      CollisionDelection.BulletCollideWithCircle(member);
-      CollisionDelection.BulletCollideWithCylinder(member);
+      CollisionDelection.bulletCollideWithCube(member);
+      CollisionDelection.bulletCollideWithCircle(member);
+      CollisionDelection.bulletCollideWithCylinder(member);
     });
   }
 
@@ -246,11 +246,10 @@ class GroupPool {
    * forEachExplosion() is function of forEach for explosionPool.
    */
   static forEachExplosion() {
-    const context = GameState.current;
-    let pool = GroupPool.explosion();
+    const pool = GroupPool.explosion();
 
     pool.members.map((member) => {
-      Explosion.isLastOfCellIndex(member)
+      Explosion.isLastOfCellIndex(member);
     });
   }
 
@@ -259,8 +258,8 @@ class GroupPool {
    */
   static forEachRhombusSplinter() {
     const context = GameState.current;
-    let pool = GroupPool.rhombusSplinter();
-    let myUnit = MyUnit.instance;
+    const pool = GroupPool.rhombusSplinter();
+    const myUnit = MyUnit.instance;
 
     pool.forEach(context, Helper.checkSpritePosition);
     pool.members.map((member) => {
@@ -272,9 +271,8 @@ class GroupPool {
    * forEachRhombus() is function of forEach for rhombusPool.
    */
   static forEachRhombus() {
-    const context = GameState.current;
-    let pool = GroupPool.rhombus();
-    let myUnit = MyUnit.instance;
+    const pool = GroupPool.rhombus();
+    const myUnit = MyUnit.instance;
 
     pool.members.map((member) => {
       myUnit.overlapOnOther(member);
@@ -291,12 +289,11 @@ class GroupPool {
       return false;
     }
 
-    if (group.state.config.name === context.config.name) {
-      return true;
-    }
-    else {
+    if (group.state.config.name !== context.config.name) {
       return false;
     }
+
+    return true;
   }
 
   /**

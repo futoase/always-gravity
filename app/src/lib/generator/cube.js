@@ -9,7 +9,7 @@ class CubeGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let cube = new Kiwi.GameObjects.Sprite(
+    const cube = new Kiwi.GameObjects.Sprite(
       context, context.textures.cube, -100, -100
     );
     cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);

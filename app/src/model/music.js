@@ -1,26 +1,12 @@
-let gameMusicContext = Symbol();
-let musicMain = Symbol();
-let musicGameOver = Symbol();
-let soundEffectOfBullet = Symbol();
-let soundEffectOfExplosion = Symbol();
-let soundEffectOfCautionForSpeed = Symbol();
-let soundEffectOfCircle = Symbol();
-let soundEffectOfMyUnitExplosion = Symbol();
+const musicMain = Symbol();
+const musicGameOver = Symbol();
+const soundEffectOfBullet = Symbol();
+const soundEffectOfExplosion = Symbol();
+const soundEffectOfCautionForSpeed = Symbol();
+const soundEffectOfCircle = Symbol();
+const soundEffectOfMyUnitExplosion = Symbol();
 
 class GameMusic {
-
-  /**
-   * initialize() is initialize settings of musics for Always-Gravity.
-   */
-  static initialize() {
-    GameMusic.main;
-    GameMusic.gameOver;
-    GameMusic.soundEffectOfBullet;
-    GameMusic.soundEffectOfExplosion;
-    GameMusic.soundEffectOfCautionForSpeed;
-    GameMusic.soundEffectOfCircle;
-    GameMusic.soundEffectOfMyUnitExplosion;
-  }
 
   /**
    * destroy() is remove all of musics for PlayState.
@@ -43,12 +29,11 @@ class GameMusic {
    */
   static get main() {
     const context = GameState.current;
-
     if (!this[musicMain]) {
       this[musicMain] = new Kiwi.Sound.Audio(
         context.game,
         'musicMain',
-        GAME_CONFIG.BASE_MUSIC_VOLUME_PER,
+        GameConfig.setting.BASE_MUSIC_VOLUME_PER,
         true
       );
     }
@@ -67,10 +52,11 @@ class GameMusic {
       this[musicGameOver] = new Kiwi.Sound.Audio(
         context.game,
         'musicGameover',
-        GAME_CONFIG.BASE_GAME_OVER_MUSIC_VOLUME_PER,
+        GameConfig.setting.BASE_GAME_OVER_MUSIC_VOLUME_PER,
         false
       );
     }
+
     return this[musicGameOver];
   }
 
@@ -86,7 +72,7 @@ class GameMusic {
       this[soundEffectOfBullet] = new Kiwi.Sound.Audio(
         context.game,
         'bullet-se',
-        GAME_CONFIG.BASE_LASER_VOLUME_PER,
+        GameConfig.setting.BASE_LASER_VOLUME_PER,
         false
       );
     }
@@ -105,7 +91,7 @@ class GameMusic {
       this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(
         context.game,
         'explosion-se',
-        GAME_CONFIG.BASE_EXPLOSION_VOLUME_PER,
+        GameConfig.setting.BASE_EXPLOSION_VOLUME_PER,
         false
       );
     }
@@ -124,7 +110,7 @@ class GameMusic {
       this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(
         context.game,
         'caution-of-speed-se',
-        GAME_CONFIG.BASE_CAUTION_VOLUME_PER,
+        GameConfig.setting.BASE_CAUTION_VOLUME_PER,
         false
       );
     }
@@ -143,7 +129,7 @@ class GameMusic {
       this[soundEffectOfCircle] = new Kiwi.Sound.Audio(
         context.game,
         'circle-se',
-        GAME_CONFIG.BASE_CIRCLE_VOLUME_PER,
+        GameConfig.setting.BASE_CIRCLE_VOLUME_PER,
         false
       );
     }
@@ -162,7 +148,7 @@ class GameMusic {
       this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(
         context.game,
         'explosion-myunit-se',
-        GAME_CONFIG.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
+        GameConfig.setting.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
         false
       );
     }

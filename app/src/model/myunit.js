@@ -1,5 +1,5 @@
-let myUnitSingleton = Symbol();
-let myUnitSingletonEnforcer = Symbol();
+const myUnitSingleton = Symbol();
+const myUnitSingletonEnforcer = Symbol();
 
 class MyUnit {
 
@@ -10,7 +10,7 @@ class MyUnit {
    */
   constructor(enforcer) {
     if (enforcer !== myUnitSingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 
@@ -88,9 +88,8 @@ class MyUnit {
    */
   create() {
     const context = GameState.current;
-    let myUnit;
 
-    myUnit = new Kiwi.GameObjects.Sprite(
+    const myUnit = new Kiwi.GameObjects.Sprite(
       context, context.textures.myUnit, 400, 300
     );
 
@@ -98,9 +97,9 @@ class MyUnit {
     myUnit.physics = myUnit.components.add(
       new Kiwi.Components.ArcadePhysics(myUnit, myUnit.box)
     );
-    myUnit.physics.maxVelocity = GAME_CONFIG.MAX_SPEED;
-    myUnit.physics.drag.x = GAME_CONFIG.DRAG;
-    myUnit.physics.drag.y = GAME_CONFIG.DRAG;
+    myUnit.physics.maxVelocity = GameConfig.setting.MAX_SPEED;
+    myUnit.physics.drag.x = GameConfig.setting.DRAG;
+    myUnit.physics.drag.y = GameConfig.setting.DRAG;
 
     this.sprite = myUnit;
 
@@ -116,18 +115,18 @@ class MyUnit {
     const context = GameState.current;
     const myUnit = this.sprite;
 
-    let hud = HUD.instance;
+    const hud = HUD.instance;
 
     if (!context.contains(myUnit) || context.isGameOver) {
       return;
     }
 
-    let isOverlap = myUnit.physics.overlaps(object);
-    let isOverlapOfRhombus = isOverlap && object.name == "rhombus";
+    const isOverlap = myUnit.physics.overlaps(object);
+    const isOverlapOfRhombus = isOverlap && (object.name === 'rhombus');
 
-    if (isOverlap && GAME_COUNTER.hitPoint >= 1) {
+    if (isOverlap && GameCounter.hitPoint >= 1) {
       Helper.revive(object);
-      GAME_COUNTER.hitPoint--;
+      GameCounter.hitPoint--;
       hud.hitPointBar.counter.current--;
       GroupPool.explosion().addChild(
         Explosion.generate(myUnit.x, myUnit.y)
@@ -135,8 +134,8 @@ class MyUnit {
       GameMusic.soundEffectOfMyUnitExplosion.play();
     }
 
-    if (isOverlapOfRhombus || GAME_COUNTER.hitPoint < 1) {
-      GAME_COUNTER.hitPoint = 0;
+    if (isOverlapOfRhombus || GameCounter.hitPoint < 1) {
+      GameCounter.hitPoint = 0;
       hud.hitPointBar.counter.current = 0;
       this.explosion();
     }
@@ -150,8 +149,7 @@ class MyUnit {
 
     if (context.myUnitExplosion === undefined) {
       context.myUnitExplosion = true;
-    }
-    else {
+    } else {
       return;
     }
 
@@ -188,19 +186,17 @@ class MyUnit {
    */
   _watchOfStatusForRotationKeys() {
     const context = GameState.current;
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
       return;
     }
 
     if (GameKey.activeLeftKey()) {
-      myUnit.physics.angularVelocity = -GAME_CONFIG.ROTATION_SPEED;
-    }
-    else if (GameKey.activeRightKey()) {
-      myUnit.physics.angularVelocity = GAME_CONFIG.ROTATION_SPEED;
-    }
-    else {
+      myUnit.physics.angularVelocity = -GameConfig.setting.ROTATION_SPEED;
+    } else if (GameKey.activeRightKey()) {
+      myUnit.physics.angularVelocity = GameConfig.setting.ROTATION_SPEED;
+    } else {
       myUnit.physics.angularVelocity = 0;
     }
   }
@@ -210,7 +206,7 @@ class MyUnit {
    */
   _watchOfStatusForVelocityKey() {
     const context = GameState.current;
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     if (context.myUnitExplosion !== undefined) {
       return;
@@ -218,15 +214,14 @@ class MyUnit {
 
     if (GameKey.activeUpKey()) {
       myUnit.physics.acceleration.x = (
-        Math.cos(myUnit.rotation) * GAME_CONFIG.ACCELERATION
+        Math.cos(myUnit.rotation) * GameConfig.setting.ACCELERATION
       );
       myUnit.physics.acceleration.y = (
-        Math.sin(myUnit.rotation) * GAME_CONFIG.ACCELERATION
+        Math.sin(myUnit.rotation) * GameConfig.setting.ACCELERATION
       );
       // Change sprite 'Engine on'.
       myUnit.cellIndex = 1;
-    }
-    else {
+    } else {
       myUnit.physics.acceleration.setTo(0, 0);
 
       // Change sprite 'Engine off'.
@@ -242,7 +237,7 @@ class MyUnit {
     const context = GameState.current;
     const stageWidth = context.game.stage.width;
     const stageHeight = context.game.stage.height;
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     if (myUnit.x > stageWidth) {
       myUnit.x = 0;
@@ -263,10 +258,10 @@ class MyUnit {
    */
   _updateGravity() {
     const context = GameState.current;
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     if (context.myUnitExplosion !== true) {
-      myUnit.physics.acceleration.y += GAME_CONFIG.GRAVITY;
+      myUnit.physics.acceleration.y += GameConfig.setting.GRAVITY;
     }
   }
 
@@ -274,7 +269,7 @@ class MyUnit {
    * _prop() is initialize position of MyUnit.
    */
   _prop() {
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     myUnit.physics.acceleration.x = 0;
     myUnit.physics.acceleration.y = 0;
@@ -286,10 +281,9 @@ class MyUnit {
    * _createMyUnitSplinter() is create the new sprite of MyUnitSplinter.
    */
   _createMyUnitSplinter() {
-    const context = GameState.current;
     const myUnit = this.sprite;
-    let myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
-    let angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_MYUNIT_SPLINTER);
+    const myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
+    const angleBase = Number(360 / GameConfig.setting.NUMBER_OF_MYUNIT_SPLINTER);
     let myUnitSplinterAngle = 0;
 
     myUnitSplinterMembers.forEach((splinterMember) => {
@@ -312,7 +306,7 @@ class MyUnit {
    */
   _remove() {
     const context = GameState.current;
-    let myUnit = this.sprite;
+    const myUnit = this.sprite;
 
     context.removeChild(myUnit);
   }
@@ -333,8 +327,7 @@ class MyUnit {
     context.game.time.clock.setInterval(() => {
       if (this.exposionCounter < 2) {
         this.explosionCounter += 1;
-      }
-      else {
+      } else {
         GameOver.execute();
       }
     }, 1000, context);

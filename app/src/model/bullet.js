@@ -1,4 +1,4 @@
-let lastBulletShootAt = Symbol();
+const lastBulletShootAt = Symbol();
 
 class Bullet {
 
@@ -12,17 +12,17 @@ class Bullet {
       this[lastBulletShootAt] = 0;
     }
 
-    let lastShootTime = (
+    const lastShootTime = (
       context.game.time.now() - this[lastBulletShootAt]
     );
 
-    if (lastShootTime < GAME_CONFIG.SHOOT_DELAY) {
+    if (lastShootTime < GameConfig.setting.SHOOT_DELAY) {
       return;
     }
 
     this[lastBulletShootAt] = context.game.time.now();
 
-    var bullet = Bullet.getFirstDeadBullet();
+    const bullet = Bullet.getFirstDeadBullet();
 
     if (bullet === null) {
       return;
@@ -30,7 +30,7 @@ class Bullet {
 
     bullet.alive = true;
 
-    let myUnit = MyUnit.instance;
+    const myUnit = MyUnit.instance;
 
     bullet.x = myUnit.sprite.x + myUnit.sprite.height * 0.5;
     bullet.y = myUnit.sprite.y + myUnit.sprite.width * 0.5;
@@ -38,10 +38,10 @@ class Bullet {
     bullet.rotation = myUnit.sprite.rotation;
 
     bullet.physics.velocity.x = (
-      Math.cos(bullet.rotation) * GAME_CONFIG.BULLET_SPEED
+      Math.cos(bullet.rotation) * GameConfig.setting.BULLET_SPEED
     );
     bullet.physics.velocity.y = (
-      Math.sin(bullet.rotation) * GAME_CONFIG.BULLET_SPEED
+      Math.sin(bullet.rotation) * GameConfig.setting.BULLET_SPEED
     );
 
     GameMusic.soundEffectOfBullet.stop();
@@ -55,9 +55,9 @@ class Bullet {
    * @return {null} null
    */
   static getFirstDeadBullet() {
-    let bulletMembers = GroupPool.bullet().members;
+    const bulletMembers = GroupPool.bullet().members;
     let i;
-    for(i = bulletMembers.length - 1; i >= 0; i--) {
+    for (i = bulletMembers.length - 1; i >= 0; i--) {
       if (bulletMembers[i].alive === false) {
         return bulletMembers[i];
       }
@@ -76,7 +76,7 @@ class Bullet {
     Bullet.deadBullet(bullet);
     Helper.revive(object);
     Bullet.playSoundEffectOfExplosion(volume);
-    GAME_COUNTER.gameScore += object.score;
+    GameCounter.gameScore += object.score;
   }
 
   /**
@@ -97,7 +97,7 @@ class Bullet {
    * @param {Number} volume
    */
   static playSoundEffectOfExplosion(volume) {
-    let se = GameMusic.soundEffectOfExplosion;
+    const se = GameMusic.soundEffectOfExplosion;
     se.stop();
     se.volume = volume;
     se.play();

@@ -1,5 +1,5 @@
-let timerSingleton = Symbol();
-let timerSingletonEnforcer = Symbol();
+const timerSingleton = Symbol();
+const timerSingletonEnforcer = Symbol();
 
 class Timer {
 
@@ -10,7 +10,7 @@ class Timer {
    */
   constructor(enforcer) {
     if (enforcer !== timerSingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 
@@ -79,12 +79,12 @@ class Timer {
       this.circleTimer,
       this.rhombusTimer,
       this.coutionSpeedSoundEffectTimer,
-      this.overTheLimitVelocityCountTimer
+      this.overTheLimitVelocityCountTimer,
     ];
 
-    timers.forEach((timer) =>
-      context.game.time.clock.removeTimer(timer)
-    );
+    timers.forEach((timer) => {
+      context.game.time.clock.removeTimer(timer);
+    });
   }
 
   /**
@@ -151,7 +151,7 @@ class Timer {
   createOverTheLimitVelocityCountTimer() {
     this.overTheLimitVelocityCountTimer = (
       this.setInterval(() => {
-        TimerVelocity.instance.overTheLimitCount()
+        TimerVelocity.instance.overTheLimitCount();
       }, 1000)
     );
   }

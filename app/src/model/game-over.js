@@ -1,4 +1,4 @@
-let gameOverStatus = Symbol();
+const gameOverStatus = Symbol();
 
 class GameOver {
 
@@ -17,7 +17,7 @@ class GameOver {
    * @param {Boolean} value
    */
   static set status(value) {
-    if (typeof value === "boolean") {
+    if (typeof value === 'boolean') {
       this[gameOverStatus] = value;
     }
   }
@@ -37,7 +37,7 @@ class GameOver {
     GameMusic.gameOver.play();
 
     context.addChild(GameText.createGameOver());
-    context.addChild(GameText.createScore(GAME_COUNTER.gameScore));
+    context.addChild(GameText.createScore(GameCounter.gameScore));
     context.addChild(GameText.createRestart());
     context.addChild(GameText.createExitGame());
 

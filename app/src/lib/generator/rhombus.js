@@ -9,7 +9,7 @@ class RhombusGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let rhombus = new Kiwi.GameObjects.Sprite(
+    const rhombus = new Kiwi.GameObjects.Sprite(
       context, context.textures.rhombus, -100, -100
     );
     rhombus.physics = rhombus.components.add(

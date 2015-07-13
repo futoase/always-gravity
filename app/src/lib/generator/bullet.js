@@ -9,7 +9,7 @@ class BulletGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let bullet = new Kiwi.GameObjects.Sprite(
+    const bullet = new Kiwi.GameObjects.Sprite(
       context, context.textures.bullet, -100, -100
     );
     bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);

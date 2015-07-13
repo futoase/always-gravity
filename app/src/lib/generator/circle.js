@@ -9,9 +9,9 @@ class CircleGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let circle = new Kiwi.GameObjects.Sprite(
+    const circle = new Kiwi.GameObjects.Sprite(
       context, context.textures.circle, -100, -100
-    )
+    );
     circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
     circle.anchorPointX = circle.width * 0.5;
     circle.anchorPointY = circle.height * 0.5;

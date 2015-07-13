@@ -1,10 +1,10 @@
-let gameStartKey = Symbol();
-let leftKey = Symbol();
-let rightKey = Symbol();
-let upKey = Symbol();
-let shootKey = Symbol();
-let exitKey = Symbol();
-let restartKey = Symbol();
+const gameStartKey = Symbol();
+const leftKey = Symbol();
+const rightKey = Symbol();
+const upKey = Symbol();
+const shootKey = Symbol();
+const exitKey = Symbol();
+const restartKey = Symbol();
 
 class GameKey {
 
@@ -99,8 +99,6 @@ class GameKey {
    * @return {Kiwi.Input.Key} upKey
    */
   static upKey() {
-    const context = GameState.current;
-
     if (!this[upKey]) {
       this[upKey] = this._getGameKey(Kiwi.Input.Keycodes.UP);
     }
@@ -122,8 +120,6 @@ class GameKey {
    * @return {Kiwi.Input.Key} shootKey
    */
   static shootKey() {
-    const context = GameState.current;
-
     if (!this[shootKey]) {
       this[shootKey] = this._getGameKey(Kiwi.Input.Keycodes.Z);
     }
@@ -167,7 +163,7 @@ class GameKey {
    */
   static restartKey() {
     if (!this[restartKey]) {
-      this[restartKey] = this._getGameKey(Kiwi.Input.Keycodes.R)
+      this[restartKey] = this._getGameKey(Kiwi.Input.Keycodes.R);
     }
     return this[restartKey];
   }

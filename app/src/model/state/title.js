@@ -6,7 +6,7 @@ class TitleState {
   static create() {
     Kiwi.State.prototype.create.call(this);
 
-    this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
+    this.game.stage.color = GameConfig.setting.STAGE_COLOR;
 
     GameState.instance.current = this;
 

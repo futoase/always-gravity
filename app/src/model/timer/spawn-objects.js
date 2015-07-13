@@ -1,5 +1,5 @@
-let timerSpawnObjectsSingleton = Symbol();
-let timerSpawnObjectsSingletonEnforcer = Symbol();
+const timerSpawnObjectsSingleton = Symbol();
+const timerSpawnObjectsSingletonEnforcer = Symbol();
 
 class TimerSpawnObjects {
 
@@ -10,7 +10,7 @@ class TimerSpawnObjects {
    */
   constructor(enforcer) {
     if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
-      throw "Cannot construct singleton!";
+      throw new Error('Cannot construct singleton!');
     }
   }
 
@@ -128,8 +128,7 @@ class TimerSpawnObjects {
           maxScale > sprite.scaleY) {
         sprite.scaleX += scaleBase;
         sprite.scaleY += scaleBase;
-      }
-      else {
+      } else {
         this._explosionRhombus(context, sprite);
         this._scaleDownRhombus(context, sprite);
       }
@@ -144,9 +143,8 @@ class TimerSpawnObjects {
    */
   _explosionRhombus(context, sprite) {
     const rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
-    const angleBase = Number(360 / GAME_CONFIG.NUMBER_OF_RHOMBUS_SPLINTER);
+    const angleBase = Number(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER);
     let rhombusSplinterAngle = 0;
-    let explosionCounter = 0;
 
     rhombusSplinterMembers.forEach((member) => {
       member.x = sprite.x;
@@ -183,8 +181,8 @@ class TimerSpawnObjects {
    * @param {Kiwi.GameObjects.Sprite} sprite
    */
   _tweenOfCircle(context, sprite) {
-    let tween = context.game.tweens.create(sprite);
-    let myUnit = MyUnit.instance;
+    const tween = context.game.tweens.create(sprite);
+    const myUnit = MyUnit.instance;
 
     tween.to(
       { x: myUnit.sprite.x },

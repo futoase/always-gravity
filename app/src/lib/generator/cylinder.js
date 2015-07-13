@@ -9,7 +9,7 @@ class CylinderGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let cylinder = new Kiwi.GameObjects.Sprite(
+    const cylinder = new Kiwi.GameObjects.Sprite(
       context, context.textures.cylinder, -100, -100
     );
     cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);

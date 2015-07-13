@@ -6,11 +6,10 @@ class PlayState {
   static create() {
     Kiwi.State.prototype.create.call(this);
 
-    this.game.stage.color = GAME_CONFIG.STAGE_COLOR;
+    this.game.stage.color = GameConfig.setting.STAGE_COLOR;
 
     GameState.instance.current = this;
 
-    GameMusic.initialize();
     GameMusic.main.play();
 
     HUD.initialize();
@@ -56,12 +55,11 @@ class PlayState {
    */
   static update() {
     Kiwi.State.prototype.update.call(this);
-    let myUnit = MyUnit.instance;
 
     MyUnit.update();
     HUD.update();
 
-    if (this.contains(myUnit.sprite) && GameKey.activeShootKey()) {
+    if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
       Bullet.shoot();
     }
 
@@ -72,7 +70,7 @@ class PlayState {
         ipc.sendSync('quit');
       }
 
-      if (GameKey.activeRestartKey()){
+      if (GameKey.activeRestartKey()) {
         window.location.reload(true);
       }
     }

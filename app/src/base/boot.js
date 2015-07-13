@@ -1,5 +1,8 @@
-let GAME_MAIN = new Kiwi.Game(
-  GAME_CONFIG.CONTAINER_ID, GAME_CONFIG.NAME, null, gameOptions
+const GAME_MAIN = new Kiwi.Game(
+  GameConfig.setting.CONTAINER_ID,
+  GameConfig.setting.NAME,
+  null,
+  GameConfig.kiwiOption
 );
 
 GAME_MAIN.states.addState(GameState.instance.title);

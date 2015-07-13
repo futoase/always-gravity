@@ -6,8 +6,8 @@ class CollisionDelection {
    *
    * @param {Kiwi.Sprite} bullet
    */
-  static BulletCollideWithCube(bullet) {
-    let members = GroupPool.cube().members;
+  static bulletCollideWithCube(bullet) {
+    const members = GroupPool.cube().members;
 
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
@@ -22,8 +22,8 @@ class CollisionDelection {
    *
    * @param {Kiwi.Sprite} bullet
    */
-  static BulletCollideWithCircle(bullet) {
-    let members = GroupPool.circle().members;
+  static bulletCollideWithCircle(bullet) {
+    const members = GroupPool.circle().members;
 
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
@@ -38,8 +38,8 @@ class CollisionDelection {
    *
    * @param {Kiwi.Sprite} bullet
    */
-  static BulletCollideWithCylinder(bullet) {
-    let members = GroupPool.cylinder().members;
+  static bulletCollideWithCylinder(bullet) {
+    const members = GroupPool.cylinder().members;
 
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {

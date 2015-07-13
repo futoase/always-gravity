@@ -4,6 +4,7 @@
   "parser": "babel-eslint",          // https://github.com/babel/babel-eslint
   "env": {                           // http://eslint.org/docs/user-guide/configuring.html#specifying-environments
     "browser": true,                 // browser global variables
+    "es6": true,
   },
   "ecmaFeatures": {
     "arrowFunctions": true,
@@ -42,9 +43,9 @@
     "no-shadow-restricted-names": 2, // http://eslint.org/docs/rules/no-shadow-restricted-names
     "no-unused-vars": [2, {          // http://eslint.org/docs/rules/no-unused-vars
       "vars": "local",
-      "args": "after-used"
+      "args": "none"
     }],
-    "no-use-before-define": 2,       // http://eslint.org/docs/rules/no-use-before-define
+    "no-use-before-define": 1,       // http://eslint.org/docs/rules/no-use-before-define
 
 /**
  * Possible errors
@@ -70,7 +71,7 @@
     "no-sparse-arrays": 2,           // http://eslint.org/docs/rules/no-sparse-arrays
     "no-unreachable": 2,             // http://eslint.org/docs/rules/no-unreachable
     "use-isnan": 2,                  // http://eslint.org/docs/rules/use-isnan
-    "block-scoped-var": 2,           // http://eslint.org/docs/rules/block-scoped-var
+    "block-scoped-var": 1,           // http://eslint.org/docs/rules/block-scoped-var
 
 /**
  * Best practices

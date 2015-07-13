@@ -1,15 +1,17 @@
-const gameOptions = {
-  width: 800,
-  height: 600
-};
+const GameConfig = {};
+const GameCounter = {};
 
 Kiwi.Log.display = false;
 
-const GAME_CONFIG = {
+GameConfig.kiwiOption = {
+  width: 800,
+  height: 600,
+};
+
+GameConfig.setting = {
   CONTAINER_ID: 'game-container',
   NAME: 'Always Glavity',
   STAGE_COLOR: '010101',
-  SHOOT_DELAY: 100,
   NUMBER_OF_STAR: 30,
   NUMBER_OF_CUBE: 5,
   NUMBER_OF_CYLINDER: 10,
@@ -38,11 +40,9 @@ const GAME_CONFIG = {
   BASE_CAUTION_VOLUME_PER: 2.0,
   BASE_CIRCLE_VOLUME_PER: 1.0,
   BASE_EXPLOSION_MYUNIT_VOLUME_PER: 1.0,
-}
+};
 
-let GAME_COUNTER = {
-  hitPoint: 5,
-  bullet: 0,
-  explosion: 0,
-  gameScore: 0,
-}
+GameCounter.hitPoint = 5;
+GameCounter.bullet = 0;
+GameCounter.explosion = 0;
+GameCounter.gameScore = 0;

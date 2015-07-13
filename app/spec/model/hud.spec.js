@@ -17,7 +17,7 @@ describe('HUD', () => {
       let velocityBar = HUD.instance.createVelocityBar();
       assert(velocityBar.objType() === 'BarWidget');
       assert(velocityBar.counter.min === 0);
-      assert(velocityBar.counter.max === GAME_CONFIG.LIMIT_VELOCITY);
+      assert(velocityBar.counter.max === GameConfig.setting.LIMIT_VELOCITY);
     });
   });
 
@@ -26,7 +26,7 @@ describe('HUD', () => {
       let hitPointBar = HUD.instance.createHitPointBar();
       assert(hitPointBar.objType() === 'BarWidget');
       assert(hitPointBar.counter.min === 0);
-      assert(hitPointBar.counter.max === GAME_CONFIG.LIMIT_HITPOINT);
+      assert(hitPointBar.counter.max === GameConfig.setting.LIMIT_HITPOINT);
     });
   });
 

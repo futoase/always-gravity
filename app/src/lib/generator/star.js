@@ -9,7 +9,7 @@ class StarGenerator {
   static create(index) {
     const context = GameState.current;
 
-    let star = new Kiwi.GameObjects.Sprite(
+    const star = new Kiwi.GameObjects.Sprite(
       context, context.textures.star, -100, -100
     );
     star.anchorPointX = star.width * 0.5;
@@ -19,10 +19,9 @@ class StarGenerator {
     );
     star.physics.acceleration.y = 1;
     star.x = Number(Math.random() * 800);
-    if (index < Number(GAME_CONFIG.NUMBER_OF_STAR / 3)) {
+    if (index < Number(GameConfig.setting.NUMBER_OF_STAR / 3)) {
       star.y = Number(Math.random() * 600);
-    }
-    else {
+    } else {
       star.y = -1 * Number(Math.random() * 200);
     }
     star.index = index;
