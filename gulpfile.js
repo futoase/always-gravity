@@ -7,9 +7,16 @@ var eslint = require('gulp-eslint');
 var packageJson = require('./app/package.json');
 
 gulp.task('eslint', function() {
-  return gulp.src(['app/src/**/*.js'])
-         .pipe(eslint({ useEslintrc: true }))
-         .pipe(eslint.failOnError());
+  return gulp.src([
+      './app/src/**/*.js'
+    ])
+    .pipe(eslint({
+      useEslintrc: true,
+      globals: {
+        "Kiwi": true
+      }
+    }))
+    .pipe(eslint.failOnError());
 });
 
 gulp.task('electron', function() {
