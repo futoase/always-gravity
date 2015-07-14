@@ -174,6 +174,119 @@ GameCounter.bullet = 0;
 GameCounter.explosion = 0;
 GameCounter.gameScore = 0;
 
+GameConfig.text = {
+  title: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 200,
+    text: 'Always Gravity',
+    color: '#ffffff',
+    size: 48,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  subTitle: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 270,
+    text: '常に重力',
+    color: '#ffffff',
+    size: 24,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  start: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 320,
+    text: 'START: SPACEBAR',
+    color: '#ffffff',
+    size: 20,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  quit: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 350,
+    text: 'QUIT: ESC',
+    color: '#ffffff',
+    size: 20,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  exitGame: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 380,
+    text: 'QUIT: ESC',
+    color: '#ffffff',
+    size: 20,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  gameOver: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 200,
+    text: 'GAME OVER',
+    color: '#ffffff',
+    size: 64,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  restart: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 350,
+    text: 'RESTART: R',
+    color: '#ffffff',
+    size: 20,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  scoreResults: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 280,
+    text: '',
+    color: '#ffffff',
+    size: 36,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  slowDownCount: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 250,
+    text: String(GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT),
+    color: '#ffffff',
+    size: 48,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  },
+  slowDown: {
+    x: (function () {
+      return GameConfig.kiwiOption.width / 2;
+    })(),
+    y: 200,
+    text: 'SLOW DOWN !!!',
+    color: '#ffffff',
+    size: 48,
+    weight: 'bold',
+    fontFamily: 'monospace'
+  }
+};
+
 var BulletGenerator = (function () {
   function BulletGenerator() {
     _classCallCheck(this, BulletGenerator);
@@ -791,7 +904,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textTitle]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'Always Gravity', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.title);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textTitle] = text;
       }
@@ -809,7 +922,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textSubTitle]) {
-        var text = new Kiwi.GameObjects.TextField(context, '常に重力', context.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.subTitle);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textSubTitle] = text;
       }
@@ -827,7 +940,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textStart]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'START: SPACEBAR', context.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.start);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textStart] = text;
       }
@@ -845,7 +958,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textQuit]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.quit);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textQuit] = text;
       }
@@ -863,7 +976,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textExitGame]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'QUIT: ESC', context.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.exitGame);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textExitGame] = text;
       }
@@ -881,7 +994,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textGameOver]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'GAME OVER', context.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.gameOver);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textGameOver] = text;
       }
@@ -899,7 +1012,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textRestart]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'RESTART: R', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.restart);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textRestart] = text;
       }
@@ -917,7 +1030,8 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textScore]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'SCORE: ' + score, context.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.scoreResults);
+        text.text = 'SCORE: ' + String(score);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textScore] = text;
       }
@@ -935,7 +1049,7 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textSlowDownCount]) {
-        var text = new Kiwi.GameObjects.TextField(context, GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape');
+        var text = this._createTextField(context, GameConfig.text.slowDownCount);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textSlowDownCount] = text;
       }
@@ -953,11 +1067,24 @@ var GameText = (function () {
       var context = GameState.current;
 
       if (!this[textSlowDown]) {
-        var text = new Kiwi.GameObjects.TextField(context, 'SLOW DOWN !!!', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace');
+        var text = this._createTextField(context, GameConfig.text.slowDown);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
         this[textSlowDown] = text;
       }
       return this[textSlowDown];
+    }
+  }, {
+    key: '_createTextField',
+
+    /**
+     * _createTextField() is return a new TextField.
+     *
+     * @param {Kiwi.State} context
+     * @param {Object} config
+     * @return {Kiwi.GameObjects.TextField}
+     */
+    value: function _createTextField(context, config) {
+      return new Kiwi.GameObjects.TextField(context, config.text, config.x, config.y, config.color, config.size, config.weight, config.fontFamily);
     }
   }, {
     key: 'title',

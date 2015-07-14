@@ -44,9 +44,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textTitle]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'Always Gravity', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace'
-  );
+      const text = this._createTextField(context, GameConfig.text.title);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textTitle] = text;
     }
@@ -71,9 +69,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textSubTitle]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, '常に重力', context.game.stage.width / 2, 270, '#ffffff', 24, 'bold', 'monospace'
-      );
+      const text = this._createTextField(context, GameConfig.text.subTitle);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textSubTitle] = text;
     }
@@ -98,9 +94,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textStart]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'START: SPACEBAR', context.game.stage.width / 2, 320, '#ffffff', 20, 'bold', 'monospace'
-      );
+      const text = this._createTextField(context, GameConfig.text.start);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textStart] = text;
     }
@@ -125,9 +119,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textQuit]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'QUIT: ESC', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace'
-      );
+      const text = this._createTextField(context, GameConfig.text.quit);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textQuit] = text;
     }
@@ -152,9 +144,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textExitGame]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'QUIT: ESC', context.game.stage.width / 2, 380, '#ffffff', 20, 'bold', 'monospace'
-      );
+      const text = this._createTextField(context, GameConfig.text.exitGame);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textExitGame] = text;
     }
@@ -170,9 +160,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textGameOver]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'GAME OVER', context.game.stage.width / 2, 200, '#ffffff', 64, 'bold', 'monospace'
-  );
+      const text = this._createTextField(context, GameConfig.text.gameOver);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textGameOver] = text;
     }
@@ -188,9 +176,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textRestart]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'RESTART: R', context.game.stage.width / 2, 350, '#ffffff', 20, 'bold', 'monospace'
-  );
+      const text = this._createTextField(context, GameConfig.text.restart);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textRestart] = text;
     }
@@ -206,9 +192,8 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textScore]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'SCORE: ' + score, context.game.stage.width / 2, 280, '#ffffff', 36, 'bold', 'monospace'
-      );
+      const text = this._createTextField(context, GameConfig.text.scoreResults);
+      text.text = 'SCORE: ' + String(score);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textScore] = text;
     }
@@ -224,9 +209,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textSlowDownCount]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT, context.game.stage.width / 2, 250, '#ffffff', 48, 'bold', 'monoscape'
-  );
+      const text = this._createTextField(context, GameConfig.text.slowDownCount);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textSlowDownCount] = text;
     }
@@ -260,9 +243,7 @@ class GameText {
     const context = GameState.current;
 
     if (!this[textSlowDown]) {
-      const text = new Kiwi.GameObjects.TextField(
-        context, 'SLOW DOWN !!!', context.game.stage.width / 2, 200, '#ffffff', 48, 'bold', 'monospace'
-  );
+      const text = this._createTextField(context, GameConfig.text.slowDown);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
       this[textSlowDown] = text;
     }
@@ -276,6 +257,26 @@ class GameText {
    */
   static get slowDown() {
     return this[textSlowDown];
+  }
+
+  /**
+   * _createTextField() is return a new TextField.
+   *
+   * @param {Kiwi.State} context
+   * @param {Object} config
+   * @return {Kiwi.GameObjects.TextField}
+   */
+  static _createTextField(context, config) {
+    return new Kiwi.GameObjects.TextField(
+      context,
+      config.text,
+      config.x,
+      config.y,
+      config.color,
+      config.size,
+      config.weight,
+      config.fontFamily
+    );
   }
 
 }

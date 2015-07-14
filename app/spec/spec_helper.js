@@ -84,6 +84,19 @@ testState.textures = {
   explosion: TestTextureLoader.explosion()
 };
 
+const GameTestConfig = {};
+GameTestConfig.text = {
+  test: {
+    x: 100,
+    y: 200,
+    text: 'test text',
+    color: '#f0f0f0',
+    size: 123,
+    weight: 'bold',
+    fontFamily: 'fantasy'
+  }
+};
+
 GameState.instance.current = testState;
 
 GAME_MAIN.states.addState(testState);
