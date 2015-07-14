@@ -7,12 +7,10 @@ var eslint = require('gulp-eslint');
 var del = require('del');
 var packageJson = require('./app/package.json');
 
-gulp.task('clean', ['clean:tmp']);
-
-gulp.task('clean:tmp', function(cb) {
+gulp.task('clean', ['eslint'], function(done) {
   del([
     './tmp',
-  ], cb);
+  ], done);
 });
 
 gulp.task('eslint', function() {
@@ -39,7 +37,7 @@ gulp.task('eslint', function() {
 });
 
 gulp.task('electron', function() {
-  gulp.src('')
+  return gulp.src('')
     .pipe(electron({
       src: './app',
       packageJson: packageJson,
@@ -61,7 +59,7 @@ gulp.task('electron', function() {
     .pipe(gulp.dest(''));
 });
 
-gulp.task('concat', function(cb){
+gulp.task('concat', function(){
   return gulp.src([
     './app/src/base/helper.js',
     './app/src/base/config.js',
@@ -71,11 +69,11 @@ gulp.task('concat', function(cb){
   ])
   .pipe(concat('game.js'))
   .pipe(babel())
-  .pipe(gulp.dest('./app/dest/'))
+  .pipe(gulp.dest('./app/dest/'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('app/src/**/**.js', ['eslint', 'cleanup', 'concat']);
+  gulp.watch('app/src/**/**.js', ['eslint', 'concat', 'clean']);
 });
 
 gulp.task('default', ['watch']);
