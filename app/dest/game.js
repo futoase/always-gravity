@@ -130,6 +130,11 @@ var GameCounter = {};
 
 Kiwi.Log.display = false;
 
+GameCounter.hitPoint = 5;
+GameCounter.bullet = 0;
+GameCounter.explosion = 0;
+GameCounter.gameScore = 0;
+
 GameConfig.kiwiOption = {
   width: 800,
   height: 600
@@ -168,11 +173,6 @@ GameConfig.setting = {
   BASE_CIRCLE_VOLUME_PER: 1.0,
   BASE_EXPLOSION_MYUNIT_VOLUME_PER: 1.0
 };
-
-GameCounter.hitPoint = 5;
-GameCounter.bullet = 0;
-GameCounter.explosion = 0;
-GameCounter.gameScore = 0;
 
 GameConfig.text = {
   title: {
