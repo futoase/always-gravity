@@ -545,6 +545,315 @@ var StarGenerator = (function () {
   return StarGenerator;
 })();
 
+var timerSpawnObjectsSingleton = Symbol();
+var timerSpawnObjectsSingletonEnforcer = Symbol();
+
+var TimerSpawnObjects = (function () {
+
+  /**
+   * constructor for TimerSpawnObjects.
+   *
+   * @param {Symbol} enforcer
+   */
+
+  function TimerSpawnObjects(enforcer) {
+    _classCallCheck(this, TimerSpawnObjects);
+
+    if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
+      throw new Error('Cannot construct singleton!');
+    }
+  }
+
+  _createClass(TimerSpawnObjects, [{
+    key: 'circle',
+
+    /**
+     * circle() is spawn object of circle.
+     */
+    value: function circle() {
+      var _this = this;
+
+      var context = GameState.current;
+
+      Helper.strewnSprite(Helper.getMember(GroupPool.circle().members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
+        _this._tweenOfCircle(context, sprite);
+      });
+    }
+  }, {
+    key: 'cube',
+
+    /**
+     * cube() is spawn object of cube.
+     */
+    value: function cube() {
+      var context = GameState.current;
+
+      Helper.strewnSprite(Helper.getMember(GroupPool.cube().members), { y: context.game.stage.height }, { y: 5 });
+    }
+  }, {
+    key: 'cylinder',
+
+    /**
+     * cylinder() is spawn object of cylinder.
+     */
+    value: function cylinder() {
+      var context = GameState.current;
+
+      Helper.strewnSprite(Helper.getMember(GroupPool.cylinder().members), { y: context.game.stage.height }, { y: 10 });
+    }
+  }, {
+    key: 'star',
+
+    /**
+     * star() is spawn object of star.
+     */
+    value: function star() {
+      var context = GameState.current;
+
+      Helper.strewnSprite(Helper.getMember(GroupPool.star().members), { y: context.game.stage.height }, { y: 3 });
+    }
+  }, {
+    key: 'rhombus',
+
+    /**
+     * rhombus() is spawn object of rhombus.
+     */
+    value: function rhombus() {
+      var _this2 = this;
+
+      var context = GameState.current;
+
+      if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
+        context.isSpawnSpriteOfRhombusSplinter = false;
+      }
+
+      if (parseInt(Math.random() * 100, 10) === 0) {
+        context.isSpawnSpriteOfRhombusSplinter = true;
+      }
+
+      if (context.isSpawnSpriteOfRhombusSplinter) {
+        Helper.strewnSprite(Helper.getMember(GroupPool.rhombus().members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
+          _this2._scaleUpRhombus(context, sprite);
+        }, { revive: false });
+      }
+    }
+  }, {
+    key: '_scaleUpRhombus',
+
+    /**
+     * _scaleUpRhombus a scale up of size for rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
+    value: function _scaleUpRhombus(context, sprite) {
+      var spriteBottomLeftPoint = sprite.y + sprite.height;
+      var standingPoint = context.game.stage.height / 2 - sprite.height;
+      var maxScale = 5;
+      var scaleBase = 0.05;
+
+      if (spriteBottomLeftPoint >= standingPoint) {
+        sprite.physics.acceleration.y = 0;
+        sprite.physics.velocity.y = 0;
+
+        if (maxScale > sprite.scaleX && maxScale > sprite.scaleY) {
+          sprite.scaleX += scaleBase;
+          sprite.scaleY += scaleBase;
+        } else {
+          this._explosionRhombus(context, sprite);
+          this._scaleDownRhombus(context, sprite);
+        }
+      }
+    }
+  }, {
+    key: '_explosionRhombus',
+
+    /**
+     * _explosionRhombus a new create of rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
+    value: function _explosionRhombus(context, sprite) {
+      var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
+      var angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER, 10);
+      var rhombusSplinterAngle = 0;
+
+      rhombusSplinterMembers.forEach(function (member) {
+        member.x = sprite.x;
+        member.y = sprite.y;
+
+        member.physics.velocity.x = Math.cos(Helper.radian(rhombusSplinterAngle)) * 30;
+        member.physics.velocity.y = Math.sin(Helper.radian(rhombusSplinterAngle)) * 30;
+
+        rhombusSplinterAngle += angleBase;
+      });
+    }
+  }, {
+    key: '_scaleDownRhombus',
+
+    /**
+     * _scaleDownRhombus a scale down of size for rhombus.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
+    value: function _scaleDownRhombus(context, sprite) {
+      sprite.scaleX = 1;
+      sprite.scaleY = 1;
+      Helper.revive(sprite);
+      context.isSpawnSpinterOfRhombusSplinter = false;
+    }
+  }, {
+    key: '_tweenOfCircle',
+
+    /**
+     * _tweenOfCircle is added of tween action to the circle.
+     *
+     * @param {Kiwi.State} context
+     * @param {Kiwi.GameObjects.Sprite} sprite
+     */
+    value: function _tweenOfCircle(context, sprite) {
+      var tween = context.game.tweens.create(sprite);
+      var myUnit = MyUnit.instance;
+
+      tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
+      tween.start();
+    }
+  }], [{
+    key: 'instance',
+
+    /**
+     * get() is return a instance of TimerSpawnObjects.
+     *
+     * @return {TimerSpawnObjects}
+     */
+    get: function get() {
+      if (!this[timerSpawnObjectsSingleton]) {
+        this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
+      }
+      return this[timerSpawnObjectsSingleton];
+    }
+  }]);
+
+  return TimerSpawnObjects;
+})();
+
+var timerVelocitySingleton = Symbol();
+var timerVelocitySingletonEnforcer = Symbol();
+
+var TimerVelocity = (function () {
+
+  /**
+   * constructor for TimerVelocity.
+   *
+   * @param {Symbol} enforcer
+   */
+
+  function TimerVelocity(enforcer) {
+    _classCallCheck(this, TimerVelocity);
+
+    if (enforcer !== timerVelocitySingletonEnforcer) {
+      throw new Error('Cannot construct singleton!');
+    }
+  }
+
+  _createClass(TimerVelocity, [{
+    key: 'overTheLimitCount',
+
+    /**
+     * overTheLimitCount() is observe of speed for myunit.
+     */
+    value: function overTheLimitCount() {
+      var context = GameState.current;
+
+      var myUnit = MyUnit.instance;
+      var hud = HUD.instance;
+
+      if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY) {
+        if (context.contains(GameText.slowDownCount)) {
+          GameText.slowDownCount = GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
+        }
+        this.overTheLimitVelocityCounter += 1;
+      } else {
+        this.overTheLimitVelocityCounter = 0;
+        GameText.slowDownCount = GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT;
+      }
+
+      if (this.overTheLimitVelocityCounter > GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT) {
+        myUnit.explosion();
+      }
+    }
+  }, {
+    key: 'speedLimit',
+
+    /**
+     * speedLimit() is over the limit of speed when display of slow-down.
+     */
+    value: function speedLimit() {
+      var context = GameState.current;
+      var hud = HUD.instance;
+
+      if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY * 0.95) {
+        GameMusic.soundEffectOfCautionForSpeed.play();
+        if (!context.contains(GameText.slowDown)) {
+          context.addChild(GameText.slowDown);
+        }
+        if (!context.contains(GameText.slowDownCount)) {
+          context.addChild(GameText.slowDownCount);
+        }
+      } else {
+        GameMusic.soundEffectOfCautionForSpeed.stop();
+        if (context.contains(GameText.slowDown)) {
+          context.removeChild(GameText.slowDown);
+        }
+        if (context.contains(GameText.slowDownCount)) {
+          context.removeChild(GameText.slowDownCount);
+        }
+      }
+    }
+  }, {
+    key: 'overTheVelocityCounter',
+
+    /**
+     * Getter for overTheVelocityCounter.
+     *
+     * @return {Number} this._overTheVelocityCounter
+     */
+    get: function get() {
+      if (this._overTheVelocityCounter === undefined) {
+        this._overTheVelocityCounter = 0;
+      }
+      return this._overTheVelocityCounter;
+    },
+
+    /**
+     * Setter for overTheVelocityCounter.
+     *
+     * @param {Number} value
+     */
+    set: function set(value) {
+      this._overTheVelocityCounter = value;
+    }
+  }], [{
+    key: 'instance',
+
+    /**
+     * get() is return a instance of TimerVelocity.
+     *
+     * @return {TimerVelocity}
+     */
+    get: function get() {
+      if (!this[timerVelocitySingleton]) {
+        this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);
+      }
+      return this[timerVelocitySingleton];
+    }
+  }]);
+
+  return TimerVelocity;
+})();
+
 var lastBulletShootAt = Symbol();
 
 var Bullet = (function () {
@@ -1521,6 +1830,13 @@ var groupSingleton = Symbol();
 var groupSingletonEnforcer = Symbol();
 
 var Group = (function () {
+
+  /**
+   * constructor for Group.
+   *
+   * @param {Symbol} enforcer
+   */
+
   function Group(enforcer) {
     _classCallCheck(this, Group);
 
@@ -1531,6 +1847,10 @@ var Group = (function () {
 
   _createClass(Group, [{
     key: 'star',
+
+    /**
+     * star() is generate of sprite for star.
+     */
     value: function star() {
       var context = GameState.current;
       var pool = GroupPool.star();
@@ -1543,6 +1863,10 @@ var Group = (function () {
     }
   }, {
     key: 'cube',
+
+    /**
+     * cube() is generate of sprite for cube.
+     */
     value: function cube() {
       var context = GameState.current;
       var pool = GroupPool.cube();
@@ -1555,6 +1879,10 @@ var Group = (function () {
     }
   }, {
     key: 'circle',
+
+    /**
+     * circle() is generate of sprite for circle.
+     */
     value: function circle() {
       var context = GameState.current;
       var pool = GroupPool.circle();
@@ -1567,6 +1895,10 @@ var Group = (function () {
     }
   }, {
     key: 'bullet',
+
+    /**
+     * bullet() is generate of sprite for bullet.
+     */
     value: function bullet() {
       var context = GameState.current;
       var pool = GroupPool.bullet();
@@ -1579,6 +1911,10 @@ var Group = (function () {
     }
   }, {
     key: 'cylinder',
+
+    /**
+     * cylinder() is generate of sprite for cylinder.
+     */
     value: function cylinder() {
       var context = GameState.current;
       var pool = GroupPool.cylinder();
@@ -1591,6 +1927,10 @@ var Group = (function () {
     }
   }, {
     key: 'myUnitSplinter',
+
+    /**
+     * myUnitSplinter() is generate of sprite for MyUnitSplinter.
+     */
     value: function myUnitSplinter() {
       var context = GameState.current;
       var pool = GroupPool.myUnitSplinter();
@@ -1603,6 +1943,10 @@ var Group = (function () {
     }
   }, {
     key: 'rhombusSplinter',
+
+    /**
+     * rhombusSplinter() is generate of sprite for RhombusSplinter.
+     */
     value: function rhombusSplinter() {
       var context = GameState.current;
       var pool = GroupPool.rhombusSplinter();
@@ -1615,6 +1959,10 @@ var Group = (function () {
     }
   }, {
     key: 'rhombus',
+
+    /**
+     * rhombus() is generate of sprite for Rhombus.
+     */
     value: function rhombus() {
       var context = GameState.current;
       var pool = GroupPool.rhombus();
@@ -1627,12 +1975,20 @@ var Group = (function () {
     }
   }, {
     key: 'explosion',
+
+    /**
+     * explosion() is generate of sprite for Explosion.
+     */
     value: function explosion() {
       var context = GameState.current;
       context.addChild(GroupPool.explosion());
     }
   }], [{
     key: 'initialize',
+
+    /**
+     * initialize() is initialized groups for game.
+     */
     value: function initialize() {
       var group = Group.instance;
       group.star();
@@ -1647,6 +2003,12 @@ var Group = (function () {
     }
   }, {
     key: 'instance',
+
+    /**
+     * get() is return a instance of Group.
+     *
+     * @return {Group}
+     */
     get: function get() {
       if (!this[groupSingleton]) {
         this[groupSingleton] = new Group(groupSingletonEnforcer);
@@ -2508,13 +2870,13 @@ var MyUnit = (function () {
      * _startCountUpOfExplosion() is create animation ticker of explosion.
      */
     value: function _startCountUpOfExplosion() {
-      var _this = this;
+      var _this3 = this;
 
       var context = GameState.current;
 
       context.game.time.clock.setInterval(function () {
-        if (_this.exposionCounter < 2) {
-          _this.explosionCounter += 1;
+        if (_this3.exposionCounter < 2) {
+          _this3.explosionCounter += 1;
         } else {
           GameOver.execute();
         }
@@ -3030,315 +3392,6 @@ var TitleState = (function () {
 GameState.instance.title.create = TitleState.create;
 GameState.instance.title.preload = TitleState.preload;
 GameState.instance.title.update = TitleState.update;
-
-var timerSpawnObjectsSingleton = Symbol();
-var timerSpawnObjectsSingletonEnforcer = Symbol();
-
-var TimerSpawnObjects = (function () {
-
-  /**
-   * constructor for TimerSpawnObjects.
-   *
-   * @param {Symbol} enforcer
-   */
-
-  function TimerSpawnObjects(enforcer) {
-    _classCallCheck(this, TimerSpawnObjects);
-
-    if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
-      throw new Error('Cannot construct singleton!');
-    }
-  }
-
-  _createClass(TimerSpawnObjects, [{
-    key: 'circle',
-
-    /**
-     * circle() is spawn object of circle.
-     */
-    value: function circle() {
-      var _this2 = this;
-
-      var context = GameState.current;
-
-      Helper.strewnSprite(Helper.getMember(GroupPool.circle().members), { y: context.game.stage.height }, { y: 2 }, function (sprite) {
-        _this2._tweenOfCircle(context, sprite);
-      });
-    }
-  }, {
-    key: 'cube',
-
-    /**
-     * cube() is spawn object of cube.
-     */
-    value: function cube() {
-      var context = GameState.current;
-
-      Helper.strewnSprite(Helper.getMember(GroupPool.cube().members), { y: context.game.stage.height }, { y: 5 });
-    }
-  }, {
-    key: 'cylinder',
-
-    /**
-     * cylinder() is spawn object of cylinder.
-     */
-    value: function cylinder() {
-      var context = GameState.current;
-
-      Helper.strewnSprite(Helper.getMember(GroupPool.cylinder().members), { y: context.game.stage.height }, { y: 10 });
-    }
-  }, {
-    key: 'star',
-
-    /**
-     * star() is spawn object of star.
-     */
-    value: function star() {
-      var context = GameState.current;
-
-      Helper.strewnSprite(Helper.getMember(GroupPool.star().members), { y: context.game.stage.height }, { y: 3 });
-    }
-  }, {
-    key: 'rhombus',
-
-    /**
-     * rhombus() is spawn object of rhombus.
-     */
-    value: function rhombus() {
-      var _this3 = this;
-
-      var context = GameState.current;
-
-      if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
-        context.isSpawnSpriteOfRhombusSplinter = false;
-      }
-
-      if (parseInt(Math.random() * 100, 10) === 0) {
-        context.isSpawnSpriteOfRhombusSplinter = true;
-      }
-
-      if (context.isSpawnSpriteOfRhombusSplinter) {
-        Helper.strewnSprite(Helper.getMember(GroupPool.rhombus().members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
-          _this3._scaleUpRhombus(context, sprite);
-        }, { revive: false });
-      }
-    }
-  }, {
-    key: '_scaleUpRhombus',
-
-    /**
-     * _scaleUpRhombus a scale up of size for rhombus.
-     *
-     * @param {Kiwi.State} context
-     * @param {Kiwi.GameObjects.Sprite} sprite
-     */
-    value: function _scaleUpRhombus(context, sprite) {
-      var spriteBottomLeftPoint = sprite.y + sprite.height;
-      var standingPoint = context.game.stage.height / 2 - sprite.height;
-      var maxScale = 5;
-      var scaleBase = 0.05;
-
-      if (spriteBottomLeftPoint >= standingPoint) {
-        sprite.physics.acceleration.y = 0;
-        sprite.physics.velocity.y = 0;
-
-        if (maxScale > sprite.scaleX && maxScale > sprite.scaleY) {
-          sprite.scaleX += scaleBase;
-          sprite.scaleY += scaleBase;
-        } else {
-          this._explosionRhombus(context, sprite);
-          this._scaleDownRhombus(context, sprite);
-        }
-      }
-    }
-  }, {
-    key: '_explosionRhombus',
-
-    /**
-     * _explosionRhombus a new create of rhombus.
-     *
-     * @param {Kiwi.State} context
-     * @param {Kiwi.GameObjects.Sprite} sprite
-     */
-    value: function _explosionRhombus(context, sprite) {
-      var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
-      var angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER, 10);
-      var rhombusSplinterAngle = 0;
-
-      rhombusSplinterMembers.forEach(function (member) {
-        member.x = sprite.x;
-        member.y = sprite.y;
-
-        member.physics.velocity.x = Math.cos(Helper.radian(rhombusSplinterAngle)) * 30;
-        member.physics.velocity.y = Math.sin(Helper.radian(rhombusSplinterAngle)) * 30;
-
-        rhombusSplinterAngle += angleBase;
-      });
-    }
-  }, {
-    key: '_scaleDownRhombus',
-
-    /**
-     * _scaleDownRhombus a scale down of size for rhombus.
-     *
-     * @param {Kiwi.State} context
-     * @param {Kiwi.GameObjects.Sprite} sprite
-     */
-    value: function _scaleDownRhombus(context, sprite) {
-      sprite.scaleX = 1;
-      sprite.scaleY = 1;
-      Helper.revive(sprite);
-      context.isSpawnSpinterOfRhombusSplinter = false;
-    }
-  }, {
-    key: '_tweenOfCircle',
-
-    /**
-     * _tweenOfCircle is added of tween action to the circle.
-     *
-     * @param {Kiwi.State} context
-     * @param {Kiwi.GameObjects.Sprite} sprite
-     */
-    value: function _tweenOfCircle(context, sprite) {
-      var tween = context.game.tweens.create(sprite);
-      var myUnit = MyUnit.instance;
-
-      tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
-      tween.start();
-    }
-  }], [{
-    key: 'instance',
-
-    /**
-     * get() is return a instance of TimerSpawnObjects.
-     *
-     * @return {TimerSpawnObjects}
-     */
-    get: function get() {
-      if (!this[timerSpawnObjectsSingleton]) {
-        this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
-      }
-      return this[timerSpawnObjectsSingleton];
-    }
-  }]);
-
-  return TimerSpawnObjects;
-})();
-
-var timerVelocitySingleton = Symbol();
-var timerVelocitySingletonEnforcer = Symbol();
-
-var TimerVelocity = (function () {
-
-  /**
-   * constructor for TimerVelocity.
-   *
-   * @param {Symbol} enforcer
-   */
-
-  function TimerVelocity(enforcer) {
-    _classCallCheck(this, TimerVelocity);
-
-    if (enforcer !== timerVelocitySingletonEnforcer) {
-      throw new Error('Cannot construct singleton!');
-    }
-  }
-
-  _createClass(TimerVelocity, [{
-    key: 'overTheLimitCount',
-
-    /**
-     * overTheLimitCount() is observe of speed for myunit.
-     */
-    value: function overTheLimitCount() {
-      var context = GameState.current;
-
-      var myUnit = MyUnit.instance;
-      var hud = HUD.instance;
-
-      if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY) {
-        if (context.contains(GameText.slowDownCount)) {
-          GameText.slowDownCount = GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT - this.overTheLimitVelocityCounter;
-        }
-        this.overTheLimitVelocityCounter += 1;
-      } else {
-        this.overTheLimitVelocityCounter = 0;
-        GameText.slowDownCount = GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT;
-      }
-
-      if (this.overTheLimitVelocityCounter > GameConfig.setting.LIMIT_VELOCITY_MAX_COUNT) {
-        myUnit.explosion();
-      }
-    }
-  }, {
-    key: 'speedLimit',
-
-    /**
-     * speedLimit() is over the limit of speed when display of slow-down.
-     */
-    value: function speedLimit() {
-      var context = GameState.current;
-      var hud = HUD.instance;
-
-      if (hud.velocityBar.counter.current >= GameConfig.setting.LIMIT_VELOCITY * 0.95) {
-        GameMusic.soundEffectOfCautionForSpeed.play();
-        if (!context.contains(GameText.slowDown)) {
-          context.addChild(GameText.slowDown);
-        }
-        if (!context.contains(GameText.slowDownCount)) {
-          context.addChild(GameText.slowDownCount);
-        }
-      } else {
-        GameMusic.soundEffectOfCautionForSpeed.stop();
-        if (context.contains(GameText.slowDown)) {
-          context.removeChild(GameText.slowDown);
-        }
-        if (context.contains(GameText.slowDownCount)) {
-          context.removeChild(GameText.slowDownCount);
-        }
-      }
-    }
-  }, {
-    key: 'overTheVelocityCounter',
-
-    /**
-     * Getter for overTheVelocityCounter.
-     *
-     * @return {Number} this._overTheVelocityCounter
-     */
-    get: function get() {
-      if (this._overTheVelocityCounter === undefined) {
-        this._overTheVelocityCounter = 0;
-      }
-      return this._overTheVelocityCounter;
-    },
-
-    /**
-     * Setter for overTheVelocityCounter.
-     *
-     * @param {Number} value
-     */
-    set: function set(value) {
-      this._overTheVelocityCounter = value;
-    }
-  }], [{
-    key: 'instance',
-
-    /**
-     * get() is return a instance of TimerVelocity.
-     *
-     * @return {TimerVelocity}
-     */
-    get: function get() {
-      if (!this[timerVelocitySingleton]) {
-        this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);
-      }
-      return this[timerVelocitySingleton];
-    }
-  }]);
-
-  return TimerVelocity;
-})();
 
 var GAME_MAIN = new Kiwi.Game(GameConfig.setting.CONTAINER_ID, GameConfig.setting.NAME, null, GameConfig.kiwiOption);
 

@@ -3,12 +3,22 @@ const groupSingletonEnforcer = Symbol();
 
 class Group {
 
+  /**
+   * constructor for Group.
+   *
+   * @param {Symbol} enforcer
+   */
   constructor(enforcer) {
     if (enforcer !== groupSingletonEnforcer) {
       throw new Error('Cannot constructor singleton!');
     }
   }
 
+  /**
+   * get() is return a instance of Group.
+   *
+   * @return {Group}
+   */
   static get instance() {
     if (!this[groupSingleton]) {
       this[groupSingleton] = new Group(groupSingletonEnforcer);
@@ -16,6 +26,9 @@ class Group {
     return this[groupSingleton];
   }
 
+  /**
+   * initialize() is initialized groups for game.
+   */
   static initialize() {
     const group = Group.instance;
     group.star();
@@ -29,6 +42,9 @@ class Group {
     group.explosion();
   }
 
+  /**
+   * star() is generate of sprite for star.
+   */
   star() {
     const context = GameState.current;
     const pool = GroupPool.star();
@@ -40,6 +56,9 @@ class Group {
     }
   }
 
+  /**
+   * cube() is generate of sprite for cube.
+   */
   cube() {
     const context = GameState.current;
     const pool = GroupPool.cube();
@@ -51,6 +70,9 @@ class Group {
     }
   }
 
+  /**
+   * circle() is generate of sprite for circle.
+   */
   circle() {
     const context = GameState.current;
     const pool = GroupPool.circle();
@@ -62,6 +84,9 @@ class Group {
     }
   }
 
+  /**
+   * bullet() is generate of sprite for bullet.
+   */
   bullet() {
     const context = GameState.current;
     const pool = GroupPool.bullet();
@@ -73,6 +98,9 @@ class Group {
     }
   }
 
+  /**
+   * cylinder() is generate of sprite for cylinder.
+   */
   cylinder() {
     const context = GameState.current;
     const pool = GroupPool.cylinder();
@@ -84,6 +112,9 @@ class Group {
     }
   }
 
+  /**
+   * myUnitSplinter() is generate of sprite for MyUnitSplinter.
+   */
   myUnitSplinter() {
     const context = GameState.current;
     const pool = GroupPool.myUnitSplinter();
@@ -95,6 +126,9 @@ class Group {
     }
   }
 
+  /**
+   * rhombusSplinter() is generate of sprite for RhombusSplinter.
+   */
   rhombusSplinter() {
     const context = GameState.current;
     const pool = GroupPool.rhombusSplinter();
@@ -106,6 +140,9 @@ class Group {
     }
   }
 
+  /**
+   * rhombus() is generate of sprite for Rhombus.
+   */
   rhombus() {
     const context = GameState.current;
     const pool = GroupPool.rhombus();
@@ -117,6 +154,9 @@ class Group {
     }
   }
 
+  /**
+   * explosion() is generate of sprite for Explosion.
+   */
   explosion() {
     const context = GameState.current;
     context.addChild(GroupPool.explosion());
