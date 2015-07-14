@@ -18,7 +18,7 @@ var Helper = (function () {
      * @return {Kiwi.GameObjects.Sprite}
      */
     value: function getMember(members) {
-      return members[Number(Math.random() * (members.length - 1))];
+      return members[parseInt(Math.random() * (members.length - 1), 10)];
     }
   }, {
     key: 'strewnSprite',
@@ -69,7 +69,7 @@ var Helper = (function () {
      */
     value: function revive(sprite) {
       sprite.y = -sprite.height;
-      sprite.x = Number(Math.random() * 800);
+      sprite.x = parseInt(Math.random() * 800, 10);
       sprite.physics.velocity.y = 0;
       sprite.physics.acceleration.y = 0;
       sprite.alive = true;
@@ -118,7 +118,7 @@ var Helper = (function () {
      * @return {Number} Radian
      */
     value: function radian(angle) {
-      return Number(angle) * Math.PI / 180;
+      return parseInt(angle, 10) * Math.PI / 180;
     }
   }]);
 
@@ -128,7 +128,7 @@ var Helper = (function () {
 var GameConfig = {};
 var GameCounter = {};
 
-//Kiwi.Log.display = false;
+Kiwi.Log.display = false;
 
 GameConfig.kiwiOption = {
   width: 800,
@@ -228,7 +228,7 @@ var CircleGenerator = (function () {
       circle.anchorPointX = circle.width * 0.5;
       circle.anchorPointY = circle.height * 0.5;
       circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
-      circle.x = Number(Math.random() * 800);
+      circle.x = parseInt(Math.random() * 800, 10);
       circle.index = index;
       circle.score = 500;
 
@@ -261,7 +261,7 @@ var CubeGenerator = (function () {
       cube.anchorPointX = cube.width * 0.5;
       cube.anchorPointY = cube.height * 0.5;
       cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
-      cube.x = Number(Math.random() * 800);
+      cube.x = parseInt(Math.random() * 800, 10);
       cube.index = index;
       cube.score = 100;
 
@@ -296,7 +296,7 @@ var CylinderGenerator = (function () {
       cylinder.anchorPointX = cylinder.x * 0.5;
       cylinder.anchorPointY = cylinder.y * 0.5;
       cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
-      cylinder.x = Number(Math.random() * 800);
+      cylinder.x = parseInt(Math.random() * 800, 10);
       cylinder.y = -cylinder.height;
       cylinder.index = index;
       cylinder.score = 200;
@@ -417,11 +417,11 @@ var StarGenerator = (function () {
       star.anchorPointY = star.height * 0.5;
       star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
       star.physics.acceleration.y = 1;
-      star.x = Number(Math.random() * 800);
-      if (index < Number(GameConfig.setting.NUMBER_OF_STAR / 3)) {
-        star.y = Number(Math.random() * 600);
+      star.x = parseInt(Math.random() * 800, 10);
+      if (index < parseInt(GameConfig.setting.NUMBER_OF_STAR / 3, 10)) {
+        star.y = parseInt(Math.random() * 600, 10);
       } else {
-        star.y = -1 * Number(Math.random() * 200);
+        star.y = -1 * parseInt(Math.random() * 200, 10);
       }
       star.index = index;
 
@@ -633,8 +633,8 @@ var Explosion = (function () {
 
       var explosion = new Kiwi.GameObjects.Sprite(context, context.textures.explosion, baseX, baseY);
 
-      explosion.x = Number(baseX - explosion.width * 0.5);
-      explosion.y = Number(baseY - explosion.height * 0.5);
+      explosion.x = parseInt(baseX - explosion.width * 0.5, 10);
+      explosion.y = parseInt(baseY - explosion.height * 0.5, 10);
 
       explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
       explosion.animation.play('explosion');
@@ -2340,7 +2340,7 @@ var MyUnit = (function () {
     value: function _createMyUnitSplinter() {
       var myUnit = this.sprite;
       var myUnitSplinterMembers = GroupPool.myUnitSplinter().members;
-      var angleBase = Number(360 / GameConfig.setting.NUMBER_OF_MYUNIT_SPLINTER);
+      var angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_MYUNIT_SPLINTER, 10);
       var myUnitSplinterAngle = 0;
 
       myUnitSplinterMembers.forEach(function (splinterMember) {
@@ -2751,6 +2751,159 @@ var Timer = (function () {
   return Timer;
 })();
 
+var PlayState = (function () {
+  function PlayState() {
+    _classCallCheck(this, PlayState);
+  }
+
+  _createClass(PlayState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of PlayState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameMusic.main.play();
+
+      HUD.initialize();
+      Group.initialize();
+      MyUnit.initialize();
+      GameKey.initializeOfPlay();
+      Timer.initialize();
+      GameText.createSlowDownCount();
+      GameText.createSlowDown();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for PlayState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+
+      this.addSpriteSheet('myUnit', './assets/images/unit.png', 32, 32);
+      this.addSpriteSheet('myUnitSplinter', './assets/images/my-unit-explosion.png', 32, 32);
+      this.addSpriteSheet('star', './assets/images/star.png', 8, 8);
+      this.addSpriteSheet('cube', './assets/images/cube.png', 32, 32);
+      this.addSpriteSheet('cylinder', './assets/images/cylinder.png', 32, 128);
+      this.addSpriteSheet('bullet', './assets/images/bullet.png', 4, 4);
+      this.addSpriteSheet('explosion', './assets/images/explosion.png', 256, 256);
+      this.addSpriteSheet('circle', './assets/images/circle.png', 32, 32);
+      this.addSpriteSheet('rhombus', './assets/images/rhombus.png', 32, 32);
+
+      // PUBLIC DOMAIN
+      // http://opengameart.org/content/lo-fi-chiptune-glitch-dnb
+      this.addAudio('musicMain', './assets/media/old-broken-radio.mp3');
+      // CC-BY 3.0
+      // http://opengameart.org/content/jump-and-run-8-bit
+      this.addAudio('musicGameover', './assets/media/random-silly-chip-song.ogg');
+      this.addAudio('bullet-se', './assets/media/laser.wav');
+      this.addAudio('explosion-se', './assets/media/explosion.wav');
+      this.addAudio('explosion-myunit-se', './assets/media/myunit-explosion.wav');
+      this.addAudio('circle-se', './assets/media/circle.wav');
+      this.addAudio('caution-of-speed-se', './assets/media/caution-of-speed.wav');
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in PlayState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      MyUnit.update();
+      HUD.update();
+
+      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
+        Bullet.shoot();
+      }
+
+      GroupPool.forEachAll();
+
+      if (GameOver.status) {
+        if (GameKey.activeExitKey()) {
+          ipc.sendSync('quit');
+        }
+
+        if (GameKey.activeRestartKey()) {
+          window.location.reload(true);
+        }
+      }
+    }
+  }]);
+
+  return PlayState;
+})();
+
+GameState.instance.play.create = PlayState.create;
+GameState.instance.play.preload = PlayState.preload;
+GameState.instance.play.update = PlayState.update;
+
+var TitleState = (function () {
+  function TitleState() {
+    _classCallCheck(this, TitleState);
+  }
+
+  _createClass(TitleState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of TitleState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameKey.initializeOfTitle();
+      GameText.initializeOfTitle();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for TitleState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in TitleState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      if (GameKey.activeGameStartKey()) {
+        GameText.destroyOfTitle();
+        this.game.states.switchState('Play');
+      }
+
+      if (GameKey.activeExitKey()) {
+        ipc.sendSync('quit');
+      }
+    }
+  }]);
+
+  return TitleState;
+})();
+
+GameState.instance.title.create = TitleState.create;
+GameState.instance.title.preload = TitleState.preload;
+GameState.instance.title.update = TitleState.update;
+
 var timerSpawnObjectsSingleton = Symbol();
 var timerSpawnObjectsSingletonEnforcer = Symbol();
 
@@ -2833,7 +2986,7 @@ var TimerSpawnObjects = (function () {
         context.isSpawnSpriteOfRhombusSplinter = false;
       }
 
-      if (Number(Math.random() * 100) === 0) {
+      if (parseInt(Math.random() * 100, 10) === 0) {
         context.isSpawnSpriteOfRhombusSplinter = true;
       }
 
@@ -2882,7 +3035,7 @@ var TimerSpawnObjects = (function () {
      */
     value: function _explosionRhombus(context, sprite) {
       var rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
-      var angleBase = Number(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER);
+      var angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER, 10);
       var rhombusSplinterAngle = 0;
 
       rhombusSplinterMembers.forEach(function (member) {
@@ -3059,159 +3212,6 @@ var TimerVelocity = (function () {
 
   return TimerVelocity;
 })();
-
-var PlayState = (function () {
-  function PlayState() {
-    _classCallCheck(this, PlayState);
-  }
-
-  _createClass(PlayState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of PlayState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameMusic.main.play();
-
-      HUD.initialize();
-      Group.initialize();
-      MyUnit.initialize();
-      GameKey.initializeOfPlay();
-      Timer.initialize();
-      GameText.createSlowDownCount();
-      GameText.createSlowDown();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for PlayState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-
-      this.addSpriteSheet('myUnit', './assets/images/unit.png', 32, 32);
-      this.addSpriteSheet('myUnitSplinter', './assets/images/my-unit-explosion.png', 32, 32);
-      this.addSpriteSheet('star', './assets/images/star.png', 8, 8);
-      this.addSpriteSheet('cube', './assets/images/cube.png', 32, 32);
-      this.addSpriteSheet('cylinder', './assets/images/cylinder.png', 32, 128);
-      this.addSpriteSheet('bullet', './assets/images/bullet.png', 4, 4);
-      this.addSpriteSheet('explosion', './assets/images/explosion.png', 256, 256);
-      this.addSpriteSheet('circle', './assets/images/circle.png', 32, 32);
-      this.addSpriteSheet('rhombus', './assets/images/rhombus.png', 32, 32);
-
-      // PUBLIC DOMAIN
-      // http://opengameart.org/content/lo-fi-chiptune-glitch-dnb
-      this.addAudio('musicMain', './assets/media/old-broken-radio.mp3');
-      // CC-BY 3.0
-      // http://opengameart.org/content/jump-and-run-8-bit
-      this.addAudio('musicGameover', './assets/media/random-silly-chip-song.ogg');
-      this.addAudio('bullet-se', './assets/media/laser.wav');
-      this.addAudio('explosion-se', './assets/media/explosion.wav');
-      this.addAudio('explosion-myunit-se', './assets/media/myunit-explosion.wav');
-      this.addAudio('circle-se', './assets/media/circle.wav');
-      this.addAudio('caution-of-speed-se', './assets/media/caution-of-speed.wav');
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in PlayState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      MyUnit.update();
-      HUD.update();
-
-      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
-        Bullet.shoot();
-      }
-
-      GroupPool.forEachAll();
-
-      if (GameOver.status) {
-        if (GameKey.activeExitKey()) {
-          ipc.sendSync('quit');
-        }
-
-        if (GameKey.activeRestartKey()) {
-          window.location.reload(true);
-        }
-      }
-    }
-  }]);
-
-  return PlayState;
-})();
-
-GameState.instance.play.create = PlayState.create;
-GameState.instance.play.preload = PlayState.preload;
-GameState.instance.play.update = PlayState.update;
-
-var TitleState = (function () {
-  function TitleState() {
-    _classCallCheck(this, TitleState);
-  }
-
-  _createClass(TitleState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of TitleState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameKey.initializeOfTitle();
-      GameText.initializeOfTitle();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for TitleState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in TitleState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      if (GameKey.activeGameStartKey()) {
-        GameText.destroyOfTitle();
-        this.game.states.switchState('Play');
-      }
-
-      if (GameKey.activeExitKey()) {
-        ipc.sendSync('quit');
-      }
-    }
-  }]);
-
-  return TitleState;
-})();
-
-GameState.instance.title.create = TitleState.create;
-GameState.instance.title.preload = TitleState.preload;
-GameState.instance.title.update = TitleState.update;
 
 var GAME_MAIN = new Kiwi.Game(GameConfig.setting.CONTAINER_ID, GameConfig.setting.NAME, null, GameConfig.kiwiOption);
 

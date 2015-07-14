@@ -20,7 +20,7 @@ class CylinderGenerator {
     cylinder.physics = cylinder.components.add(
       new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box)
     );
-    cylinder.x = Number(Math.random() * 800);
+    cylinder.x = parseInt(Math.random() * 800, 10);
     cylinder.y = -cylinder.height;
     cylinder.index = index;
     cylinder.score = 200;

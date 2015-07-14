@@ -18,7 +18,7 @@ class CubeGenerator {
     cube.physics = cube.components.add(
       new Kiwi.Components.ArcadePhysics(cube, cube.box)
     );
-    cube.x = Number(Math.random() * 800);
+    cube.x = parseInt(Math.random() * 800, 10);
     cube.index = index;
     cube.score = 100;
 

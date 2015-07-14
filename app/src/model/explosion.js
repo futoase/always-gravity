@@ -14,8 +14,8 @@ class Explosion {
       context, context.textures.explosion, baseX, baseY
     );
 
-    explosion.x = Number(baseX - explosion.width * 0.5);
-    explosion.y = Number(baseY - explosion.height * 0.5);
+    explosion.x = parseInt(baseX - explosion.width * 0.5, 10);
+    explosion.y = parseInt(baseY - explosion.height * 0.5, 10);
 
     explosion.animation.add('explosion', [0, 1, 2, 3], 0.1, true);
     explosion.animation.play('explosion');
