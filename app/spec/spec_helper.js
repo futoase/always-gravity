@@ -7,7 +7,7 @@ class TestTextureLoader {
     loader.boot();
     loader.init();
 
-    let sprite = loader.addSpriteSheet(name, path, width, height);
+    const sprite = loader.addSpriteSheet(name, path, width, height);
 
     loader.start();
 
@@ -69,6 +69,68 @@ class TestTextureLoader {
       'explosion', './assets/images/explosion.png', 256, 256
     );
   }
+
+}
+
+class TestAudioLoader {
+
+  static loadAudio(name, path) {
+    const audioLibrary = new Kiwi.Sound.AudioLibrary(GAME_MAIN);
+    const loader = new Kiwi.Files.Loader(GAME_MAIN);
+
+    loader.boot();
+    loader.init();
+
+    const audio = loader.addAudio(name, path);
+
+    loader.start();
+
+    audioLibrary.add(audio);
+
+    return audioLibrary.audio[name];
+  }
+
+  static musicMain() {
+    return this.loadAudio(
+      'musicMain', './assets/media/old-broken-radio.mp3'
+    );
+  }
+
+  static musicGameOver() {
+    return this.loadAudio(
+      'musicGameOver', './assets/media/random-silly-chip-song.ogg'
+    );
+  }
+
+  static bulletSe() {
+    return this.loadAudio(
+      'bullet-se', './assets/media/laser.wav'
+    );
+  }
+
+  static explosionSe() {
+    return this.loadAudio(
+      'explosion-se', './assets/media/explosion.wav'
+    );
+  }
+
+  static exposionMyUnitSe() {
+    return this.loadAudio(
+      'explosion-myunit-se', './assets/media/myunit-explosion.wav'
+    );
+  }
+
+  static circleSe() {
+    return this.loadAudio(
+      'circle-se', './assets/media/circle.wav'
+    );
+  }
+
+  static cautionOfSpeedSe() {
+    return this.loadAudio(
+      'caution-of-speed-se', './assets/media/caution-of-speed.wav'
+    );
+  }
 }
 
 let testState = new Kiwi.State('Test');
@@ -84,7 +146,17 @@ testState.textures = {
   explosion: TestTextureLoader.explosion()
 };
 
+// Setup of AudioManager on the Game.
+GAME_MAIN.audio.boot();
+GAME_MAIN.audio.registerSound(TestAudioLoader.musicMain());
+GAME_MAIN.audio.registerSound(TestAudioLoader.musicGameOver());
+GAME_MAIN.audio.registerSound(TestAudioLoader.bulletSe());
+GAME_MAIN.audio.registerSound(TestAudioLoader.explosionSe());
+GAME_MAIN.audio.registerSound(TestAudioLoader.circleSe());
+GAME_MAIN.audio.registerSound(TestAudioLoader.cautionOfSpeedSe());
+
 const GameTestConfig = {};
+
 GameTestConfig.text = {
   test: {
     x: 100,
