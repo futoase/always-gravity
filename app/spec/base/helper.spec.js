@@ -1,5 +1,13 @@
 describe('Helper', () => {
 
+  beforeEach(() => {
+    GameState.current.boot();
+  });
+
+  afterEach(() => {
+    setTestTextures(GameState.current);
+  });
+
   // FIXME: 'requestSharedRender' of null
   //describe('#revive', () => {
   //  let bullet = BulletGenerator.create(
@@ -51,6 +59,20 @@ describe('Helper', () => {
     assert(Helper.radian(225) === (5 * Math.PI / 4));
     assert(Helper.radian(270) === (3 * Math.PI / 2));
     assert(Helper.radian(360) === (2 * Math.PI));
+  });
+
+  describe('#addSprites', () => {
+    assert.doesNotThrow(() => {
+      GameState.current.game.loader.boot();
+      Helper.addSprites(GameState.current, GameTestConfig.spriteSheets);
+    });
+  });
+
+  describe('#addAudio', () => {
+    assert.doesNotThrow(() => {
+      GameState.current.game.loader.boot();
+      Helper.addSound(GameState.current, GameTestConfig.soundFiles);
+    });
   });
 
 });

@@ -104,4 +104,28 @@ class Helper {
     return parseInt(angle, 10) * Math.PI / 180;
   }
 
+  /**
+   * addSprites() is settings of sprite onto State.
+   *
+   * @param {Kiwi.State} context
+   * @param {Array} spriteSheets
+   */
+  static addSprites(context, spriteSheets) {
+    spriteSheets.map((sprite) => {
+      context.addSpriteSheet(sprite.name, sprite.path, sprite.width, sprite.height);
+    });
+  }
+
+  /**
+   * addSprites() is settings of sound onto State.
+   *
+   * @param {Kiwi.State} context
+   * @param {Array} soundFiles
+   */
+  static addSound(context, soundFiles) {
+    soundFiles.map((soundFile) => {
+      context.addAudio(soundFile.name, soundFile.path);
+    });
+  }
+
 }

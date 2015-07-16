@@ -133,18 +133,22 @@ class TestAudioLoader {
   }
 }
 
-let testState = new Kiwi.State('Test');
+const testState = new Kiwi.State('Test');
 
-testState.textures = {
-  myUnit: TestTextureLoader.myUnit(),
-  myUnitSplinter: TestTextureLoader.myUnitSplinter(),
-  bullet: TestTextureLoader.bullet(),
-  circle: TestTextureLoader.circle(),
-  cube: TestTextureLoader.cube(),
-  cylinder: TestTextureLoader.cylinder(),
-  rhombus: TestTextureLoader.rhombus(),
-  explosion: TestTextureLoader.explosion()
-};
+function setTestTextures(state) {
+  state.textures = {
+    myUnit: TestTextureLoader.myUnit(),
+    myUnitSplinter: TestTextureLoader.myUnitSplinter(),
+    bullet: TestTextureLoader.bullet(),
+    circle: TestTextureLoader.circle(),
+    cube: TestTextureLoader.cube(),
+    cylinder: TestTextureLoader.cylinder(),
+    rhombus: TestTextureLoader.rhombus(),
+    explosion: TestTextureLoader.explosion()
+  }
+}
+
+setTestTextures(testState);
 
 // Setup of AudioManager on the Game.
 GAME_MAIN.audio.boot();
@@ -168,6 +172,22 @@ GameTestConfig.text = {
     fontFamily: 'fantasy'
   }
 };
+
+GameTestConfig.spriteSheets = [
+  {
+    name: 'testMyUnit',
+    path: './assets/images/unit.png',
+    width: 32,
+    height: 32
+  },
+];
+
+GameTestConfig.soundFiles = [
+  {
+    name: 'testBulletSe',
+    path: './assets/media/laser.wav',
+  },
+];
 
 GameState.instance.current = testState;
 
