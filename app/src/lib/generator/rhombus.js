@@ -12,6 +12,8 @@ class RhombusGenerator {
     const rhombus = new Kiwi.GameObjects.Sprite(
       context, context.textures.rhombus, -100, -100
     );
+
+    rhombus.index = index;
     rhombus.physics = rhombus.components.add(
       new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box)
     );

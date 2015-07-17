@@ -12,6 +12,8 @@ class BulletGenerator {
     const bullet = new Kiwi.GameObjects.Sprite(
       context, context.textures.bullet, -100, -100
     );
+
+    bullet.index = index;
     bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
     bullet.anchorPointX = bullet.width * 0.5;
     bullet.anchorPointY = bullet.height * 0.5;
@@ -19,7 +21,6 @@ class BulletGenerator {
       new Kiwi.Components.ArcadePhysics(bullet, bullet.box)
     );
     bullet.alive = false;
-    bullet.index = index;
 
     return bullet;
   }

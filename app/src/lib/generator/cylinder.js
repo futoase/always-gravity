@@ -12,6 +12,8 @@ class CylinderGenerator {
     const cylinder = new Kiwi.GameObjects.Sprite(
       context, context.textures.cylinder, -100, -100
     );
+
+    cylinder.index = index;
     cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
     cylinder.animation.play('cycle');
     cylinder.hitbox = new Kiwi.Geom.Rectangle(0, 10, 30, 110);
@@ -22,7 +24,6 @@ class CylinderGenerator {
     );
     cylinder.x = parseInt(Math.random() * 800, 10);
     cylinder.y = -cylinder.height;
-    cylinder.index = index;
     cylinder.score = 200;
 
     return cylinder;
