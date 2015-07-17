@@ -52,7 +52,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_STAR; i++) {
-      pool.addChild(StarGenerator.create(context, i));
+      pool.addChild(StarGenerator.create(i));
     }
   }
 
@@ -66,7 +66,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_CUBE; i++) {
-      pool.addChild(CubeGenerator.create(context, i));
+      pool.addChild(CubeGenerator.create(i));
     }
   }
 
@@ -80,7 +80,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_CIRCLE; i++) {
-      pool.addChild(CircleGenerator.create(context, i));
+      pool.addChild(CircleGenerator.create(i));
     }
   }
 
@@ -94,7 +94,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_BULLET; i++) {
-      pool.addChild(BulletGenerator.create(context, i));
+      pool.addChild(BulletGenerator.create(i));
     }
   }
 
@@ -108,7 +108,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_CYLINDER; i++) {
-      pool.addChild(CylinderGenerator.create(context, i));
+      pool.addChild(CylinderGenerator.create(i));
     }
   }
 
@@ -122,7 +122,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_MYUNIT_SPLINTER; i++) {
-      pool.addChild(MyUnitSplinterGenerator.create(context, i));
+      pool.addChild(MyUnitSplinterGenerator.create(i));
     }
   }
 
@@ -136,7 +136,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER; i++) {
-      pool.addChild(RhombusSplinterGenerator.create(context, i));
+      pool.addChild(RhombusSplinterGenerator.create(i));
     }
   }
 
@@ -150,7 +150,7 @@ class Group {
 
     let i;
     for (i = 0; i < GameConfig.setting.NUMBER_OF_RHOMBUS; i++) {
-      pool.addChild(RhombusGenerator.create(context, i));
+      pool.addChild(RhombusGenerator.create(i));
     }
   }
 
