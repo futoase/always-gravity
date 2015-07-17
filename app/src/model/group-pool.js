@@ -212,21 +212,6 @@ class GroupPool {
     });
   }
 
-  // TODO: !!!!! REMOVE !!!!!
-  static forEachCircle() {
-    const context = GameState.current;
-    const pool = GroupPool.circle();
-    const myUnit = MyUnit.instance;
-
-    pool.forEach(context, Helper.checkSpritePosition);
-    pool.forEach(context, (circle) => {
-      Helper.updateSpriteRotation(circle, 30);
-    });
-    pool.members.map((member) => {
-      myUnit.overlapOnOther(member);
-    });
-  }
-
   /**
    * forEachBullet() is function of forEach for bulletPool.
    */
