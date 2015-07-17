@@ -6,6 +6,7 @@ describe('GameText', () => {
   });
 
   describe('#_createTextField', () => {
+
     it ('should be is return a new instance of TextField.', () => {
       const testText = GameText._createTextField(
         GameState.current, GameTestConfig.text.test
@@ -16,6 +17,7 @@ describe('GameText', () => {
       assert(testText.fontSize === GameTestConfig.text.test.size);
       assert(testText.fontFamily === GameTestConfig.text.test.fontFamily);
     });
+
   });
 
 });

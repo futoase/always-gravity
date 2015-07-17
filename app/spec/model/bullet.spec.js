@@ -12,14 +12,17 @@ describe('Bullet', () => {
   });
 
   describe('#shoot', () => {
+
     it ('should be create of Bullet.', () => {
       assert.doesNotThrow(() => {
         Bullet.shoot()
       });
     });
+
   });
 
   describe('#getFirstDeadBullet', () => {
+
     it ('should be get Bullet.', () => {
       let bullet = Bullet.getFirstDeadBullet();
       assert(bullet !== null);
@@ -33,9 +36,11 @@ describe('Bullet', () => {
       let bullet = Bullet.getFirstDeadBullet();
       assert(bullet === null);
     });
+
   });
 
   describe('#deadBullet', () => {
+
     it ('should be set is dead of Bullet.', () => {
       let bullet = Bullet.getFirstDeadBullet();
       bullet.alive = true;
@@ -44,6 +49,7 @@ describe('Bullet', () => {
       assert(bullet.x === -1000);
       assert(bullet.y === -1000);
     });
+
   });
 
 });

@@ -5,11 +5,13 @@ describe('GameOver', () => {
   });
 
   describe('#execute', () => {
+
     it ('should be running a method of execute.', () => {
       GameOver.status = false;
       GameOver.execute();
       assert(GameOver.status === true);
     });
+
   });
 
 });
