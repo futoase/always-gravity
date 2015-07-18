@@ -197,13 +197,13 @@ var HUD_SINGLETON = Symbol();
 var HUD_SINGLETON_ENFORCER = Symbol();
 
 // GameKey
-var _GAMESTART_KEY = Symbol();
-var _LEFT_KEY = Symbol();
-var _RIGHT_KEY = Symbol();
-var _UP_KEY = Symbol();
-var _SHOOT_KEY = Symbol();
-var _EXIT_KEY = Symbol();
-var _RESTART_KEY = Symbol();
+var GAMESTART_KEY = Symbol();
+var LEFT_KEY = Symbol();
+var RIGHT_KEY = Symbol();
+var UP_KEY = Symbol();
+var SHOOT_KEY = Symbol();
+var EXIT_KEY = Symbol();
+var RESTART_KEY = Symbol();
 
 // GameMusic
 var MUSIC_MAIN = Symbol();
@@ -2083,12 +2083,12 @@ var GameKey = (function () {
      * initializeOfPlay() is initialize of keys for PlayState.
      */
     value: function initializeOfPlay() {
-      GameKey.LEFT_KEY();
-      GameKey.RIGHT_KEY();
-      GameKey.UP_KEY();
-      GameKey.SHOOT_KEY();
-      GameKey.EXIT_KEY();
-      GameKey.RESTART_KEY();
+      GameKey.leftKey();
+      GameKey.rightKey();
+      GameKey.upKey();
+      GameKey.shootKey();
+      GameKey.exitKey();
+      GameKey.restartKey();
     }
   }, {
     key: 'initializeOfTitle',
@@ -2097,22 +2097,22 @@ var GameKey = (function () {
      * initializeOfTitle() is initialize of keys for TitleState.
      */
     value: function initializeOfTitle() {
-      GameKey.GAMESTART_KEY();
-      GameKey.EXIT_KEY();
+      GameKey.gameStartKey();
+      GameKey.exitKey();
     }
   }, {
-    key: 'GAMESTART_KEY',
+    key: 'gameStartKey',
 
     /**
-     * GAMESTART_KEY() is return new Game key for the Start.
+     * gameStartKey() is return new Game key for the Start.
      *
      * @return {Kiwi.Input.Key} GAMESTART_KEY
      */
-    value: function GAMESTART_KEY() {
-      if (!this[_GAMESTART_KEY]) {
-        this[_GAMESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR);
+    value: function gameStartKey() {
+      if (!this[GAMESTART_KEY]) {
+        this[GAMESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR);
       }
-      return this[_GAMESTART_KEY];
+      return this[GAMESTART_KEY];
     }
   }, {
     key: 'activeGameStartKey',
@@ -2123,21 +2123,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeGameStartKey() {
-      return this[_GAMESTART_KEY].isDown;
+      return this[GAMESTART_KEY].isDown;
     }
   }, {
-    key: 'LEFT_KEY',
+    key: 'leftKey',
 
     /**
-     * LEFT_KEY() is return new Game key for the Left.
+     * leftKey() is return new Game key for the Left.
      *
      * @return {Kiwi.Input.Key} LEFT_KEY
      */
-    value: function LEFT_KEY() {
-      if (!this[_LEFT_KEY]) {
-        this[_LEFT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
+    value: function leftKey() {
+      if (!this[LEFT_KEY]) {
+        this[LEFT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
       }
-      return this[_LEFT_KEY];
+      return this[LEFT_KEY];
     }
   }, {
     key: 'activeLeftKey',
@@ -2148,21 +2148,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeLeftKey() {
-      return this[_LEFT_KEY].isDown;
+      return this[LEFT_KEY].isDown;
     }
   }, {
-    key: 'RIGHT_KEY',
+    key: 'rightKey',
 
     /**
-     * RIGHT_KEY() is return new Game key for the Right.
+     * rightKey() is return new Game key for the Right.
      *
      * @return {Kiwi.Input.Key} RIGHT_KEY
      */
-    value: function RIGHT_KEY() {
-      if (!this[_RIGHT_KEY]) {
-        this[_RIGHT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
+    value: function rightKey() {
+      if (!this[RIGHT_KEY]) {
+        this[RIGHT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
       }
-      return this[_RIGHT_KEY];
+      return this[RIGHT_KEY];
     }
   }, {
     key: 'activeRightKey',
@@ -2173,21 +2173,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeRightKey() {
-      return this[_RIGHT_KEY].isDown;
+      return this[RIGHT_KEY].isDown;
     }
   }, {
-    key: 'UP_KEY',
+    key: 'upKey',
 
     /**
-     * UP_KEY() is return new Game key for the Up.
+     * upKey() is return new Game key for the Up.
      *
      * @return {Kiwi.Input.Key} UP_KEY
      */
-    value: function UP_KEY() {
-      if (!this[_UP_KEY]) {
-        this[_UP_KEY] = this._getGameKey(Kiwi.Input.Keycodes.UP);
+    value: function upKey() {
+      if (!this[UP_KEY]) {
+        this[UP_KEY] = this._getGameKey(Kiwi.Input.Keycodes.UP);
       }
-      return this[_UP_KEY];
+      return this[UP_KEY];
     }
   }, {
     key: 'activeUpKey',
@@ -2198,21 +2198,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeUpKey() {
-      return this[_UP_KEY].isDown;
+      return this[UP_KEY].isDown;
     }
   }, {
-    key: 'SHOOT_KEY',
+    key: 'shootKey',
 
     /**
-     * SHOOT_KEY() is return new Game key for the Shoot.
+     * shootKey() is return new Game key for the Shoot.
      *
      * @return {Kiwi.Input.Key} SHOOT_KEY
      */
-    value: function SHOOT_KEY() {
-      if (!this[_SHOOT_KEY]) {
-        this[_SHOOT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.Z);
+    value: function shootKey() {
+      if (!this[SHOOT_KEY]) {
+        this[SHOOT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.Z);
       }
-      return this[_SHOOT_KEY];
+      return this[SHOOT_KEY];
     }
   }, {
     key: 'activeShootKey',
@@ -2223,21 +2223,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeShootKey() {
-      return this[_SHOOT_KEY].isDown;
+      return this[SHOOT_KEY].isDown;
     }
   }, {
-    key: 'EXIT_KEY',
+    key: 'exitKey',
 
     /**
-     * EXIT_KEY() is return new Game key for the Exit.
+     * exitKey() is return new Game key for the Exit.
      *
      * @return {Kiwi.Input.Key} EXIT_KEY
      */
-    value: function EXIT_KEY() {
-      if (!this[_EXIT_KEY]) {
-        this[_EXIT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
+    value: function exitKey() {
+      if (!this[EXIT_KEY]) {
+        this[EXIT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
       }
-      return this[_EXIT_KEY];
+      return this[EXIT_KEY];
     }
   }, {
     key: 'activeExitKey',
@@ -2248,21 +2248,21 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeExitKey() {
-      return this[_EXIT_KEY].isDown;
+      return this[EXIT_KEY].isDown;
     }
   }, {
-    key: 'RESTART_KEY',
+    key: 'restartKey',
 
     /**
-     * RESTART_KEY() is return new Game key for the Restart.
+     * restartKey() is return new Game key for the Restart.
      *
      * @return {Kiwi.Input.Key} RESTART_KEY
      */
-    value: function RESTART_KEY() {
-      if (!this[_RESTART_KEY]) {
-        this[_RESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.R);
+    value: function restartKey() {
+      if (!this[RESTART_KEY]) {
+        this[RESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.R);
       }
-      return this[_RESTART_KEY];
+      return this[RESTART_KEY];
     }
   }, {
     key: 'activeRestartKey',
@@ -2273,7 +2273,7 @@ var GameKey = (function () {
      * @return {Boolean} isDown
      */
     value: function activeRestartKey() {
-      return this[_RESTART_KEY].isDown;
+      return this[RESTART_KEY].isDown;
     }
   }, {
     key: '_getGameKey',
