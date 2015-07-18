@@ -1,5 +1,14 @@
 class TestTextureLoader {
 
+  /**
+   * loadImage() is loading image from file.
+   *
+   * @param {String} name
+   * @param {String} path
+   * @param {Number} width
+   * @param {Number} height
+   * @return {Kiwi.Textures.SpriteSheet}
+   */
   static loadImage(name, path, width, height) {
     const textureLibrary = new Kiwi.Textures.TextureLibrary(GAME_MAIN);
     const loader = new Kiwi.Files.Loader(GAME_MAIN);
@@ -17,63 +26,61 @@ class TestTextureLoader {
   }
 
   static myUnit() {
-    return this.loadImage(
-      'myUnit', './assets/images/unit.png', 32, 32
-    );
+    const {name, path, width, height} = GameConfig.spriteSheets[0];
+    return this.loadImage(name, path, width, height);
   }
 
   static myUnitSplinter() {
-    return this.loadImage(
-      'myUnitSplinter', './assets/images/my-unit-explosion.png', 32, 32
-    );
-  }
-
-  static bullet() {
-    return this.loadImage(
-      'bullet', './assets/images/bullet.png', 4, 4
-    );
-  }
-
-  static circle() {
-    return this.loadImage(
-      'circle', './assets/images/circle.png', 32, 32
-    );
-  }
-
-  static cube() {
-    return this.loadImage(
-      'cube', './assets/images/cube.png', 32, 32
-    );
-  }
-
-  static cylinder() {
-    return this.loadImage(
-      'cylinder', './assets/images/cylinder.png', 32, 128
-    );
+    const {name, path, width, height} = GameConfig.spriteSheets[1];
+    return this.loadImage(name, path, width, height);
   }
 
   static star() {
-    return this.loadImage(
-      'star', './assets/images/star.png', 8, 8
-    );
+    const {name, path, width, height} = GameConfig.spriteSheets[2];
+    return this.loadImage(name, path, width, height);
   }
 
-  static rhombus() {
-    return this.loadImage(
-      'rhombus', './assets/images/rhombus.png', 32, 32
-    );
+  static cube() {
+    const {name, path, width, height} = GameConfig.spriteSheets[3];
+    return this.loadImage(name, path, width, height);
+  }
+
+  static cylinder() {
+    const {name, path, width, height} = GameConfig.spriteSheets[4];
+    return this.loadImage(name, path, width, height);
+  }
+
+  static bullet() {
+    const {name, path, width, height} = GameConfig.spriteSheets[5];
+    return this.loadImage(name, path, width, height);
   }
 
   static explosion() {
-    return this.loadImage(
-      'explosion', './assets/images/explosion.png', 256, 256
-    );
+    const {name, path, width, height} = GameConfig.spriteSheets[6];
+    return this.loadImage(name, path, width, height);
+  }
+
+  static circle() {
+    const {name, path, width, height} = GameConfig.spriteSheets[7];
+    return this.loadImage(name, path, width, height);
+  }
+
+  static rhombus() {
+    const {name, path, width, height} = GameConfig.spriteSheets[8];
+    return this.loadImage(name, path, width, height);
   }
 
 }
 
 class TestAudioLoader {
 
+  /**
+   * loadAudio() is loading audio from file.
+   *
+   * @param {String} name
+   * @param {String} path
+   * @return {Kiwi.Files.AudioFile}
+   */
   static loadAudio(name, path) {
     const audioLibrary = new Kiwi.Sound.AudioLibrary(GAME_MAIN);
     const loader = new Kiwi.Files.Loader(GAME_MAIN);
@@ -91,49 +98,40 @@ class TestAudioLoader {
   }
 
   static musicMain() {
-    return this.loadAudio(
-      'musicMain', './assets/media/old-broken-radio.mp3'
-    );
+    const {name, path} = GameConfig.soundFiles[0];
+    return this.loadAudio(name, path);
   }
 
   static musicGameOver() {
-    return this.loadAudio(
-      'musicGameOver', './assets/media/random-silly-chip-song.ogg'
-    );
+    const {name, path} = GameConfig.soundFiles[1];
+    return this.loadAudio(name, path);
   }
 
   static bulletSe() {
-    return this.loadAudio(
-      'bullet-se', './assets/media/laser.wav'
-    );
+    const {name, path} = GameConfig.soundFiles[2];
+    return this.loadAudio(name, path);
   }
 
   static explosionSe() {
-    return this.loadAudio(
-      'explosion-se', './assets/media/explosion.wav'
-    );
+    const {name, path} = GameConfig.soundFiles[3];
+    return this.loadAudio(name, path);
   }
 
   static exposionMyUnitSe() {
-    return this.loadAudio(
-      'explosion-myunit-se', './assets/media/myunit-explosion.wav'
-    );
+    const {name, path} = GameConfig.soundFiles[4];
+    return this.loadAudio(name, path);
   }
 
   static circleSe() {
-    return this.loadAudio(
-      'circle-se', './assets/media/circle.wav'
-    );
+    const {name, path} = GameConfig.soundFiles[5];
+    return this.loadAudio(name, path);
   }
 
   static cautionOfSpeedSe() {
-    return this.loadAudio(
-      'caution-of-speed-se', './assets/media/caution-of-speed.wav'
-    );
+    const {name, path} = GameConfig.soundFiles[6];
+    return this.loadAudio(name, path);
   }
 }
-
-const testState = new Kiwi.State('Test');
 
 function setTestTextures(state) {
   state.textures = {
@@ -148,8 +146,6 @@ function setTestTextures(state) {
   }
 }
 
-setTestTextures(testState);
-
 // Setup of AudioManager on the Game.
 GAME_MAIN.audio.boot();
 GAME_MAIN.audio.registerSound(TestAudioLoader.musicMain());
@@ -159,6 +155,7 @@ GAME_MAIN.audio.registerSound(TestAudioLoader.explosionSe());
 GAME_MAIN.audio.registerSound(TestAudioLoader.circleSe());
 GAME_MAIN.audio.registerSound(TestAudioLoader.cautionOfSpeedSe());
 
+const testState = new Kiwi.State('Test');
 const GameTestConfig = {};
 
 GameTestConfig.text = {
@@ -188,6 +185,8 @@ GameTestConfig.soundFiles = [
     path: './assets/media/laser.wav',
   },
 ];
+
+setTestTextures(testState);
 
 GameState.instance.current = testState;
 
