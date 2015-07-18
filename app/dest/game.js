@@ -839,7 +839,7 @@ var Bullet = (function () {
      * Emit event will be collision of bullet from other sprite.
      */
     value: function overlapOnObject(bullet, object) {
-      var volume = arguments[2] === undefined ? 1.0 : arguments[2];
+      var volume = arguments.length <= 2 || arguments[2] === undefined ? 1.0 : arguments[2];
 
       GroupPool.explosion().addChild(Explosion.generate(bullet.x, bullet.y));
       Bullet.deadBullet(bullet);
