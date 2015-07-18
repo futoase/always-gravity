@@ -10,7 +10,10 @@ class MyUnitSplinterGenerator {
     const context = GameState.current;
 
     const myUnitSplinter = new Kiwi.GameObjects.Sprite(
-      context, context.textures.myUnitSplinter, -100, -100
+      context,
+      context.textures.myUnitSplinter,
+      GameConfig.init.spawnSprite.x,
+      GameConfig.init.spawnSprite.y
     );
 
     myUnitSplinter.index = index;

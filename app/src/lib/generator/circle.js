@@ -10,7 +10,10 @@ class CircleGenerator {
     const context = GameState.current;
 
     const circle = new Kiwi.GameObjects.Sprite(
-      context, context.textures.circle, -100, -100
+      context,
+      context.textures.circle,
+      GameConfig.init.spawnSprite.x,
+      GameConfig.init.spawnSprite.y
     );
 
     circle.index = index;
@@ -20,7 +23,7 @@ class CircleGenerator {
     circle.physics = circle.components.add(
       new Kiwi.Components.ArcadePhysics(circle, circle.box)
     );
-    circle.x = parseInt(Math.random() * 800, 10);
+    circle.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
     circle.score = 500;
 
     return circle;

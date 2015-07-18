@@ -10,7 +10,10 @@ class CubeGenerator {
     const context = GameState.current;
 
     const cube = new Kiwi.GameObjects.Sprite(
-      context, context.textures.cube, -100, -100
+      context,
+      context.textures.cube,
+      GameConfig.init.spawnSprite.x,
+      GameConfig.init.spawnSprite.y
     );
 
     cube.index = index;
@@ -20,7 +23,7 @@ class CubeGenerator {
     cube.physics = cube.components.add(
       new Kiwi.Components.ArcadePhysics(cube, cube.box)
     );
-    cube.x = parseInt(Math.random() * 800, 10);
+    cube.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
     cube.score = 100;
 
     return cube;

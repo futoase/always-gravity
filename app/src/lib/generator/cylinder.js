@@ -10,7 +10,10 @@ class CylinderGenerator {
     const context = GameState.current;
 
     const cylinder = new Kiwi.GameObjects.Sprite(
-      context, context.textures.cylinder, -100, -100
+      context,
+      context.textures.cylinder,
+      GameConfig.init.spawnSprite.x,
+      GameConfig.init.spawnSprite.y
     );
 
     cylinder.index = index;
@@ -22,7 +25,7 @@ class CylinderGenerator {
     cylinder.physics = cylinder.components.add(
       new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box)
     );
-    cylinder.x = parseInt(Math.random() * 800, 10);
+    cylinder.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
     cylinder.y = -cylinder.height;
     cylinder.score = 200;
 

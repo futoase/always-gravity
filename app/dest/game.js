@@ -164,6 +164,13 @@ GameCounter.bullet = 0;
 GameCounter.explosion = 0;
 GameCounter.gameScore = 0;
 
+GameConfig.init = {
+  spawnSprite: {
+    x: -100,
+    y: -100
+  }
+};
+
 GameConfig.kiwiOption = {
   width: 800,
   height: 600
@@ -411,7 +418,7 @@ var BulletGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, -100, -100);
+      var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       bullet.index = index;
       bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
@@ -444,14 +451,14 @@ var CircleGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var circle = new Kiwi.GameObjects.Sprite(context, context.textures.circle, -100, -100);
+      var circle = new Kiwi.GameObjects.Sprite(context, context.textures.circle, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       circle.index = index;
       circle.hitbox = new Kiwi.Geom.Rectangle(10, 0, 18, 18);
       circle.anchorPointX = circle.width * 0.5;
       circle.anchorPointY = circle.height * 0.5;
       circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
-      circle.x = parseInt(Math.random() * 800, 10);
+      circle.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
       circle.score = 500;
 
       return circle;
@@ -478,14 +485,14 @@ var CubeGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var cube = new Kiwi.GameObjects.Sprite(context, context.textures.cube, -100, -100);
+      var cube = new Kiwi.GameObjects.Sprite(context, context.textures.cube, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       cube.index = index;
       cube.hitbox = new Kiwi.Geom.Rectangle(10, 0, 20, 20);
       cube.anchorPointX = cube.width * 0.5;
       cube.anchorPointY = cube.height * 0.5;
       cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
-      cube.x = parseInt(Math.random() * 800, 10);
+      cube.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
       cube.score = 100;
 
       return cube;
@@ -512,7 +519,7 @@ var CylinderGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var cylinder = new Kiwi.GameObjects.Sprite(context, context.textures.cylinder, -100, -100);
+      var cylinder = new Kiwi.GameObjects.Sprite(context, context.textures.cylinder, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       cylinder.index = index;
       cylinder.animation.add('cycle', [0, 1, 2, 3, 4, 5, 6, 7], 0.1, true);
@@ -521,7 +528,7 @@ var CylinderGenerator = (function () {
       cylinder.anchorPointX = cylinder.x * 0.5;
       cylinder.anchorPointY = cylinder.y * 0.5;
       cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
-      cylinder.x = parseInt(Math.random() * 800, 10);
+      cylinder.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
       cylinder.y = -cylinder.height;
       cylinder.score = 200;
 
@@ -549,7 +556,7 @@ var MyUnitSplinterGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var myUnitSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.myUnitSplinter, -100, -100);
+      var myUnitSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.myUnitSplinter, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       myUnitSplinter.index = index;
       myUnitSplinter.animation.add('explosion', [0, 1, 2, 3, 4, 5], 0.05, true);
@@ -579,7 +586,7 @@ var RhombusSplinterGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var rhombusSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
+      var rhombusSplinter = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       rhombusSplinter.index = index;
       rhombusSplinter.physics = rhombusSplinter.components.add(new Kiwi.Components.ArcadePhysics(rhombusSplinter, rhombusSplinter.ox));
@@ -608,7 +615,7 @@ var RhombusGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var rhombus = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, -100, -100);
+      var rhombus = new Kiwi.GameObjects.Sprite(context, context.textures.rhombus, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       rhombus.index = index;
       rhombus.physics = rhombus.components.add(new Kiwi.Components.ArcadePhysics(rhombus, rhombus.box));
@@ -640,17 +647,17 @@ var StarGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var star = new Kiwi.GameObjects.Sprite(context, context.textures.star, -100, -100);
+      var star = new Kiwi.GameObjects.Sprite(context, context.textures.star, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
 
       star.index = index;
       star.anchorPointX = star.width * 0.5;
       star.anchorPointY = star.height * 0.5;
       star.physics = star.components.add(new Kiwi.Components.ArcadePhysics(star, star.box));
       star.physics.acceleration.y = 1;
-      star.x = parseInt(Math.random() * 800, 10);
+      star.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
 
       if (index < parseInt(GameConfig.setting.NUMBER_OF_STAR / 3, 10)) {
-        star.y = parseInt(Math.random() * 600, 10);
+        star.y = parseInt(Math.random() * GameConfig.kiwiOption.height, 10);
       } else {
         star.y = -1 * parseInt(Math.random() * 200, 10);
       }

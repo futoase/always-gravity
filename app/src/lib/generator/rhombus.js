@@ -10,7 +10,10 @@ class RhombusGenerator {
     const context = GameState.current;
 
     const rhombus = new Kiwi.GameObjects.Sprite(
-      context, context.textures.rhombus, -100, -100
+      context,
+      context.textures.rhombus,
+      GameConfig.init.spawnSprite.x,
+      GameConfig.init.spawnSprite.y
     );
 
     rhombus.index = index;
