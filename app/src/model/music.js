@@ -1,11 +1,3 @@
-const musicMain = Symbol();
-const musicGameOver = Symbol();
-const soundEffectOfBullet = Symbol();
-const soundEffectOfExplosion = Symbol();
-const soundEffectOfCautionForSpeed = Symbol();
-const soundEffectOfCircle = Symbol();
-const soundEffectOfMyUnitExplosion = Symbol();
-
 class GameMusic {
 
   /**
@@ -25,31 +17,31 @@ class GameMusic {
   /**
    * Getter of main game music.
    *
-   * @return {Kiwi.Sound.Audio} musicMain
+   * @return {Kiwi.Sound.Audio} MUSIC_MAIN
    */
   static get main() {
     const context = GameState.current;
-    if (!this[musicMain]) {
-      this[musicMain] = new Kiwi.Sound.Audio(
+    if (!this[MUSIC_MAIN]) {
+      this[MUSIC_MAIN] = new Kiwi.Sound.Audio(
         context.game,
-        'musicMain',
+        'MUSIC_MAIN',
         GameConfig.setting.BASE_MUSIC_VOLUME_PER,
         true
       );
     }
-    return this[musicMain];
+    return this[MUSIC_MAIN];
   }
 
   /**
    * Getter of game over music.
    *
-   * @return {Kiwi.Sound.Audio} musicGameOver
+   * @return {Kiwi.Sound.Audio} MUSIC_GAMEOVER
    */
   static get gameOver() {
     const context = GameState.current;
 
-    if (!this[musicGameOver]) {
-      this[musicGameOver] = new Kiwi.Sound.Audio(
+    if (!this[MUSIC_GAMEOVER]) {
+      this[MUSIC_GAMEOVER] = new Kiwi.Sound.Audio(
         context.game,
         'musicGameover',
         GameConfig.setting.BASE_GAME_OVER_MUSIC_VOLUME_PER,
@@ -57,102 +49,102 @@ class GameMusic {
       );
     }
 
-    return this[musicGameOver];
+    return this[MUSIC_GAMEOVER];
   }
 
   /**
    * Getter of sound effect for bullet.
    *
-   * @return {Kiwi.Sound.Audio} soundEffectOfBullet
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_BULLET
    */
   static get soundEffectOfBullet() {
     const context = GameState.current;
 
-    if (!this[soundEffectOfBullet]) {
-      this[soundEffectOfBullet] = new Kiwi.Sound.Audio(
+    if (!this[SOUND_EFFECT_OF_BULLET]) {
+      this[SOUND_EFFECT_OF_BULLET] = new Kiwi.Sound.Audio(
         context.game,
         'bullet-se',
         GameConfig.setting.BASE_LASER_VOLUME_PER,
         false
       );
     }
-    return this[soundEffectOfBullet];
+    return this[SOUND_EFFECT_OF_BULLET];
   }
 
   /**
    * Getter of sound effect for explosion.
    *
-   * @return {Kiwi.Sound.Audio} soundEffectOfExplosion
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_EXPLOSION
    */
   static get soundEffectOfExplosion() {
     const context = GameState.current;
 
-    if (!this[soundEffectOfExplosion]) {
-      this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(
+    if (!this[SOUND_EFFECT_OF_EXPLOSION]) {
+      this[SOUND_EFFECT_OF_EXPLOSION] = new Kiwi.Sound.Audio(
         context.game,
         'explosion-se',
         GameConfig.setting.BASE_EXPLOSION_VOLUME_PER,
         false
       );
     }
-    return this[soundEffectOfExplosion];
+    return this[SOUND_EFFECT_OF_EXPLOSION];
   }
 
   /**
    * Getter of sound effect for caution for speed.
    *
-   * @return {Kiwi.Sound.Audio} soundEffectOfCautionForSpeed
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_CAUTION_FOR_SPEED
    */
   static get soundEffectOfCautionForSpeed() {
     const context = GameState.current;
 
-    if (!this[soundEffectOfCautionForSpeed]) {
-      this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(
+    if (!this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED]) {
+      this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED] = new Kiwi.Sound.Audio(
         context.game,
         'caution-of-speed-se',
         GameConfig.setting.BASE_CAUTION_VOLUME_PER,
         false
       );
     }
-    return this[soundEffectOfCautionForSpeed];
+    return this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED];
   }
 
   /**
    * Getter of sound effect for circle.
    *
-   * @return {Kiwi.Sound.Audio} soundEffectOfCircle
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_CIRCLE
    */
   static get soundEffectOfCircle() {
     const context = GameState.current;
 
-    if (!this[soundEffectOfCircle]) {
-      this[soundEffectOfCircle] = new Kiwi.Sound.Audio(
+    if (!this[SOUND_EFFECT_OF_CIRCLE]) {
+      this[SOUND_EFFECT_OF_CIRCLE] = new Kiwi.Sound.Audio(
         context.game,
         'circle-se',
         GameConfig.setting.BASE_CIRCLE_VOLUME_PER,
         false
       );
     }
-    return this[soundEffectOfCircle];
+    return this[SOUND_EFFECT_OF_CIRCLE];
   }
 
   /**
    * Getter of sound effect for my unit explosion.
    *
-   * @return {Kiwi.Sound.Audio} soundEffectOfMyUnitExplosion
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_MYUNIT_EXPLOSION
    */
   static get soundEffectOfMyUnitExplosion() {
     const context = GameState.current;
 
-    if (!this[soundEffectOfMyUnitExplosion]) {
-      this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(
+    if (!this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION]) {
+      this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION] = new Kiwi.Sound.Audio(
         context.game,
         'explosion-myunit-se',
         GameConfig.setting.BASE_EXPLOSION_MYUNIT_VOLUME_PER,
         false
       );
     }
-    return this[soundEffectOfMyUnitExplosion];
+    return this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION];
   }
 
 }

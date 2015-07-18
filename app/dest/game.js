@@ -159,6 +159,84 @@ var GameCounter = {};
 // Disable output of Kiwi.Logger.
 Kiwi.Log.display = false;
 
+// Bullet
+var LAST_BULLET_SHOOT_AT = Symbol();
+
+// GameOver
+var GAME_OVER_STATUS = Symbol();
+
+// GameText
+var TEXT_TITLE = Symbol();
+var TEXT_SUB_TITLE = Symbol();
+var TEXT_START = Symbol();
+var TEXT_QUIT = Symbol();
+var TEXT_EXIT_GAME = Symbol();
+var TEXT_GAME_OVER = Symbol();
+var TEXT_RESTART = Symbol();
+var TEXT_SCORE = Symbol();
+var TEXT_SLOWDOWN_COUNT = Symbol();
+var TEXT_SLOWDOWN = Symbol();
+
+// GroupPool
+var STAR_POOL = Symbol();
+var CUBE_POOL = Symbol();
+var CIRCLE_POOL = Symbol();
+var BULLET_POOL = Symbol();
+var CYLINDER_POOL = Symbol();
+var MYUNIT_SPLINTER_POOL = Symbol();
+var RHOMBUS_SPLINTER_POOL = Symbol();
+var RHOMBUS_POOL = Symbol();
+var EXPLOSION_POOL = Symbol();
+
+// Group
+var GROUP_SINGLETON = Symbol();
+var GROUP_SINGLETON_ENFORCER = Symbol();
+
+// HUD
+var HUD_SINGLETON = Symbol();
+var HUD_SINGLETON_ENFORCER = Symbol();
+
+// GameKey
+var _GAMESTART_KEY = Symbol();
+var _LEFT_KEY = Symbol();
+var _RIGHT_KEY = Symbol();
+var _UP_KEY = Symbol();
+var _SHOOT_KEY = Symbol();
+var _EXIT_KEY = Symbol();
+var _RESTART_KEY = Symbol();
+
+// GameMusic
+var MUSIC_MAIN = Symbol();
+var MUSIC_GAMEOVER = Symbol();
+var SOUND_EFFECT_OF_BULLET = Symbol();
+var SOUND_EFFECT_OF_EXPLOSION = Symbol();
+var SOUND_EFFECT_OF_CAUTION_FOR_SPEED = Symbol();
+var SOUND_EFFECT_OF_CIRCLE = Symbol();
+var SOUND_EFFECT_OF_MYUNIT_EXPLOSION = Symbol();
+
+// MyUnit
+var MYUNIT_SINGLETON = Symbol();
+var MYUNIT_SINGLETON_ENFORCER = Symbol();
+
+// GameState
+var GAMESTATE_SINGLETON = Symbol();
+var GAMESTATE_SINGLETON_ENFORCER = Symbol();
+var GAMESTATE_CURRENT = Symbol();
+var GAMESTATE_TITLE = Symbol();
+var GAMESTATE_PLAY = Symbol();
+
+// Timer
+var TIMER_SINGLETON = Symbol();
+var TIMER_SINGLETON_ENFORCER = Symbol();
+
+// TimerSpawnObjects
+var TIMER_SPAWN_OBJECTS_SINGLETON = Symbol();
+var TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER = Symbol();
+
+// TimerVelocity
+var TIMER_VELOCITY_SINGLETON = Symbol();
+var TIMER_VELOCITY_SINGLETON_ENFORCER = Symbol();
+
 GameCounter.hitPoint = 5;
 GameCounter.bullet = 0;
 GameCounter.explosion = 0;
@@ -669,8 +747,6 @@ var StarGenerator = (function () {
   return StarGenerator;
 })();
 
-var lastBulletShootAt = Symbol();
-
 var Bullet = (function () {
   function Bullet() {
     _classCallCheck(this, Bullet);
@@ -685,17 +761,17 @@ var Bullet = (function () {
     value: function shoot() {
       var context = GameState.current;
 
-      if (!this[lastBulletShootAt]) {
-        this[lastBulletShootAt] = 0;
+      if (!this[LAST_BULLET_SHOOT_AT]) {
+        this[LAST_BULLET_SHOOT_AT] = 0;
       }
 
-      var lastShootTime = context.game.time.now() - this[lastBulletShootAt];
+      var lastShootTime = context.game.time.now() - this[LAST_BULLET_SHOOT_AT];
 
       if (lastShootTime < GameConfig.setting.SHOOT_DELAY) {
         return;
       }
 
-      this[lastBulletShootAt] = context.game.time.now();
+      this[LAST_BULLET_SHOOT_AT] = context.game.time.now();
 
       var bullet = Bullet.getFirstDeadBullet();
 
@@ -898,8 +974,6 @@ var Explosion = (function () {
   return Explosion;
 })();
 
-var gameOverStatus = Symbol();
-
 var GameOver = (function () {
   function GameOver() {
     _classCallCheck(this, GameOver);
@@ -954,7 +1028,7 @@ var GameOver = (function () {
      * @return {Boolean} GameOverStatus
      */
     get: function get() {
-      return this[gameOverStatus];
+      return this[GAME_OVER_STATUS];
     },
 
     /**
@@ -964,24 +1038,13 @@ var GameOver = (function () {
      */
     set: function set(value) {
       if (typeof value === 'boolean') {
-        this[gameOverStatus] = value;
+        this[GAME_OVER_STATUS] = value;
       }
     }
   }]);
 
   return GameOver;
 })();
-
-var textTitle = Symbol();
-var textSubTitle = Symbol();
-var textStart = Symbol();
-var textQuit = Symbol();
-var textExitGame = Symbol();
-var textGameOver = Symbol();
-var textRestart = Symbol();
-var textScore = Symbol();
-var textSlowDownCount = Symbol();
-var textSlowDown = Symbol();
 
 var GameText = (function () {
   function GameText() {
@@ -1022,17 +1085,17 @@ var GameText = (function () {
     /**
      * createTitle() is create text of Game Title.
      *
-     * @return {Kiwi.GameObjects.TextField} textTitle
+     * @return {Kiwi.GameObjects.TextField} TEXT_TITLE
      */
     value: function createTitle() {
       var context = GameState.current;
 
-      if (!this[textTitle]) {
+      if (!this[TEXT_TITLE]) {
         var text = this._createTextField(context, GameConfig.text.title);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textTitle] = text;
+        this[TEXT_TITLE] = text;
       }
-      return this[textTitle];
+      return this[TEXT_TITLE];
     }
   }, {
     key: 'createSubTitle',
@@ -1040,17 +1103,17 @@ var GameText = (function () {
     /**
      * createSubTitle() is create text of Game Sub-Title.
      *
-     * @return {Kiwi.GameObjects.TextField} textSubTitle
+     * @return {Kiwi.GameObjects.TextField} TEXT_SUB_TITLE
      */
     value: function createSubTitle() {
       var context = GameState.current;
 
-      if (!this[textSubTitle]) {
+      if (!this[TEXT_SUB_TITLE]) {
         var text = this._createTextField(context, GameConfig.text.subTitle);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textSubTitle] = text;
+        this[TEXT_SUB_TITLE] = text;
       }
-      return this[textSubTitle];
+      return this[TEXT_SUB_TITLE];
     }
   }, {
     key: 'createStart',
@@ -1058,17 +1121,17 @@ var GameText = (function () {
     /**
      * createStart() is create text of Start.
      *
-     * @return {Kiwi.GameObjects.TextField} textStart
+     * @return {Kiwi.GameObjects.TextField} TEXT_START
      */
     value: function createStart() {
       var context = GameState.current;
 
-      if (!this[textStart]) {
+      if (!this[TEXT_START]) {
         var text = this._createTextField(context, GameConfig.text.start);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textStart] = text;
+        this[TEXT_START] = text;
       }
-      return this[textStart];
+      return this[TEXT_START];
     }
   }, {
     key: 'createQuit',
@@ -1076,17 +1139,17 @@ var GameText = (function () {
     /**
      * createQuit() is create text of Quit.
      *
-     * @return {Kiwi.GameObjects.TextField} textQuit
+     * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
      */
     value: function createQuit() {
       var context = GameState.current;
 
-      if (!this[textQuit]) {
+      if (!this[TEXT_QUIT]) {
         var text = this._createTextField(context, GameConfig.text.quit);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textQuit] = text;
+        this[TEXT_QUIT] = text;
       }
-      return this[textQuit];
+      return this[TEXT_QUIT];
     }
   }, {
     key: 'createExitGame',
@@ -1094,17 +1157,17 @@ var GameText = (function () {
     /**
      * createQuit() is create text of Quit.
      *
-     * @return {Kiwi.GameObjects.TextField} textQuit
+     * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
      */
     value: function createExitGame() {
       var context = GameState.current;
 
-      if (!this[textExitGame]) {
+      if (!this[TEXT_EXIT_GAME]) {
         var text = this._createTextField(context, GameConfig.text.exitGame);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textExitGame] = text;
+        this[TEXT_EXIT_GAME] = text;
       }
-      return this[textExitGame];
+      return this[TEXT_EXIT_GAME];
     }
   }, {
     key: 'createGameOver',
@@ -1112,17 +1175,17 @@ var GameText = (function () {
     /**
      * createGameOver() is create text of GAMEOVER.
      *
-     * @return {Kiwi.GameObjects.TextField} textGameOver
+     * @return {Kiwi.GameObjects.TextField} TEXT_GAME_OVER
      */
     value: function createGameOver() {
       var context = GameState.current;
 
-      if (!this[textGameOver]) {
+      if (!this[TEXT_GAME_OVER]) {
         var text = this._createTextField(context, GameConfig.text.gameOver);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textGameOver] = text;
+        this[TEXT_GAME_OVER] = text;
       }
-      return this[textGameOver];
+      return this[TEXT_GAME_OVER];
     }
   }, {
     key: 'createRestart',
@@ -1130,17 +1193,17 @@ var GameText = (function () {
     /**
      * createRestart() is create text of Restart.
      *
-     * @return {Kiwi.GameObjects.TextField} textRestart
+     * @return {Kiwi.GameObjects.TextField} TEXT_RESTART
      */
     value: function createRestart() {
       var context = GameState.current;
 
-      if (!this[textRestart]) {
+      if (!this[TEXT_RESTART]) {
         var text = this._createTextField(context, GameConfig.text.restart);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textRestart] = text;
+        this[TEXT_RESTART] = text;
       }
-      return this[textRestart];
+      return this[TEXT_RESTART];
     }
   }, {
     key: 'createScore',
@@ -1148,18 +1211,18 @@ var GameText = (function () {
     /**
      * createScore() is create text of score.
      *
-     * @return {Kiwi.GameObjects.TextField} textScore
+     * @return {Kiwi.GameObjects.TextField} TEXT_SCORE
      */
     value: function createScore(score) {
       var context = GameState.current;
 
-      if (!this[textScore]) {
+      if (!this[TEXT_SCORE]) {
         var text = this._createTextField(context, GameConfig.text.scoreResults);
         text.text = 'SCORE: ' + String(score);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textScore] = text;
+        this[TEXT_SCORE] = text;
       }
-      return this[textScore];
+      return this[TEXT_SCORE];
     }
   }, {
     key: 'createSlowDownCount',
@@ -1167,17 +1230,17 @@ var GameText = (function () {
     /**
      * createSlowDownCount() is create text of counter for SlowDown.
      *
-     * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+     * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN_COUNT
      */
     value: function createSlowDownCount() {
       var context = GameState.current;
 
-      if (!this[textSlowDownCount]) {
+      if (!this[TEXT_SLOWDOWN_COUNT]) {
         var text = this._createTextField(context, GameConfig.text.slowDownCount);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textSlowDownCount] = text;
+        this[TEXT_SLOWDOWN_COUNT] = text;
       }
-      return this[textSlowDownCount];
+      return this[TEXT_SLOWDOWN_COUNT];
     }
   }, {
     key: 'createSlowDown',
@@ -1185,17 +1248,17 @@ var GameText = (function () {
     /**
      * createSlowDown() is create text of warning for the SlowDown!
      *
-     * @return {Kiwi.GameObjects.TextField} textSlowDown
+     * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN
      */
     value: function createSlowDown() {
       var context = GameState.current;
 
-      if (!this[textSlowDown]) {
+      if (!this[TEXT_SLOWDOWN]) {
         var text = this._createTextField(context, GameConfig.text.slowDown);
         text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-        this[textSlowDown] = text;
+        this[TEXT_SLOWDOWN] = text;
       }
-      return this[textSlowDown];
+      return this[TEXT_SLOWDOWN];
     }
   }, {
     key: '_createTextField',
@@ -1216,10 +1279,10 @@ var GameText = (function () {
     /**
      * Getter of Title.
      *
-     * @return {Kiwi.GameObjects.TextField} textTitle
+     * @return {Kiwi.GameObjects.TextField} TEXT_TITLE
      */
     get: function get() {
-      return this[textTitle];
+      return this[TEXT_TITLE];
     }
   }, {
     key: 'subTitle',
@@ -1227,10 +1290,10 @@ var GameText = (function () {
     /**
      * Getter of Sub-Title.
      *
-     * @return {Kiwi.GameObjects.TextField} textSubTitle
+     * @return {Kiwi.GameObjects.TextField} TEXT_SUB_TITLE
      */
     get: function get() {
-      return this[textSubTitle];
+      return this[TEXT_SUB_TITLE];
     }
   }, {
     key: 'start',
@@ -1238,10 +1301,10 @@ var GameText = (function () {
     /**
      * Getter of Start.
      *
-     * @return {Kiwi.GameObjects.TextField} textStart
+     * @return {Kiwi.GameObjects.TextField} TEXT_START
      */
     get: function get() {
-      return this[textStart];
+      return this[TEXT_START];
     }
   }, {
     key: 'quit',
@@ -1249,10 +1312,10 @@ var GameText = (function () {
     /**
      * Getter of Quit.
      *
-     * @return {Kiwi.GameObjects.TextField} textQuit
+     * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
      */
     get: function get() {
-      return this[textQuit];
+      return this[TEXT_QUIT];
     }
   }, {
     key: 'slowDownCount',
@@ -1260,10 +1323,10 @@ var GameText = (function () {
     /**
      * Getter of slowDownCount.
      *
-     * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+     * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN_COUNT
      */
     get: function get() {
-      return this[textSlowDownCount];
+      return this[TEXT_SLOWDOWN_COUNT];
     },
 
     /**
@@ -1272,7 +1335,7 @@ var GameText = (function () {
      * @param {String} text
      */
     set: function set(text) {
-      this[textSlowDownCount].text = text;
+      this[TEXT_SLOWDOWN_COUNT].text = text;
     }
   }, {
     key: 'slowDown',
@@ -1280,25 +1343,15 @@ var GameText = (function () {
     /**
      * Getter of slowDown.
      *
-     * @return {Kiwi.GameObjects.TextField} textSlowDown
+     * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN
      */
     get: function get() {
-      return this[textSlowDown];
+      return this[TEXT_SLOWDOWN];
     }
   }]);
 
   return GameText;
 })();
-
-var starPool = Symbol();
-var cubePool = Symbol();
-var circlePool = Symbol();
-var bulletPool = Symbol();
-var cylinderPool = Symbol();
-var myUnitSplinterPool = Symbol();
-var rhombusSplinterPool = Symbol();
-var rhombusPool = Symbol();
-var explosionPool = Symbol();
 
 var GroupPool = (function () {
   function GroupPool() {
@@ -1314,10 +1367,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} starPool
      */
     value: function star() {
-      if (!this[starPool] || !this._isExistsContextName(this[starPool])) {
-        this[starPool] = this._createNewGroup();
+      if (!this[STAR_POOL] || !this._isExistsContextName(this[STAR_POOL])) {
+        this[STAR_POOL] = this._createNewGroup();
       }
-      return this[starPool];
+      return this[STAR_POOL];
     }
   }, {
     key: 'cube',
@@ -1328,10 +1381,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} cubePool
      */
     value: function cube() {
-      if (!this[cubePool] || !this._isExistsContextName(this[cubePool])) {
-        this[cubePool] = this._createNewGroup();
+      if (!this[CUBE_POOL] || !this._isExistsContextName(this[CUBE_POOL])) {
+        this[CUBE_POOL] = this._createNewGroup();
       }
-      return this[cubePool];
+      return this[CUBE_POOL];
     }
   }, {
     key: 'circle',
@@ -1342,10 +1395,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} circlePool
      */
     value: function circle() {
-      if (!this[circlePool] || !this._isExistsContextName(this[circlePool])) {
-        this[circlePool] = this._createNewGroup();
+      if (!this[CIRCLE_POOL] || !this._isExistsContextName(this[CIRCLE_POOL])) {
+        this[CIRCLE_POOL] = this._createNewGroup();
       }
-      return this[circlePool];
+      return this[CIRCLE_POOL];
     }
   }, {
     key: 'bullet',
@@ -1356,10 +1409,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} bulletPool
      */
     value: function bullet() {
-      if (!this[bulletPool] || !this._isExistsContextName(this[bulletPool])) {
-        this[bulletPool] = this._createNewGroup();
+      if (!this[BULLET_POOL] || !this._isExistsContextName(this[BULLET_POOL])) {
+        this[BULLET_POOL] = this._createNewGroup();
       }
-      return this[bulletPool];
+      return this[BULLET_POOL];
     }
   }, {
     key: 'cylinder',
@@ -1370,10 +1423,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} cylinderPool
      */
     value: function cylinder() {
-      if (!this[cylinderPool] || !this._isExistsContextName(this[cylinderPool])) {
-        this[cylinderPool] = this._createNewGroup();
+      if (!this[CYLINDER_POOL] || !this._isExistsContextName(this[CYLINDER_POOL])) {
+        this[CYLINDER_POOL] = this._createNewGroup();
       }
-      return this[cylinderPool];
+      return this[CYLINDER_POOL];
     }
   }, {
     key: 'myUnitSplinter',
@@ -1381,13 +1434,13 @@ var GroupPool = (function () {
     /**
      * myUnitSplinter() is create of GameGroup for myUnitSplinter.
      *
-     * @return {Kiwi.Group} myUnitSplinterPool
+     * @return {Kiwi.Group} myunitSplinterPool
      */
     value: function myUnitSplinter() {
-      if (!this[myUnitSplinterPool] || !this._isExistsContextName(this[myUnitSplinterPool])) {
-        this[myUnitSplinterPool] = this._createNewGroup();
+      if (!this[MYUNIT_SPLINTER_POOL] || !this._isExistsContextName(this[MYUNIT_SPLINTER_POOL])) {
+        this[MYUNIT_SPLINTER_POOL] = this._createNewGroup();
       }
-      return this[myUnitSplinterPool];
+      return this[MYUNIT_SPLINTER_POOL];
     }
   }, {
     key: 'rhombusSplinter',
@@ -1398,10 +1451,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} rhombusSplinterPool
      */
     value: function rhombusSplinter() {
-      if (!this[rhombusSplinterPool] || !this._isExistsContextName(this[rhombusSplinterPool])) {
-        this[rhombusSplinterPool] = this._createNewGroup();
+      if (!this[RHOMBUS_SPLINTER_POOL] || !this._isExistsContextName(this[RHOMBUS_SPLINTER_POOL])) {
+        this[RHOMBUS_SPLINTER_POOL] = this._createNewGroup();
       }
-      return this[rhombusSplinterPool];
+      return this[RHOMBUS_SPLINTER_POOL];
     }
   }, {
     key: 'rhombus',
@@ -1412,10 +1465,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} rhombusPool
      */
     value: function rhombus() {
-      if (!this[rhombusPool] || !this._isExistsContextName(this[rhombusPool])) {
-        this[rhombusPool] = this._createNewGroup();
+      if (!this[RHOMBUS_POOL] || !this._isExistsContextName(this[RHOMBUS_POOL])) {
+        this[RHOMBUS_POOL] = this._createNewGroup();
       }
-      return this[rhombusPool];
+      return this[RHOMBUS_POOL];
     }
   }, {
     key: 'explosion',
@@ -1426,10 +1479,10 @@ var GroupPool = (function () {
      * @return {Kiwi.Group} explosionPool
      */
     value: function explosion() {
-      if (!this[explosionPool] || !this._isExistsContextName(this[explosionPool])) {
-        this[explosionPool] = this._createNewGroup();
+      if (!this[EXPLOSION_POOL] || !this._isExistsContextName(this[EXPLOSION_POOL])) {
+        this[EXPLOSION_POOL] = this._createNewGroup();
       }
-      return this[explosionPool];
+      return this[EXPLOSION_POOL];
     }
   }, {
     key: 'removeChildrenForAll',
@@ -1624,9 +1677,6 @@ var GroupPool = (function () {
   return GroupPool;
 })();
 
-var groupSingleton = Symbol();
-var groupSingletonEnforcer = Symbol();
-
 var Group = (function () {
 
   /**
@@ -1638,7 +1688,7 @@ var Group = (function () {
   function Group(enforcer) {
     _classCallCheck(this, Group);
 
-    if (enforcer !== groupSingletonEnforcer) {
+    if (enforcer !== GROUP_SINGLETON_ENFORCER) {
       throw new Error('Cannot constructor singleton!');
     }
   }
@@ -1808,18 +1858,15 @@ var Group = (function () {
      * @return {Group}
      */
     get: function get() {
-      if (!this[groupSingleton]) {
-        this[groupSingleton] = new Group(groupSingletonEnforcer);
+      if (!this[GROUP_SINGLETON]) {
+        this[GROUP_SINGLETON] = new Group(GROUP_SINGLETON_ENFORCER);
       }
-      return this[groupSingleton];
+      return this[GROUP_SINGLETON];
     }
   }]);
 
   return Group;
 })();
-
-var hudSingleton = Symbol();
-var hudSingletonEnforcer = Symbol();
 
 var HUD = (function () {
 
@@ -1832,7 +1879,7 @@ var HUD = (function () {
   function HUD(enforcer) {
     _classCallCheck(this, HUD);
 
-    if (enforcer !== hudSingletonEnforcer) {
+    if (enforcer !== HUD_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -2008,23 +2055,15 @@ var HUD = (function () {
      * @return {HUD}
      */
     get: function get() {
-      if (!this[hudSingleton]) {
-        this[hudSingleton] = new HUD(hudSingletonEnforcer);
+      if (!this[HUD_SINGLETON]) {
+        this[HUD_SINGLETON] = new HUD(HUD_SINGLETON_ENFORCER);
       }
-      return this[hudSingleton];
+      return this[HUD_SINGLETON];
     }
   }]);
 
   return HUD;
 })();
-
-var _gameStartKey = Symbol();
-var _leftKey = Symbol();
-var _rightKey = Symbol();
-var _upKey = Symbol();
-var _shootKey = Symbol();
-var _exitKey = Symbol();
-var _restartKey = Symbol();
 
 var GameKey = (function () {
   function GameKey() {
@@ -2038,12 +2077,12 @@ var GameKey = (function () {
      * initializeOfPlay() is initialize of keys for PlayState.
      */
     value: function initializeOfPlay() {
-      GameKey.leftKey();
-      GameKey.rightKey();
-      GameKey.upKey();
-      GameKey.shootKey();
-      GameKey.exitKey();
-      GameKey.restartKey();
+      GameKey.LEFT_KEY();
+      GameKey.RIGHT_KEY();
+      GameKey.UP_KEY();
+      GameKey.SHOOT_KEY();
+      GameKey.EXIT_KEY();
+      GameKey.RESTART_KEY();
     }
   }, {
     key: 'initializeOfTitle',
@@ -2052,183 +2091,183 @@ var GameKey = (function () {
      * initializeOfTitle() is initialize of keys for TitleState.
      */
     value: function initializeOfTitle() {
-      GameKey.gameStartKey();
-      GameKey.exitKey();
+      GameKey.GAMESTART_KEY();
+      GameKey.EXIT_KEY();
     }
   }, {
-    key: 'gameStartKey',
+    key: 'GAMESTART_KEY',
 
     /**
-     * gameStartKey() is return new Game key for the Start.
+     * GAMESTART_KEY() is return new Game key for the Start.
      *
-     * @return {Kiwi.Input.Key} gameStartKey
+     * @return {Kiwi.Input.Key} GAMESTART_KEY
      */
-    value: function gameStartKey() {
-      if (!this[_gameStartKey]) {
-        this[_gameStartKey] = this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR);
+    value: function GAMESTART_KEY() {
+      if (!this[_GAMESTART_KEY]) {
+        this[_GAMESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR);
       }
-      return this[_gameStartKey];
+      return this[_GAMESTART_KEY];
     }
   }, {
     key: 'activeGameStartKey',
 
     /**
-     * activeGameStartKey() is be check an active of gameStartKey.
+     * activeGameStartKey() is be check an active of GAMESTART_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeGameStartKey() {
-      return this[_gameStartKey].isDown;
+      return this[_GAMESTART_KEY].isDown;
     }
   }, {
-    key: 'leftKey',
+    key: 'LEFT_KEY',
 
     /**
-     * leftKey() is return new Game key for the Left.
+     * LEFT_KEY() is return new Game key for the Left.
      *
-     * @return {Kiwi.Input.Key} leftKey
+     * @return {Kiwi.Input.Key} LEFT_KEY
      */
-    value: function leftKey() {
-      if (!this[_leftKey]) {
-        this[_leftKey] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
+    value: function LEFT_KEY() {
+      if (!this[_LEFT_KEY]) {
+        this[_LEFT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
       }
-      return this[_leftKey];
+      return this[_LEFT_KEY];
     }
   }, {
     key: 'activeLeftKey',
 
     /**
-     * activeLeftKey() is be check an active of leftKey.
+     * activeLeftKey() is be check an active of LEFT_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeLeftKey() {
-      return this[_leftKey].isDown;
+      return this[_LEFT_KEY].isDown;
     }
   }, {
-    key: 'rightKey',
+    key: 'RIGHT_KEY',
 
     /**
-     * rightKey() is return new Game key for the Right.
+     * RIGHT_KEY() is return new Game key for the Right.
      *
-     * @return {Kiwi.Input.Key} rightKey
+     * @return {Kiwi.Input.Key} RIGHT_KEY
      */
-    value: function rightKey() {
-      if (!this[_rightKey]) {
-        this[_rightKey] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
+    value: function RIGHT_KEY() {
+      if (!this[_RIGHT_KEY]) {
+        this[_RIGHT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
       }
-      return this[_rightKey];
+      return this[_RIGHT_KEY];
     }
   }, {
     key: 'activeRightKey',
 
     /**
-     * activeRightKey() is be check an active of rightKey.
+     * activeRightKey() is be check an active of RIGHT_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeRightKey() {
-      return this[_rightKey].isDown;
+      return this[_RIGHT_KEY].isDown;
     }
   }, {
-    key: 'upKey',
+    key: 'UP_KEY',
 
     /**
-     * upKey() is return new Game key for the Up.
+     * UP_KEY() is return new Game key for the Up.
      *
-     * @return {Kiwi.Input.Key} upKey
+     * @return {Kiwi.Input.Key} UP_KEY
      */
-    value: function upKey() {
-      if (!this[_upKey]) {
-        this[_upKey] = this._getGameKey(Kiwi.Input.Keycodes.UP);
+    value: function UP_KEY() {
+      if (!this[_UP_KEY]) {
+        this[_UP_KEY] = this._getGameKey(Kiwi.Input.Keycodes.UP);
       }
-      return this[_upKey];
+      return this[_UP_KEY];
     }
   }, {
     key: 'activeUpKey',
 
     /**
-     * activeUpKey() is be check an active of upKey.
+     * activeUpKey() is be check an active of UP_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeUpKey() {
-      return this[_upKey].isDown;
+      return this[_UP_KEY].isDown;
     }
   }, {
-    key: 'shootKey',
+    key: 'SHOOT_KEY',
 
     /**
-     * shootKey() is return new Game key for the Shoot.
+     * SHOOT_KEY() is return new Game key for the Shoot.
      *
-     * @return {Kiwi.Input.Key} shootKey
+     * @return {Kiwi.Input.Key} SHOOT_KEY
      */
-    value: function shootKey() {
-      if (!this[_shootKey]) {
-        this[_shootKey] = this._getGameKey(Kiwi.Input.Keycodes.Z);
+    value: function SHOOT_KEY() {
+      if (!this[_SHOOT_KEY]) {
+        this[_SHOOT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.Z);
       }
-      return this[_shootKey];
+      return this[_SHOOT_KEY];
     }
   }, {
     key: 'activeShootKey',
 
     /**
-     * activeShootKey() is be check an active of shootKey.
+     * activeShootKey() is be check an active of SHOOT_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeShootKey() {
-      return this[_shootKey].isDown;
+      return this[_SHOOT_KEY].isDown;
     }
   }, {
-    key: 'exitKey',
+    key: 'EXIT_KEY',
 
     /**
-     * exitKey() is return new Game key for the Exit.
+     * EXIT_KEY() is return new Game key for the Exit.
      *
-     * @return {Kiwi.Input.Key} exitKey
+     * @return {Kiwi.Input.Key} EXIT_KEY
      */
-    value: function exitKey() {
-      if (!this[_exitKey]) {
-        this[_exitKey] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
+    value: function EXIT_KEY() {
+      if (!this[_EXIT_KEY]) {
+        this[_EXIT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
       }
-      return this[_exitKey];
+      return this[_EXIT_KEY];
     }
   }, {
     key: 'activeExitKey',
 
     /**
-     * activeExitKey() is be check an active of exitKey.
+     * activeExitKey() is be check an active of EXIT_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeExitKey() {
-      return this[_exitKey].isDown;
+      return this[_EXIT_KEY].isDown;
     }
   }, {
-    key: 'restartKey',
+    key: 'RESTART_KEY',
 
     /**
-     * restartKey() is return new Game key for the Restart.
+     * RESTART_KEY() is return new Game key for the Restart.
      *
-     * @return {Kiwi.Input.Key} restartKey
+     * @return {Kiwi.Input.Key} RESTART_KEY
      */
-    value: function restartKey() {
-      if (!this[_restartKey]) {
-        this[_restartKey] = this._getGameKey(Kiwi.Input.Keycodes.R);
+    value: function RESTART_KEY() {
+      if (!this[_RESTART_KEY]) {
+        this[_RESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.R);
       }
-      return this[_restartKey];
+      return this[_RESTART_KEY];
     }
   }, {
     key: 'activeRestartKey',
 
     /**
-     * activeExitKey() is be check an active of exitKey.
+     * activeExitKey() is be check an active of EXIT_KEY.
      *
      * @return {Boolean} isDown
      */
     value: function activeRestartKey() {
-      return this[_restartKey].isDown;
+      return this[_RESTART_KEY].isDown;
     }
   }, {
     key: '_getGameKey',
@@ -2246,14 +2285,6 @@ var GameKey = (function () {
 
   return GameKey;
 })();
-
-var musicMain = Symbol();
-var musicGameOver = Symbol();
-var soundEffectOfBullet = Symbol();
-var soundEffectOfExplosion = Symbol();
-var soundEffectOfCautionForSpeed = Symbol();
-var soundEffectOfCircle = Symbol();
-var soundEffectOfMyUnitExplosion = Symbol();
 
 var GameMusic = (function () {
   function GameMusic() {
@@ -2282,14 +2313,14 @@ var GameMusic = (function () {
     /**
      * Getter of main game music.
      *
-     * @return {Kiwi.Sound.Audio} musicMain
+     * @return {Kiwi.Sound.Audio} MUSIC_MAIN
      */
     get: function get() {
       var context = GameState.current;
-      if (!this[musicMain]) {
-        this[musicMain] = new Kiwi.Sound.Audio(context.game, 'musicMain', GameConfig.setting.BASE_MUSIC_VOLUME_PER, true);
+      if (!this[MUSIC_MAIN]) {
+        this[MUSIC_MAIN] = new Kiwi.Sound.Audio(context.game, 'MUSIC_MAIN', GameConfig.setting.BASE_MUSIC_VOLUME_PER, true);
       }
-      return this[musicMain];
+      return this[MUSIC_MAIN];
     }
   }, {
     key: 'gameOver',
@@ -2297,16 +2328,16 @@ var GameMusic = (function () {
     /**
      * Getter of game over music.
      *
-     * @return {Kiwi.Sound.Audio} musicGameOver
+     * @return {Kiwi.Sound.Audio} MUSIC_GAMEOVER
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[musicGameOver]) {
-        this[musicGameOver] = new Kiwi.Sound.Audio(context.game, 'musicGameover', GameConfig.setting.BASE_GAME_OVER_MUSIC_VOLUME_PER, false);
+      if (!this[MUSIC_GAMEOVER]) {
+        this[MUSIC_GAMEOVER] = new Kiwi.Sound.Audio(context.game, 'musicGameover', GameConfig.setting.BASE_GAME_OVER_MUSIC_VOLUME_PER, false);
       }
 
-      return this[musicGameOver];
+      return this[MUSIC_GAMEOVER];
     }
   }, {
     key: 'soundEffectOfBullet',
@@ -2314,15 +2345,15 @@ var GameMusic = (function () {
     /**
      * Getter of sound effect for bullet.
      *
-     * @return {Kiwi.Sound.Audio} soundEffectOfBullet
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_BULLET
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[soundEffectOfBullet]) {
-        this[soundEffectOfBullet] = new Kiwi.Sound.Audio(context.game, 'bullet-se', GameConfig.setting.BASE_LASER_VOLUME_PER, false);
+      if (!this[SOUND_EFFECT_OF_BULLET]) {
+        this[SOUND_EFFECT_OF_BULLET] = new Kiwi.Sound.Audio(context.game, 'bullet-se', GameConfig.setting.BASE_LASER_VOLUME_PER, false);
       }
-      return this[soundEffectOfBullet];
+      return this[SOUND_EFFECT_OF_BULLET];
     }
   }, {
     key: 'soundEffectOfExplosion',
@@ -2330,15 +2361,15 @@ var GameMusic = (function () {
     /**
      * Getter of sound effect for explosion.
      *
-     * @return {Kiwi.Sound.Audio} soundEffectOfExplosion
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_EXPLOSION
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[soundEffectOfExplosion]) {
-        this[soundEffectOfExplosion] = new Kiwi.Sound.Audio(context.game, 'explosion-se', GameConfig.setting.BASE_EXPLOSION_VOLUME_PER, false);
+      if (!this[SOUND_EFFECT_OF_EXPLOSION]) {
+        this[SOUND_EFFECT_OF_EXPLOSION] = new Kiwi.Sound.Audio(context.game, 'explosion-se', GameConfig.setting.BASE_EXPLOSION_VOLUME_PER, false);
       }
-      return this[soundEffectOfExplosion];
+      return this[SOUND_EFFECT_OF_EXPLOSION];
     }
   }, {
     key: 'soundEffectOfCautionForSpeed',
@@ -2346,15 +2377,15 @@ var GameMusic = (function () {
     /**
      * Getter of sound effect for caution for speed.
      *
-     * @return {Kiwi.Sound.Audio} soundEffectOfCautionForSpeed
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_CAUTION_FOR_SPEED
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[soundEffectOfCautionForSpeed]) {
-        this[soundEffectOfCautionForSpeed] = new Kiwi.Sound.Audio(context.game, 'caution-of-speed-se', GameConfig.setting.BASE_CAUTION_VOLUME_PER, false);
+      if (!this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED]) {
+        this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED] = new Kiwi.Sound.Audio(context.game, 'caution-of-speed-se', GameConfig.setting.BASE_CAUTION_VOLUME_PER, false);
       }
-      return this[soundEffectOfCautionForSpeed];
+      return this[SOUND_EFFECT_OF_CAUTION_FOR_SPEED];
     }
   }, {
     key: 'soundEffectOfCircle',
@@ -2362,15 +2393,15 @@ var GameMusic = (function () {
     /**
      * Getter of sound effect for circle.
      *
-     * @return {Kiwi.Sound.Audio} soundEffectOfCircle
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_CIRCLE
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[soundEffectOfCircle]) {
-        this[soundEffectOfCircle] = new Kiwi.Sound.Audio(context.game, 'circle-se', GameConfig.setting.BASE_CIRCLE_VOLUME_PER, false);
+      if (!this[SOUND_EFFECT_OF_CIRCLE]) {
+        this[SOUND_EFFECT_OF_CIRCLE] = new Kiwi.Sound.Audio(context.game, 'circle-se', GameConfig.setting.BASE_CIRCLE_VOLUME_PER, false);
       }
-      return this[soundEffectOfCircle];
+      return this[SOUND_EFFECT_OF_CIRCLE];
     }
   }, {
     key: 'soundEffectOfMyUnitExplosion',
@@ -2378,23 +2409,20 @@ var GameMusic = (function () {
     /**
      * Getter of sound effect for my unit explosion.
      *
-     * @return {Kiwi.Sound.Audio} soundEffectOfMyUnitExplosion
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_MYUNIT_EXPLOSION
      */
     get: function get() {
       var context = GameState.current;
 
-      if (!this[soundEffectOfMyUnitExplosion]) {
-        this[soundEffectOfMyUnitExplosion] = new Kiwi.Sound.Audio(context.game, 'explosion-myunit-se', GameConfig.setting.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
+      if (!this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION]) {
+        this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION] = new Kiwi.Sound.Audio(context.game, 'explosion-myunit-se', GameConfig.setting.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
       }
-      return this[soundEffectOfMyUnitExplosion];
+      return this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION];
     }
   }]);
 
   return GameMusic;
 })();
-
-var myUnitSingleton = Symbol();
-var myUnitSingletonEnforcer = Symbol();
 
 var MyUnit = (function () {
 
@@ -2407,7 +2435,7 @@ var MyUnit = (function () {
   function MyUnit(enforcer) {
     _classCallCheck(this, MyUnit);
 
-    if (enforcer !== myUnitSingletonEnforcer) {
+    if (enforcer !== MYUNIT_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -2752,21 +2780,15 @@ var MyUnit = (function () {
      * @return {MyUnit}
      */
     get: function get() {
-      if (!this[myUnitSingleton]) {
-        this[myUnitSingleton] = new MyUnit(myUnitSingletonEnforcer);
+      if (!this[MYUNIT_SINGLETON]) {
+        this[MYUNIT_SINGLETON] = new MyUnit(MYUNIT_SINGLETON_ENFORCER);
       }
-      return this[myUnitSingleton];
+      return this[MYUNIT_SINGLETON];
     }
   }]);
 
   return MyUnit;
 })();
-
-var gameStateSingleton = Symbol();
-var gameStateSingletonEnforcer = Symbol();
-var gameStateCurrent = Symbol();
-var gameStateTitle = Symbol();
-var gameStatePlay = Symbol();
 
 var GameState = (function () {
 
@@ -2779,7 +2801,7 @@ var GameState = (function () {
   function GameState(enforcer) {
     _classCallCheck(this, GameState);
 
-    if (enforcer !== gameStateSingletonEnforcer) {
+    if (enforcer !== GAMESTATE_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -2790,10 +2812,10 @@ var GameState = (function () {
     /**
      * Getter of current GameState
      *
-     * @return {Kiwi.State} gameStateCurrent
+     * @return {Kiwi.State} gamestateCurrent
      */
     get: function get() {
-      return this[gameStateCurrent];
+      return this[GAMESTATE_CURRENT];
     },
 
     /**
@@ -2802,7 +2824,7 @@ var GameState = (function () {
      * @param {Kiwi.State} value
      */
     set: function set(value) {
-      this[gameStateCurrent] = value;
+      this[GAMESTATE_CURRENT] = value;
     }
   }, {
     key: 'title',
@@ -2813,10 +2835,10 @@ var GameState = (function () {
      * @return {Kiwi.State} TitleState
      */
     get: function get() {
-      if (!this[gameStateTitle]) {
-        this[gameStateTitle] = new Kiwi.State('Title');
+      if (!this[GAMESTATE_TITLE]) {
+        this[GAMESTATE_TITLE] = new Kiwi.State('Title');
       }
-      return this[gameStateTitle];
+      return this[GAMESTATE_TITLE];
     }
   }, {
     key: 'play',
@@ -2827,10 +2849,10 @@ var GameState = (function () {
      * @return {Kiwi.State} PlayState
      */
     get: function get() {
-      if (!this[gameStatePlay]) {
-        this[gameStatePlay] = new Kiwi.State('Play');
+      if (!this[GAMESTATE_PLAY]) {
+        this[GAMESTATE_PLAY] = new Kiwi.State('Play');
       }
-      return this[gameStatePlay];
+      return this[GAMESTATE_PLAY];
     }
   }], [{
     key: 'instance',
@@ -2841,10 +2863,10 @@ var GameState = (function () {
      * @return {GameState}
      */
     get: function get() {
-      if (!this[gameStateSingleton]) {
-        this[gameStateSingleton] = new GameState(gameStateSingletonEnforcer);
+      if (!this[GAMESTATE_SINGLETON]) {
+        this[GAMESTATE_SINGLETON] = new GameState(GAMESTATE_SINGLETON_ENFORCER);
       }
-      return this[gameStateSingleton];
+      return this[GAMESTATE_SINGLETON];
     }
   }, {
     key: 'current',
@@ -2860,9 +2882,6 @@ var GameState = (function () {
   return GameState;
 })();
 
-var timerSingleton = Symbol();
-var timerSingletonEnforcer = Symbol();
-
 var Timer = (function () {
 
   /**
@@ -2874,7 +2893,7 @@ var Timer = (function () {
   function Timer(enforcer) {
     _classCallCheck(this, Timer);
 
-    if (enforcer !== timerSingletonEnforcer) {
+    if (enforcer !== TIMER_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -3028,18 +3047,149 @@ var Timer = (function () {
      * @return {Timer}
      */
     get: function get() {
-      if (!this[timerSingleton]) {
-        this[timerSingleton] = new Timer(timerSingletonEnforcer);
+      if (!this[TIMER_SINGLETON]) {
+        this[TIMER_SINGLETON] = new Timer(TIMER_SINGLETON_ENFORCER);
       }
-      return this[timerSingleton];
+      return this[TIMER_SINGLETON];
     }
   }]);
 
   return Timer;
 })();
 
-var timerSpawnObjectsSingleton = Symbol();
-var timerSpawnObjectsSingletonEnforcer = Symbol();
+var PlayState = (function () {
+  function PlayState() {
+    _classCallCheck(this, PlayState);
+  }
+
+  _createClass(PlayState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of PlayState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameMusic.main.play();
+
+      HUD.initialize();
+      Group.initialize();
+      MyUnit.initialize();
+      GameKey.initializeOfPlay();
+      Timer.initialize();
+      GameText.createSlowDownCount();
+      GameText.createSlowDown();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for PlayState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+
+      Helper.addSprites(this, GameConfig.spriteSheets);
+      Helper.addSound(this, GameConfig.soundFiles);
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in PlayState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      MyUnit.update();
+      HUD.update();
+
+      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
+        Bullet.shoot();
+      }
+
+      GroupPool.forEachAll();
+
+      if (GameOver.status) {
+        if (GameKey.activeExitKey()) {
+          ipc.sendSync('quit');
+        }
+
+        if (GameKey.activeRestartKey()) {
+          window.location.reload(true);
+        }
+      }
+    }
+  }]);
+
+  return PlayState;
+})();
+
+GameState.instance.play.create = PlayState.create;
+GameState.instance.play.preload = PlayState.preload;
+GameState.instance.play.update = PlayState.update;
+
+var TitleState = (function () {
+  function TitleState() {
+    _classCallCheck(this, TitleState);
+  }
+
+  _createClass(TitleState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of TitleState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameKey.initializeOfTitle();
+      GameText.initializeOfTitle();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for TitleState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in TitleState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      if (GameKey.activeGameStartKey()) {
+        GameText.destroyOfTitle();
+        this.game.states.switchState('Play');
+      }
+
+      if (GameKey.activeExitKey()) {
+        ipc.sendSync('quit');
+      }
+    }
+  }]);
+
+  return TitleState;
+})();
+
+GameState.instance.title.create = TitleState.create;
+GameState.instance.title.preload = TitleState.preload;
+GameState.instance.title.update = TitleState.update;
 
 var TimerSpawnObjects = (function () {
 
@@ -3052,7 +3202,7 @@ var TimerSpawnObjects = (function () {
   function TimerSpawnObjects(enforcer) {
     _classCallCheck(this, TimerSpawnObjects);
 
-    if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
+    if (enforcer !== TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -3222,18 +3372,15 @@ var TimerSpawnObjects = (function () {
      * @return {TimerSpawnObjects}
      */
     get: function get() {
-      if (!this[timerSpawnObjectsSingleton]) {
-        this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
+      if (!this[TIMER_SPAWN_OBJECTS_SINGLETON]) {
+        this[TIMER_SPAWN_OBJECTS_SINGLETON] = new TimerSpawnObjects(TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER);
       }
-      return this[timerSpawnObjectsSingleton];
+      return this[TIMER_SPAWN_OBJECTS_SINGLETON];
     }
   }]);
 
   return TimerSpawnObjects;
 })();
-
-var timerVelocitySingleton = Symbol();
-var timerVelocitySingletonEnforcer = Symbol();
 
 var TimerVelocity = (function () {
 
@@ -3246,7 +3393,7 @@ var TimerVelocity = (function () {
   function TimerVelocity(enforcer) {
     _classCallCheck(this, TimerVelocity);
 
-    if (enforcer !== timerVelocitySingletonEnforcer) {
+    if (enforcer !== TIMER_VELOCITY_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -3337,149 +3484,15 @@ var TimerVelocity = (function () {
      * @return {TimerVelocity}
      */
     get: function get() {
-      if (!this[timerVelocitySingleton]) {
-        this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);
+      if (!this[TIMER_VELOCITY_SINGLETON]) {
+        this[TIMER_VELOCITY_SINGLETON] = new TimerVelocity(TIMER_VELOCITY_SINGLETON_ENFORCER);
       }
-      return this[timerVelocitySingleton];
+      return this[TIMER_VELOCITY_SINGLETON];
     }
   }]);
 
   return TimerVelocity;
 })();
-
-var PlayState = (function () {
-  function PlayState() {
-    _classCallCheck(this, PlayState);
-  }
-
-  _createClass(PlayState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of PlayState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameMusic.main.play();
-
-      HUD.initialize();
-      Group.initialize();
-      MyUnit.initialize();
-      GameKey.initializeOfPlay();
-      Timer.initialize();
-      GameText.createSlowDownCount();
-      GameText.createSlowDown();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for PlayState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-
-      Helper.addSprites(this, GameConfig.spriteSheets);
-      Helper.addSound(this, GameConfig.soundFiles);
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in PlayState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      MyUnit.update();
-      HUD.update();
-
-      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
-        Bullet.shoot();
-      }
-
-      GroupPool.forEachAll();
-
-      if (GameOver.status) {
-        if (GameKey.activeExitKey()) {
-          ipc.sendSync('quit');
-        }
-
-        if (GameKey.activeRestartKey()) {
-          window.location.reload(true);
-        }
-      }
-    }
-  }]);
-
-  return PlayState;
-})();
-
-GameState.instance.play.create = PlayState.create;
-GameState.instance.play.preload = PlayState.preload;
-GameState.instance.play.update = PlayState.update;
-
-var TitleState = (function () {
-  function TitleState() {
-    _classCallCheck(this, TitleState);
-  }
-
-  _createClass(TitleState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of TitleState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameKey.initializeOfTitle();
-      GameText.initializeOfTitle();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for TitleState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in TitleState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      if (GameKey.activeGameStartKey()) {
-        GameText.destroyOfTitle();
-        this.game.states.switchState('Play');
-      }
-
-      if (GameKey.activeExitKey()) {
-        ipc.sendSync('quit');
-      }
-    }
-  }]);
-
-  return TitleState;
-})();
-
-GameState.instance.title.create = TitleState.create;
-GameState.instance.title.preload = TitleState.preload;
-GameState.instance.title.update = TitleState.update;
 
 var GAME_MAIN = new Kiwi.Game(GameConfig.setting.CONTAINER_ID, GameConfig.setting.NAME, null, GameConfig.kiwiOption);
 

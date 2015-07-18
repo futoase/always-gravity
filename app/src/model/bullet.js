@@ -1,5 +1,3 @@
-const lastBulletShootAt = Symbol();
-
 class Bullet {
 
   /**
@@ -8,19 +6,19 @@ class Bullet {
   static shoot() {
     const context = GameState.current;
 
-    if (!this[lastBulletShootAt]) {
-      this[lastBulletShootAt] = 0;
+    if (!this[LAST_BULLET_SHOOT_AT]) {
+      this[LAST_BULLET_SHOOT_AT] = 0;
     }
 
     const lastShootTime = (
-      context.game.time.now() - this[lastBulletShootAt]
+      context.game.time.now() - this[LAST_BULLET_SHOOT_AT]
     );
 
     if (lastShootTime < GameConfig.setting.SHOOT_DELAY) {
       return;
     }
 
-    this[lastBulletShootAt] = context.game.time.now();
+    this[LAST_BULLET_SHOOT_AT] = context.game.time.now();
 
     const bullet = Bullet.getFirstDeadBullet();
 

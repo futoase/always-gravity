@@ -1,6 +1,3 @@
-const timerSpawnObjectsSingleton = Symbol();
-const timerSpawnObjectsSingletonEnforcer = Symbol();
-
 class TimerSpawnObjects {
 
   /**
@@ -9,7 +6,7 @@ class TimerSpawnObjects {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== timerSpawnObjectsSingletonEnforcer) {
+    if (enforcer !== TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -20,10 +17,10 @@ class TimerSpawnObjects {
    * @return {TimerSpawnObjects}
    */
   static get instance() {
-    if (!this[timerSpawnObjectsSingleton]) {
-      this[timerSpawnObjectsSingleton] = new TimerSpawnObjects(timerSpawnObjectsSingletonEnforcer);
+    if (!this[TIMER_SPAWN_OBJECTS_SINGLETON]) {
+      this[TIMER_SPAWN_OBJECTS_SINGLETON] = new TimerSpawnObjects(TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER);
     }
-    return this[timerSpawnObjectsSingleton];
+    return this[TIMER_SPAWN_OBJECTS_SINGLETON];
   }
 
   /**

@@ -1,13 +1,3 @@
-const starPool = Symbol();
-const cubePool = Symbol();
-const circlePool = Symbol();
-const bulletPool = Symbol();
-const cylinderPool = Symbol();
-const myUnitSplinterPool = Symbol();
-const rhombusSplinterPool = Symbol();
-const rhombusPool = Symbol();
-const explosionPool = Symbol();
-
 class GroupPool {
 
   /**
@@ -16,11 +6,11 @@ class GroupPool {
    * @return {Kiwi.Group} starPool
    */
   static star() {
-    if (!this[starPool] ||
-        !this._isExistsContextName(this[starPool])) {
-      this[starPool] = this._createNewGroup();
+    if (!this[STAR_POOL] ||
+        !this._isExistsContextName(this[STAR_POOL])) {
+      this[STAR_POOL] = this._createNewGroup();
     }
-    return this[starPool];
+    return this[STAR_POOL];
   }
 
   /**
@@ -29,11 +19,11 @@ class GroupPool {
    * @return {Kiwi.Group} cubePool
    */
   static cube() {
-    if (!this[cubePool] ||
-        !this._isExistsContextName(this[cubePool])) {
-      this[cubePool] = this._createNewGroup();
+    if (!this[CUBE_POOL] ||
+        !this._isExistsContextName(this[CUBE_POOL])) {
+      this[CUBE_POOL] = this._createNewGroup();
     }
-    return this[cubePool];
+    return this[CUBE_POOL];
   }
 
   /**
@@ -42,11 +32,11 @@ class GroupPool {
    * @return {Kiwi.Group} circlePool
    */
   static circle() {
-    if (!this[circlePool] ||
-        !this._isExistsContextName(this[circlePool])) {
-      this[circlePool] = this._createNewGroup();
+    if (!this[CIRCLE_POOL] ||
+        !this._isExistsContextName(this[CIRCLE_POOL])) {
+      this[CIRCLE_POOL] = this._createNewGroup();
     }
-    return this[circlePool];
+    return this[CIRCLE_POOL];
   }
 
   /**
@@ -55,11 +45,11 @@ class GroupPool {
    * @return {Kiwi.Group} bulletPool
    */
   static bullet() {
-    if (!this[bulletPool] ||
-        !this._isExistsContextName(this[bulletPool])) {
-      this[bulletPool] = this._createNewGroup();
+    if (!this[BULLET_POOL] ||
+        !this._isExistsContextName(this[BULLET_POOL])) {
+      this[BULLET_POOL] = this._createNewGroup();
     }
-    return this[bulletPool];
+    return this[BULLET_POOL];
   }
 
   /**
@@ -68,24 +58,24 @@ class GroupPool {
    * @return {Kiwi.Group} cylinderPool
    */
   static cylinder() {
-    if (!this[cylinderPool] ||
-        !this._isExistsContextName(this[cylinderPool])) {
-      this[cylinderPool] = this._createNewGroup();
+    if (!this[CYLINDER_POOL] ||
+        !this._isExistsContextName(this[CYLINDER_POOL])) {
+      this[CYLINDER_POOL] = this._createNewGroup();
     }
-    return this[cylinderPool];
+    return this[CYLINDER_POOL];
   }
 
   /**
    * myUnitSplinter() is create of GameGroup for myUnitSplinter.
    *
-   * @return {Kiwi.Group} myUnitSplinterPool
+   * @return {Kiwi.Group} myunitSplinterPool
    */
   static myUnitSplinter() {
-    if (!this[myUnitSplinterPool] ||
-        !this._isExistsContextName(this[myUnitSplinterPool])) {
-      this[myUnitSplinterPool] = this._createNewGroup();
+    if (!this[MYUNIT_SPLINTER_POOL] ||
+        !this._isExistsContextName(this[MYUNIT_SPLINTER_POOL])) {
+      this[MYUNIT_SPLINTER_POOL] = this._createNewGroup();
     }
-    return this[myUnitSplinterPool];
+    return this[MYUNIT_SPLINTER_POOL];
   }
 
   /**
@@ -94,11 +84,11 @@ class GroupPool {
    * @return {Kiwi.Group} rhombusSplinterPool
    */
   static rhombusSplinter() {
-    if (!this[rhombusSplinterPool] ||
-        !this._isExistsContextName(this[rhombusSplinterPool])) {
-      this[rhombusSplinterPool] = this._createNewGroup();
+    if (!this[RHOMBUS_SPLINTER_POOL] ||
+        !this._isExistsContextName(this[RHOMBUS_SPLINTER_POOL])) {
+      this[RHOMBUS_SPLINTER_POOL] = this._createNewGroup();
     }
-    return this[rhombusSplinterPool];
+    return this[RHOMBUS_SPLINTER_POOL];
   }
 
   /**
@@ -107,11 +97,11 @@ class GroupPool {
    * @return {Kiwi.Group} rhombusPool
    */
   static rhombus() {
-    if (!this[rhombusPool] ||
-        !this._isExistsContextName(this[rhombusPool])) {
-      this[rhombusPool] = this._createNewGroup();
+    if (!this[RHOMBUS_POOL] ||
+        !this._isExistsContextName(this[RHOMBUS_POOL])) {
+      this[RHOMBUS_POOL] = this._createNewGroup();
     }
-    return this[rhombusPool];
+    return this[RHOMBUS_POOL];
   }
 
   /**
@@ -120,11 +110,11 @@ class GroupPool {
    * @return {Kiwi.Group} explosionPool
    */
   static explosion() {
-    if (!this[explosionPool] ||
-        !this._isExistsContextName(this[explosionPool])) {
-      this[explosionPool] = this._createNewGroup();
+    if (!this[EXPLOSION_POOL] ||
+        !this._isExistsContextName(this[EXPLOSION_POOL])) {
+      this[EXPLOSION_POOL] = this._createNewGroup();
     }
-    return this[explosionPool];
+    return this[EXPLOSION_POOL];
   }
 
   /**

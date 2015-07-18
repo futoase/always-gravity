@@ -1,6 +1,3 @@
-const myUnitSingleton = Symbol();
-const myUnitSingletonEnforcer = Symbol();
-
 class MyUnit {
 
   /**
@@ -9,7 +6,7 @@ class MyUnit {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== myUnitSingletonEnforcer) {
+    if (enforcer !== MYUNIT_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -20,10 +17,10 @@ class MyUnit {
    * @return {MyUnit}
    */
   static get instance() {
-    if (!this[myUnitSingleton]) {
-      this[myUnitSingleton] = new MyUnit(myUnitSingletonEnforcer);
+    if (!this[MYUNIT_SINGLETON]) {
+      this[MYUNIT_SINGLETON] = new MyUnit(MYUNIT_SINGLETON_ENFORCER);
     }
-    return this[myUnitSingleton];
+    return this[MYUNIT_SINGLETON];
   }
 
   /**

@@ -1,14 +1,3 @@
-const textTitle = Symbol();
-const textSubTitle = Symbol();
-const textStart = Symbol();
-const textQuit = Symbol();
-const textExitGame = Symbol();
-const textGameOver = Symbol();
-const textRestart = Symbol();
-const textScore = Symbol();
-const textSlowDownCount = Symbol();
-const textSlowDown = Symbol();
-
 class GameText {
 
   /**
@@ -38,191 +27,191 @@ class GameText {
   /**
    * createTitle() is create text of Game Title.
    *
-   * @return {Kiwi.GameObjects.TextField} textTitle
+   * @return {Kiwi.GameObjects.TextField} TEXT_TITLE
    */
   static createTitle() {
     const context = GameState.current;
 
-    if (!this[textTitle]) {
+    if (!this[TEXT_TITLE]) {
       const text = this._createTextField(context, GameConfig.text.title);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textTitle] = text;
+      this[TEXT_TITLE] = text;
     }
-    return this[textTitle];
+    return this[TEXT_TITLE];
   }
 
   /**
    * Getter of Title.
    *
-   * @return {Kiwi.GameObjects.TextField} textTitle
+   * @return {Kiwi.GameObjects.TextField} TEXT_TITLE
    */
   static get title() {
-    return this[textTitle];
+    return this[TEXT_TITLE];
   }
 
   /**
    * createSubTitle() is create text of Game Sub-Title.
    *
-   * @return {Kiwi.GameObjects.TextField} textSubTitle
+   * @return {Kiwi.GameObjects.TextField} TEXT_SUB_TITLE
    */
   static createSubTitle() {
     const context = GameState.current;
 
-    if (!this[textSubTitle]) {
+    if (!this[TEXT_SUB_TITLE]) {
       const text = this._createTextField(context, GameConfig.text.subTitle);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textSubTitle] = text;
+      this[TEXT_SUB_TITLE] = text;
     }
-    return this[textSubTitle];
+    return this[TEXT_SUB_TITLE];
   }
 
   /**
    * Getter of Sub-Title.
    *
-   * @return {Kiwi.GameObjects.TextField} textSubTitle
+   * @return {Kiwi.GameObjects.TextField} TEXT_SUB_TITLE
    */
   static get subTitle() {
-    return this[textSubTitle];
+    return this[TEXT_SUB_TITLE];
   }
 
   /**
    * createStart() is create text of Start.
    *
-   * @return {Kiwi.GameObjects.TextField} textStart
+   * @return {Kiwi.GameObjects.TextField} TEXT_START
    */
   static createStart() {
     const context = GameState.current;
 
-    if (!this[textStart]) {
+    if (!this[TEXT_START]) {
       const text = this._createTextField(context, GameConfig.text.start);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textStart] = text;
+      this[TEXT_START] = text;
     }
-    return this[textStart];
+    return this[TEXT_START];
   }
 
   /**
    * Getter of Start.
    *
-   * @return {Kiwi.GameObjects.TextField} textStart
+   * @return {Kiwi.GameObjects.TextField} TEXT_START
    */
   static get start() {
-    return this[textStart];
+    return this[TEXT_START];
   }
 
   /**
    * createQuit() is create text of Quit.
    *
-   * @return {Kiwi.GameObjects.TextField} textQuit
+   * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
    */
   static createQuit() {
     const context = GameState.current;
 
-    if (!this[textQuit]) {
+    if (!this[TEXT_QUIT]) {
       const text = this._createTextField(context, GameConfig.text.quit);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textQuit] = text;
+      this[TEXT_QUIT] = text;
     }
-    return this[textQuit];
+    return this[TEXT_QUIT];
   }
 
   /**
    * Getter of Quit.
    *
-   * @return {Kiwi.GameObjects.TextField} textQuit
+   * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
    */
   static get quit() {
-    return this[textQuit];
+    return this[TEXT_QUIT];
   }
 
   /**
    * createQuit() is create text of Quit.
    *
-   * @return {Kiwi.GameObjects.TextField} textQuit
+   * @return {Kiwi.GameObjects.TextField} TEXT_QUIT
    */
   static createExitGame() {
     const context = GameState.current;
 
-    if (!this[textExitGame]) {
+    if (!this[TEXT_EXIT_GAME]) {
       const text = this._createTextField(context, GameConfig.text.exitGame);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textExitGame] = text;
+      this[TEXT_EXIT_GAME] = text;
     }
-    return this[textExitGame];
+    return this[TEXT_EXIT_GAME];
   }
 
   /**
    * createGameOver() is create text of GAMEOVER.
    *
-   * @return {Kiwi.GameObjects.TextField} textGameOver
+   * @return {Kiwi.GameObjects.TextField} TEXT_GAME_OVER
    */
   static createGameOver() {
     const context = GameState.current;
 
-    if (!this[textGameOver]) {
+    if (!this[TEXT_GAME_OVER]) {
       const text = this._createTextField(context, GameConfig.text.gameOver);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textGameOver] = text;
+      this[TEXT_GAME_OVER] = text;
     }
-    return this[textGameOver];
+    return this[TEXT_GAME_OVER];
   }
 
   /**
    * createRestart() is create text of Restart.
    *
-   * @return {Kiwi.GameObjects.TextField} textRestart
+   * @return {Kiwi.GameObjects.TextField} TEXT_RESTART
    */
   static createRestart() {
     const context = GameState.current;
 
-    if (!this[textRestart]) {
+    if (!this[TEXT_RESTART]) {
       const text = this._createTextField(context, GameConfig.text.restart);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textRestart] = text;
+      this[TEXT_RESTART] = text;
     }
-    return this[textRestart];
+    return this[TEXT_RESTART];
   }
 
   /**
    * createScore() is create text of score.
    *
-   * @return {Kiwi.GameObjects.TextField} textScore
+   * @return {Kiwi.GameObjects.TextField} TEXT_SCORE
    */
   static createScore(score) {
     const context = GameState.current;
 
-    if (!this[textScore]) {
+    if (!this[TEXT_SCORE]) {
       const text = this._createTextField(context, GameConfig.text.scoreResults);
       text.text = 'SCORE: ' + String(score);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textScore] = text;
+      this[TEXT_SCORE] = text;
     }
-    return this[textScore];
+    return this[TEXT_SCORE];
   }
 
   /**
    * createSlowDownCount() is create text of counter for SlowDown.
    *
-   * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+   * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN_COUNT
    */
   static createSlowDownCount() {
     const context = GameState.current;
 
-    if (!this[textSlowDownCount]) {
+    if (!this[TEXT_SLOWDOWN_COUNT]) {
       const text = this._createTextField(context, GameConfig.text.slowDownCount);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textSlowDownCount] = text;
+      this[TEXT_SLOWDOWN_COUNT] = text;
     }
-    return this[textSlowDownCount];
+    return this[TEXT_SLOWDOWN_COUNT];
   }
 
   /**
    * Getter of slowDownCount.
    *
-   * @return {Kiwi.GameObjects.TextField} textSlowDownCount
+   * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN_COUNT
    */
   static get slowDownCount() {
-    return this[textSlowDownCount];
+    return this[TEXT_SLOWDOWN_COUNT];
   }
 
   /**
@@ -231,32 +220,32 @@ class GameText {
    * @param {String} text
    */
   static set slowDownCount(text) {
-    this[textSlowDownCount].text = text;
+    this[TEXT_SLOWDOWN_COUNT].text = text;
   }
 
   /**
    * createSlowDown() is create text of warning for the SlowDown!
    *
-   * @return {Kiwi.GameObjects.TextField} textSlowDown
+   * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN
    */
   static createSlowDown() {
     const context = GameState.current;
 
-    if (!this[textSlowDown]) {
+    if (!this[TEXT_SLOWDOWN]) {
       const text = this._createTextField(context, GameConfig.text.slowDown);
       text.textAlign = Kiwi.GameObjects.TextField.TEXT_ALIGN_CENTER;
-      this[textSlowDown] = text;
+      this[TEXT_SLOWDOWN] = text;
     }
-    return this[textSlowDown];
+    return this[TEXT_SLOWDOWN];
   }
 
   /**
    * Getter of slowDown.
    *
-   * @return {Kiwi.GameObjects.TextField} textSlowDown
+   * @return {Kiwi.GameObjects.TextField} TEXT_SLOWDOWN
    */
   static get slowDown() {
-    return this[textSlowDown];
+    return this[TEXT_SLOWDOWN];
   }
 
   /**

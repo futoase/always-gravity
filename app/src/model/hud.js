@@ -1,6 +1,3 @@
-const hudSingleton = Symbol();
-const hudSingletonEnforcer = Symbol();
-
 class HUD {
 
   /**
@@ -9,7 +6,7 @@ class HUD {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== hudSingletonEnforcer) {
+    if (enforcer !== HUD_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -20,10 +17,10 @@ class HUD {
    * @return {HUD}
    */
   static get instance() {
-    if (!this[hudSingleton]) {
-      this[hudSingleton] = new HUD(hudSingletonEnforcer);
+    if (!this[HUD_SINGLETON]) {
+      this[HUD_SINGLETON] = new HUD(HUD_SINGLETON_ENFORCER);
     }
-    return this[hudSingleton];
+    return this[HUD_SINGLETON];
   }
 
   /**

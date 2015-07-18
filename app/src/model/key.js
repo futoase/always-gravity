@@ -1,180 +1,172 @@
-const gameStartKey = Symbol();
-const leftKey = Symbol();
-const rightKey = Symbol();
-const upKey = Symbol();
-const shootKey = Symbol();
-const exitKey = Symbol();
-const restartKey = Symbol();
-
 class GameKey {
 
   /**
    * initializeOfPlay() is initialize of keys for PlayState.
    */
   static initializeOfPlay() {
-    GameKey.leftKey();
-    GameKey.rightKey();
-    GameKey.upKey();
-    GameKey.shootKey();
-    GameKey.exitKey();
-    GameKey.restartKey();
+    GameKey.LEFT_KEY();
+    GameKey.RIGHT_KEY();
+    GameKey.UP_KEY();
+    GameKey.SHOOT_KEY();
+    GameKey.EXIT_KEY();
+    GameKey.RESTART_KEY();
   }
 
   /**
    * initializeOfTitle() is initialize of keys for TitleState.
    */
   static initializeOfTitle() {
-    GameKey.gameStartKey();
-    GameKey.exitKey();
+    GameKey.GAMESTART_KEY();
+    GameKey.EXIT_KEY();
   }
 
   /**
-   * gameStartKey() is return new Game key for the Start.
+   * GAMESTART_KEY() is return new Game key for the Start.
    *
-   * @return {Kiwi.Input.Key} gameStartKey
+   * @return {Kiwi.Input.Key} GAMESTART_KEY
    */
-  static gameStartKey() {
-    if (!this[gameStartKey]) {
-      this[gameStartKey] = (
+  static GAMESTART_KEY() {
+    if (!this[GAMESTART_KEY]) {
+      this[GAMESTART_KEY] = (
         this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR)
       );
     }
-    return this[gameStartKey];
+    return this[GAMESTART_KEY];
   }
 
   /**
-   * activeGameStartKey() is be check an active of gameStartKey.
+   * activeGameStartKey() is be check an active of GAMESTART_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeGameStartKey() {
-    return this[gameStartKey].isDown;
+    return this[GAMESTART_KEY].isDown;
   }
 
   /**
-   * leftKey() is return new Game key for the Left.
+   * LEFT_KEY() is return new Game key for the Left.
    *
-   * @return {Kiwi.Input.Key} leftKey
+   * @return {Kiwi.Input.Key} LEFT_KEY
    */
-  static leftKey() {
-    if (!this[leftKey]) {
-      this[leftKey] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
+  static LEFT_KEY() {
+    if (!this[LEFT_KEY]) {
+      this[LEFT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
     }
-    return this[leftKey];
+    return this[LEFT_KEY];
   }
 
   /**
-   * activeLeftKey() is be check an active of leftKey.
+   * activeLeftKey() is be check an active of LEFT_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeLeftKey() {
-    return this[leftKey].isDown;
+    return this[LEFT_KEY].isDown;
   }
 
   /**
-   * rightKey() is return new Game key for the Right.
+   * RIGHT_KEY() is return new Game key for the Right.
    *
-   * @return {Kiwi.Input.Key} rightKey
+   * @return {Kiwi.Input.Key} RIGHT_KEY
    */
-  static rightKey() {
-    if (!this[rightKey]) {
-      this[rightKey] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
+  static RIGHT_KEY() {
+    if (!this[RIGHT_KEY]) {
+      this[RIGHT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
     }
-    return this[rightKey];
+    return this[RIGHT_KEY];
   }
 
   /**
-   * activeRightKey() is be check an active of rightKey.
+   * activeRightKey() is be check an active of RIGHT_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeRightKey() {
-    return this[rightKey].isDown;
+    return this[RIGHT_KEY].isDown;
   }
 
   /**
-   * upKey() is return new Game key for the Up.
+   * UP_KEY() is return new Game key for the Up.
    *
-   * @return {Kiwi.Input.Key} upKey
+   * @return {Kiwi.Input.Key} UP_KEY
    */
-  static upKey() {
-    if (!this[upKey]) {
-      this[upKey] = this._getGameKey(Kiwi.Input.Keycodes.UP);
+  static UP_KEY() {
+    if (!this[UP_KEY]) {
+      this[UP_KEY] = this._getGameKey(Kiwi.Input.Keycodes.UP);
     }
-    return this[upKey];
+    return this[UP_KEY];
   }
 
   /**
-   * activeUpKey() is be check an active of upKey.
+   * activeUpKey() is be check an active of UP_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeUpKey() {
-    return this[upKey].isDown;
+    return this[UP_KEY].isDown;
   }
 
   /**
-   * shootKey() is return new Game key for the Shoot.
+   * SHOOT_KEY() is return new Game key for the Shoot.
    *
-   * @return {Kiwi.Input.Key} shootKey
+   * @return {Kiwi.Input.Key} SHOOT_KEY
    */
-  static shootKey() {
-    if (!this[shootKey]) {
-      this[shootKey] = this._getGameKey(Kiwi.Input.Keycodes.Z);
+  static SHOOT_KEY() {
+    if (!this[SHOOT_KEY]) {
+      this[SHOOT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.Z);
     }
-    return this[shootKey];
+    return this[SHOOT_KEY];
   }
 
   /**
-   * activeShootKey() is be check an active of shootKey.
+   * activeShootKey() is be check an active of SHOOT_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeShootKey() {
-    return this[shootKey].isDown;
+    return this[SHOOT_KEY].isDown;
   }
 
   /**
-   * exitKey() is return new Game key for the Exit.
+   * EXIT_KEY() is return new Game key for the Exit.
    *
-   * @return {Kiwi.Input.Key} exitKey
+   * @return {Kiwi.Input.Key} EXIT_KEY
    */
-  static exitKey() {
-    if (!this[exitKey]) {
-      this[exitKey] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
+  static EXIT_KEY() {
+    if (!this[EXIT_KEY]) {
+      this[EXIT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
     }
-    return this[exitKey];
+    return this[EXIT_KEY];
   }
 
   /**
-   * activeExitKey() is be check an active of exitKey.
+   * activeExitKey() is be check an active of EXIT_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeExitKey() {
-    return this[exitKey].isDown;
+    return this[EXIT_KEY].isDown;
   }
 
   /**
-   * restartKey() is return new Game key for the Restart.
+   * RESTART_KEY() is return new Game key for the Restart.
    *
-   * @return {Kiwi.Input.Key} restartKey
+   * @return {Kiwi.Input.Key} RESTART_KEY
    */
-  static restartKey() {
-    if (!this[restartKey]) {
-      this[restartKey] = this._getGameKey(Kiwi.Input.Keycodes.R);
+  static RESTART_KEY() {
+    if (!this[RESTART_KEY]) {
+      this[RESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.R);
     }
-    return this[restartKey];
+    return this[RESTART_KEY];
   }
 
   /**
-   * activeExitKey() is be check an active of exitKey.
+   * activeExitKey() is be check an active of EXIT_KEY.
    *
    * @return {Boolean} isDown
    */
   static activeRestartKey() {
-    return this[restartKey].isDown;
+    return this[RESTART_KEY].isDown;
   }
 
   /**

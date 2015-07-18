@@ -1,9 +1,3 @@
-const gameStateSingleton = Symbol();
-const gameStateSingletonEnforcer = Symbol();
-const gameStateCurrent = Symbol();
-const gameStateTitle = Symbol();
-const gameStatePlay = Symbol();
-
 class GameState {
 
   /**
@@ -12,7 +6,7 @@ class GameState {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== gameStateSingletonEnforcer) {
+    if (enforcer !== GAMESTATE_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -23,10 +17,10 @@ class GameState {
    * @return {GameState}
    */
   static get instance() {
-    if (!this[gameStateSingleton]) {
-      this[gameStateSingleton] = new GameState(gameStateSingletonEnforcer);
+    if (!this[GAMESTATE_SINGLETON]) {
+      this[GAMESTATE_SINGLETON] = new GameState(GAMESTATE_SINGLETON_ENFORCER);
     }
-    return this[gameStateSingleton];
+    return this[GAMESTATE_SINGLETON];
   }
 
   /**
@@ -39,10 +33,10 @@ class GameState {
   /**
    * Getter of current GameState
    *
-   * @return {Kiwi.State} gameStateCurrent
+   * @return {Kiwi.State} gamestateCurrent
    */
   get current() {
-    return this[gameStateCurrent];
+    return this[GAMESTATE_CURRENT];
   }
 
   /**
@@ -51,7 +45,7 @@ class GameState {
    * @param {Kiwi.State} value
    */
   set current(value) {
-    this[gameStateCurrent] = value;
+    this[GAMESTATE_CURRENT] = value;
   }
 
   /**
@@ -60,10 +54,10 @@ class GameState {
    * @return {Kiwi.State} TitleState
    */
   get title() {
-    if (!this[gameStateTitle]) {
-      this[gameStateTitle] = new Kiwi.State('Title');
+    if (!this[GAMESTATE_TITLE]) {
+      this[GAMESTATE_TITLE] = new Kiwi.State('Title');
     }
-    return this[gameStateTitle];
+    return this[GAMESTATE_TITLE];
   }
 
   /**
@@ -72,10 +66,10 @@ class GameState {
    * @return {Kiwi.State} PlayState
    */
   get play() {
-    if (!this[gameStatePlay]) {
-      this[gameStatePlay] = new Kiwi.State('Play');
+    if (!this[GAMESTATE_PLAY]) {
+      this[GAMESTATE_PLAY] = new Kiwi.State('Play');
     }
-    return this[gameStatePlay];
+    return this[GAMESTATE_PLAY];
   }
 
 }

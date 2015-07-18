@@ -1,6 +1,3 @@
-const groupSingleton = Symbol();
-const groupSingletonEnforcer = Symbol();
-
 class Group {
 
   /**
@@ -9,7 +6,7 @@ class Group {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== groupSingletonEnforcer) {
+    if (enforcer !== GROUP_SINGLETON_ENFORCER) {
       throw new Error('Cannot constructor singleton!');
     }
   }
@@ -20,10 +17,10 @@ class Group {
    * @return {Group}
    */
   static get instance() {
-    if (!this[groupSingleton]) {
-      this[groupSingleton] = new Group(groupSingletonEnforcer);
+    if (!this[GROUP_SINGLETON]) {
+      this[GROUP_SINGLETON] = new Group(GROUP_SINGLETON_ENFORCER);
     }
-    return this[groupSingleton];
+    return this[GROUP_SINGLETON];
   }
 
   /**

@@ -1,6 +1,3 @@
-const timerVelocitySingleton = Symbol();
-const timerVelocitySingletonEnforcer = Symbol();
-
 class TimerVelocity {
 
   /**
@@ -9,7 +6,7 @@ class TimerVelocity {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== timerVelocitySingletonEnforcer) {
+    if (enforcer !== TIMER_VELOCITY_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -20,10 +17,10 @@ class TimerVelocity {
    * @return {TimerVelocity}
    */
   static get instance() {
-    if (!this[timerVelocitySingleton]) {
-      this[timerVelocitySingleton] = new TimerVelocity(timerVelocitySingletonEnforcer);
+    if (!this[TIMER_VELOCITY_SINGLETON]) {
+      this[TIMER_VELOCITY_SINGLETON] = new TimerVelocity(TIMER_VELOCITY_SINGLETON_ENFORCER);
     }
-    return this[timerVelocitySingleton];
+    return this[TIMER_VELOCITY_SINGLETON];
   }
 
   /**

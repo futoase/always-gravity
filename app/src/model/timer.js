@@ -1,6 +1,3 @@
-const timerSingleton = Symbol();
-const timerSingletonEnforcer = Symbol();
-
 class Timer {
 
   /**
@@ -9,7 +6,7 @@ class Timer {
    * @param {Symbol} enforcer
    */
   constructor(enforcer) {
-    if (enforcer !== timerSingletonEnforcer) {
+    if (enforcer !== TIMER_SINGLETON_ENFORCER) {
       throw new Error('Cannot construct singleton!');
     }
   }
@@ -20,10 +17,10 @@ class Timer {
    * @return {Timer}
    */
   static get instance() {
-    if (!this[timerSingleton]) {
-      this[timerSingleton] = new Timer(timerSingletonEnforcer);
+    if (!this[TIMER_SINGLETON]) {
+      this[TIMER_SINGLETON] = new Timer(TIMER_SINGLETON_ENFORCER);
     }
-    return this[timerSingleton];
+    return this[TIMER_SINGLETON];
   }
 
   /**

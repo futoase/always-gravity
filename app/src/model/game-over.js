@@ -1,5 +1,3 @@
-const gameOverStatus = Symbol();
-
 class GameOver {
 
   /**
@@ -8,7 +6,7 @@ class GameOver {
    * @return {Boolean} GameOverStatus
    */
   static get status() {
-    return this[gameOverStatus];
+    return this[GAME_OVER_STATUS];
   }
 
   /**
@@ -18,7 +16,7 @@ class GameOver {
    */
   static set status(value) {
     if (typeof value === 'boolean') {
-      this[gameOverStatus] = value;
+      this[GAME_OVER_STATUS] = value;
     }
   }
 
