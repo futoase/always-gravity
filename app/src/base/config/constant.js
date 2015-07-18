@@ -52,6 +52,8 @@ const SOUND_EFFECT_OF_EXPLOSION = Symbol();
 const SOUND_EFFECT_OF_CAUTION_FOR_SPEED = Symbol();
 const SOUND_EFFECT_OF_CIRCLE = Symbol();
 const SOUND_EFFECT_OF_MYUNIT_EXPLOSION = Symbol();
+const SOUND_EFFECT_OF_SPAWN_RHOMBUS = Symbol();
+const SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER = Symbol();
 
 // MyUnit
 const MYUNIT_SINGLETON = Symbol();
@@ -71,6 +73,8 @@ const TIMER_SINGLETON_ENFORCER = Symbol();
 // TimerSpawnObjects
 const TIMER_SPAWN_OBJECTS_SINGLETON = Symbol();
 const TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER = Symbol();
+const TIMER_SPAWN_RHOMBUS = Symbol();
+const TIMER_SPAWN_RHOMBUS_PLAY_SE = Symbol();
 
 // TimerVelocity
 const TIMER_VELOCITY_SINGLETON = Symbol();

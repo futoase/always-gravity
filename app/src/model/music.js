@@ -147,4 +147,42 @@ class GameMusic {
     return this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION];
   }
 
+  /**
+   * Getter of sound effect for spawn rhombus.
+   *
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_SPAWN_RHOMBUS
+   */
+  static get soundEffectOfSpawnRhombus() {
+    const context = GameState.current;
+
+    if (!this[SOUND_EFFECT_OF_SPAWN_RHOMBUS]) {
+      this[SOUND_EFFECT_OF_SPAWN_RHOMBUS] = new Kiwi.Sound.Audio(
+        context.game,
+        'spawn-rhombus-se',
+        GameConfig.setting.BASE_SPAWN_RHOMBUS_VOLUME_PER,
+        false
+      );
+    }
+    return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS];
+  }
+
+  /**
+   * Getter of sound effect for spawn rhombus splinter.
+   *
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER
+   */
+  static get soundEffectOfSpawnRhombusSplinter() {
+    const context = GameState.current;
+
+    if (!this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER]) {
+      this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER] = new Kiwi.Sound.Audio(
+        context.game,
+        'spawn-rhombus-splinter-se',
+        GameConfig.setting.BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER,
+        false
+      );
+    }
+    return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER];
+  }
+
 }

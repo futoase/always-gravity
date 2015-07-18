@@ -32,4 +32,12 @@ GameConfig.soundFiles = [
     name: 'caution-of-speed-se',
     path: './assets/media/caution-of-speed.wav',
   },
+  {
+    name: 'spawn-rhombus-se',
+    path: './assets/media/spawn-rhombus.wav',
+  },
+  {
+    name: 'spawn-rhombus-splinter-se',
+    path: './assets/media/spawn-rhombus-splinter.wav',
+  },
 ];

@@ -213,6 +213,8 @@ var SOUND_EFFECT_OF_EXPLOSION = Symbol();
 var SOUND_EFFECT_OF_CAUTION_FOR_SPEED = Symbol();
 var SOUND_EFFECT_OF_CIRCLE = Symbol();
 var SOUND_EFFECT_OF_MYUNIT_EXPLOSION = Symbol();
+var SOUND_EFFECT_OF_SPAWN_RHOMBUS = Symbol();
+var SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER = Symbol();
 
 // MyUnit
 var MYUNIT_SINGLETON = Symbol();
@@ -232,6 +234,8 @@ var TIMER_SINGLETON_ENFORCER = Symbol();
 // TimerSpawnObjects
 var TIMER_SPAWN_OBJECTS_SINGLETON = Symbol();
 var TIMER_SPAWN_OBJECTS_SINGLETON_ENFORCER = Symbol();
+var TIMER_SPAWN_RHOMBUS = Symbol();
+var TIMER_SPAWN_RHOMBUS_PLAY_SE = Symbol();
 
 // TimerVelocity
 var TIMER_VELOCITY_SINGLETON = Symbol();
@@ -291,7 +295,9 @@ GameConfig.setting = {
   BASE_EXPLOSION_VOLUME_PER: 1.0,
   BASE_CAUTION_VOLUME_PER: 2.0,
   BASE_CIRCLE_VOLUME_PER: 1.0,
-  BASE_EXPLOSION_MYUNIT_VOLUME_PER: 1.0
+  BASE_EXPLOSION_MYUNIT_VOLUME_PER: 1.0,
+  BASE_SPAWN_RHOMBUS_VOLUME_PER: 0.6,
+  BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER: 1.0
 };
 
 GameConfig.soundFiles = [
@@ -323,6 +329,12 @@ GameConfig.soundFiles = [
 }, {
   name: 'caution-of-speed-se',
   path: './assets/media/caution-of-speed.wav'
+}, {
+  name: 'spawn-rhombus-se',
+  path: './assets/media/spawn-rhombus.wav'
+}, {
+  name: 'spawn-rhombus-splinter-se',
+  path: './assets/media/spawn-rhombus-splinter.wav'
 }];
 
 GameConfig.spriteSheets = [{
@@ -2324,7 +2336,7 @@ var GameMusic = (function () {
     get: function get() {
       var context = GameState.current;
       if (!this[MUSIC_MAIN]) {
-        this[MUSIC_MAIN] = new Kiwi.Sound.Audio(context.game, 'MUSIC_MAIN', GameConfig.setting.BASE_MUSIC_VOLUME_PER, true);
+        this[MUSIC_MAIN] = new Kiwi.Sound.Audio(context.game, 'musicMain', GameConfig.setting.BASE_MUSIC_VOLUME_PER, true);
       }
       return this[MUSIC_MAIN];
     }
@@ -2424,6 +2436,38 @@ var GameMusic = (function () {
         this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION] = new Kiwi.Sound.Audio(context.game, 'explosion-myunit-se', GameConfig.setting.BASE_EXPLOSION_MYUNIT_VOLUME_PER, false);
       }
       return this[SOUND_EFFECT_OF_MYUNIT_EXPLOSION];
+    }
+  }, {
+    key: 'soundEffectOfSpawnRhombus',
+
+    /**
+     * Getter of sound effect for spawn rhombus.
+     *
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_SPAWN_RHOMBUS
+     */
+    get: function get() {
+      var context = GameState.current;
+
+      if (!this[SOUND_EFFECT_OF_SPAWN_RHOMBUS]) {
+        this[SOUND_EFFECT_OF_SPAWN_RHOMBUS] = new Kiwi.Sound.Audio(context.game, 'spawn-rhombus-se', GameConfig.setting.BASE_SPAWN_RHOMBUS_VOLUME_PER, false);
+      }
+      return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS];
+    }
+  }, {
+    key: 'soundEffectOfSpawnRhombusSplinter',
+
+    /**
+     * Getter of sound effect for spawn rhombus splinter.
+     *
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER
+     */
+    get: function get() {
+      var context = GameState.current;
+
+      if (!this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER]) {
+        this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER] = new Kiwi.Sound.Audio(context.game, 'spawn-rhombus-splinter-se', GameConfig.setting.BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER, false);
+      }
+      return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER];
     }
   }]);
 
@@ -3272,15 +3316,18 @@ var TimerSpawnObjects = (function () {
 
       var context = GameState.current;
 
-      if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
-        context.isSpawnSpriteOfRhombusSplinter = false;
-      }
-
       if (parseInt(Math.random() * 100, 10) === 0) {
-        context.isSpawnSpriteOfRhombusSplinter = true;
+        this.spawnRhombus = true;
       }
 
-      if (context.isSpawnSpriteOfRhombusSplinter) {
+      if (this.spawnRhombus) {
+
+        if (this.playSeOfSpawnRhombus === false) {
+          this.playSeOfSpawnRhombus = true;
+          GameMusic.soundEffectOfSpawnRhombus.stop();
+          GameMusic.soundEffectOfSpawnRhombus.play();
+        }
+
         Helper.strewnSprite(Helper.getMember(GroupPool.rhombus().members), { y: context.game.stage.height / 2 - 32 }, { y: 1 }, function (sprite) {
           _this3._scaleUpRhombus(context, sprite);
         }, { revive: false });
@@ -3328,6 +3375,12 @@ var TimerSpawnObjects = (function () {
       var angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER, 10);
       var rhombusSplinterAngle = 0;
 
+      this.spawnRhombus = false;
+      this.playSeOfSpawnRhombus = false;
+
+      GameMusic.soundEffectOfSpawnRhombusSplinter.stop();
+      GameMusic.soundEffectOfSpawnRhombusSplinter.play();
+
       rhombusSplinterMembers.forEach(function (member) {
         member.x = sprite.x;
         member.y = sprite.y;
@@ -3368,6 +3421,32 @@ var TimerSpawnObjects = (function () {
 
       tween.to({ x: myUnit.sprite.x }, 1000, Kiwi.Animations.Tweens.Easing.Sinusoidal.Out, true);
       tween.start();
+    }
+  }, {
+    key: 'spawnRhombus',
+    get: function get() {
+      if (!this[TIMER_SPAWN_RHOMBUS]) {
+        this[TIMER_SPAWN_RHOMBUS] = false;
+      }
+      return this[TIMER_SPAWN_RHOMBUS];
+    },
+    set: function set(value) {
+      if (typeof value === 'boolean') {
+        this[TIMER_SPAWN_RHOMBUS] = value;
+      }
+    }
+  }, {
+    key: 'playSeOfSpawnRhombus',
+    get: function get() {
+      if (!this[TIMER_SPAWN_RHOMBUS_PLAY_SE]) {
+        this[TIMER_SPAWN_RHOMBUS_PLAY_SE] = false;
+      }
+      return this[TIMER_SPAWN_RHOMBUS_PLAY_SE];
+    },
+    set: function set(value) {
+      if (typeof value === 'boolean') {
+        this[TIMER_SPAWN_RHOMBUS_PLAY_SE] = value;
+      }
     }
   }], [{
     key: 'instance',

@@ -23,6 +23,32 @@ class TimerSpawnObjects {
     return this[TIMER_SPAWN_OBJECTS_SINGLETON];
   }
 
+  get spawnRhombus() {
+    if (!this[TIMER_SPAWN_RHOMBUS]) {
+      this[TIMER_SPAWN_RHOMBUS] = false;
+    }
+    return this[TIMER_SPAWN_RHOMBUS];
+  }
+
+  set spawnRhombus(value) {
+    if (typeof value === "boolean"){
+      this[TIMER_SPAWN_RHOMBUS] = value;
+    }
+  }
+
+  get playSeOfSpawnRhombus() {
+    if (!this[TIMER_SPAWN_RHOMBUS_PLAY_SE]) {
+      this[TIMER_SPAWN_RHOMBUS_PLAY_SE] = false;
+    }
+    return this[TIMER_SPAWN_RHOMBUS_PLAY_SE];
+  }
+
+  set playSeOfSpawnRhombus(value) {
+    if (typeof value === "boolean") {
+      this[TIMER_SPAWN_RHOMBUS_PLAY_SE] = value;
+    }
+  }
+
   /**
    * circle() is spawn object of circle.
    */
@@ -84,15 +110,18 @@ class TimerSpawnObjects {
   rhombus() {
     const context = GameState.current;
 
-    if (context.isSpawnSpriteOfRhombusSplinter === undefined) {
-      context.isSpawnSpriteOfRhombusSplinter = false;
-    }
-
     if (parseInt(Math.random() * 100, 10) === 0) {
-      context.isSpawnSpriteOfRhombusSplinter = true;
+      this.spawnRhombus = true;
     }
 
-    if (context.isSpawnSpriteOfRhombusSplinter) {
+    if (this.spawnRhombus) {
+
+      if (this.playSeOfSpawnRhombus === false) {
+        this.playSeOfSpawnRhombus = true;
+        GameMusic.soundEffectOfSpawnRhombus.stop();
+        GameMusic.soundEffectOfSpawnRhombus.play();
+      }
+
       Helper.strewnSprite(
         Helper.getMember(GroupPool.rhombus().members),
         { y: context.game.stage.height / 2 - 32 },
@@ -102,6 +131,7 @@ class TimerSpawnObjects {
         },
         { revive: false }
       );
+
     }
   }
 
@@ -142,6 +172,12 @@ class TimerSpawnObjects {
     const rhombusSplinterMembers = GroupPool.rhombusSplinter().members;
     const angleBase = parseInt(360 / GameConfig.setting.NUMBER_OF_RHOMBUS_SPLINTER, 10);
     let rhombusSplinterAngle = 0;
+
+    this.spawnRhombus = false;
+    this.playSeOfSpawnRhombus = false;
+
+    GameMusic.soundEffectOfSpawnRhombusSplinter.stop();
+    GameMusic.soundEffectOfSpawnRhombusSplinter.play();
 
     rhombusSplinterMembers.forEach((member) => {
       member.x = sprite.x;
