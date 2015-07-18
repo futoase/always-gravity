@@ -24,7 +24,7 @@ class GameMusic {
     if (!this[MUSIC_MAIN]) {
       this[MUSIC_MAIN] = new Kiwi.Sound.Audio(
         context.game,
-        'MUSIC_MAIN',
+        'musicMain',
         GameConfig.setting.BASE_MUSIC_VOLUME_PER,
         true
       );
