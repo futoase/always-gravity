@@ -9,7 +9,7 @@ class TestTextureLoader {
    * @param {Number} height
    * @return {Kiwi.Textures.SpriteSheet}
    */
-  static loadImage(name, path, width, height) {
+  static loadImage({name, path, width, height}) {
     const textureLibrary = new Kiwi.Textures.TextureLibrary(GAME_MAIN);
     const loader = new Kiwi.Files.Loader(GAME_MAIN);
 
@@ -26,48 +26,39 @@ class TestTextureLoader {
   }
 
   static myUnit() {
-    const {name, path, width, height} = GameConfig.spriteSheets[0];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[0]);
   }
 
   static myUnitSplinter() {
-    const {name, path, width, height} = GameConfig.spriteSheets[1];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[1]);
   }
 
   static star() {
-    const {name, path, width, height} = GameConfig.spriteSheets[2];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[2]);
   }
 
   static cube() {
-    const {name, path, width, height} = GameConfig.spriteSheets[3];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[3]);
   }
 
   static cylinder() {
-    const {name, path, width, height} = GameConfig.spriteSheets[4];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[4]);
   }
 
   static bullet() {
-    const {name, path, width, height} = GameConfig.spriteSheets[5];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[5]);
   }
 
   static explosion() {
-    const {name, path, width, height} = GameConfig.spriteSheets[6];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[6]);
   }
 
   static circle() {
-    const {name, path, width, height} = GameConfig.spriteSheets[7];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[7]);
   }
 
   static rhombus() {
-    const {name, path, width, height} = GameConfig.spriteSheets[8];
-    return this.loadImage(name, path, width, height);
+    return this.loadImage(GameConfig.spriteSheets[8]);
   }
 
 }
@@ -81,7 +72,7 @@ class TestAudioLoader {
    * @param {String} path
    * @return {Kiwi.Files.AudioFile}
    */
-  static loadAudio(name, path) {
+  static loadAudio({name, path}) {
     const audioLibrary = new Kiwi.Sound.AudioLibrary(GAME_MAIN);
     const loader = new Kiwi.Files.Loader(GAME_MAIN);
 
@@ -98,38 +89,31 @@ class TestAudioLoader {
   }
 
   static musicMain() {
-    const {name, path} = GameConfig.soundFiles[0];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[0]);
   }
 
   static musicGameOver() {
-    const {name, path} = GameConfig.soundFiles[1];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[1]);
   }
 
   static bulletSe() {
-    const {name, path} = GameConfig.soundFiles[2];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[2]);
   }
 
   static explosionSe() {
-    const {name, path} = GameConfig.soundFiles[3];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[3]);
   }
 
   static exposionMyUnitSe() {
-    const {name, path} = GameConfig.soundFiles[4];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[4]);
   }
 
   static circleSe() {
-    const {name, path} = GameConfig.soundFiles[5];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[5]);
   }
 
   static cautionOfSpeedSe() {
-    const {name, path} = GameConfig.soundFiles[6];
-    return this.loadAudio(name, path);
+    return this.loadAudio(GameConfig.soundFiles[6]);
   }
 }
 
