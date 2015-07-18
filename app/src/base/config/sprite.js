@@ -7,7 +7,7 @@ GameConfig.spriteSheets = [
   },
   {
     name: 'myUnitSplinter',
-    path:'./assets/images/my-unit-explosion.png',
+    path: './assets/images/my-unit-explosion.png',
     width: 32,
     height: 32,
   },
@@ -52,5 +52,5 @@ GameConfig.spriteSheets = [
     path: './assets/images/rhombus.png',
     width: 32,
     height: 32,
-  }
+  },
 ];

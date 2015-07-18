@@ -26,7 +26,7 @@ class StarGenerator {
     star.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
 
     if (index < parseInt(GameConfig.setting.NUMBER_OF_STAR / 3, 10)) {
-      star.y = parseInt(Math.random() *GameConfig.kiwiOption.height, 10);
+      star.y = parseInt(Math.random() * GameConfig.kiwiOption.height, 10);
     } else {
       star.y = -1 * parseInt(Math.random() * 200, 10);
     }

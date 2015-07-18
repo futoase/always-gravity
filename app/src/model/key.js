@@ -4,28 +4,28 @@ class GameKey {
    * initializeOfPlay() is initialize of keys for PlayState.
    */
   static initializeOfPlay() {
-    GameKey.LEFT_KEY();
-    GameKey.RIGHT_KEY();
-    GameKey.UP_KEY();
-    GameKey.SHOOT_KEY();
-    GameKey.EXIT_KEY();
-    GameKey.RESTART_KEY();
+    GameKey.leftKey();
+    GameKey.rightKey();
+    GameKey.upKey();
+    GameKey.shootKey();
+    GameKey.exitKey();
+    GameKey.restartKey();
   }
 
   /**
    * initializeOfTitle() is initialize of keys for TitleState.
    */
   static initializeOfTitle() {
-    GameKey.GAMESTART_KEY();
-    GameKey.EXIT_KEY();
+    GameKey.gameStartKey();
+    GameKey.exitKey();
   }
 
   /**
-   * GAMESTART_KEY() is return new Game key for the Start.
+   * gameStartKey() is return new Game key for the Start.
    *
    * @return {Kiwi.Input.Key} GAMESTART_KEY
    */
-  static GAMESTART_KEY() {
+  static gameStartKey() {
     if (!this[GAMESTART_KEY]) {
       this[GAMESTART_KEY] = (
         this._getGameKey(Kiwi.Input.Keycodes.SPACEBAR)
@@ -44,11 +44,11 @@ class GameKey {
   }
 
   /**
-   * LEFT_KEY() is return new Game key for the Left.
+   * leftKey() is return new Game key for the Left.
    *
    * @return {Kiwi.Input.Key} LEFT_KEY
    */
-  static LEFT_KEY() {
+  static leftKey() {
     if (!this[LEFT_KEY]) {
       this[LEFT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.LEFT);
     }
@@ -65,11 +65,11 @@ class GameKey {
   }
 
   /**
-   * RIGHT_KEY() is return new Game key for the Right.
+   * rightKey() is return new Game key for the Right.
    *
    * @return {Kiwi.Input.Key} RIGHT_KEY
    */
-  static RIGHT_KEY() {
+  static rightKey() {
     if (!this[RIGHT_KEY]) {
       this[RIGHT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.RIGHT);
     }
@@ -86,11 +86,11 @@ class GameKey {
   }
 
   /**
-   * UP_KEY() is return new Game key for the Up.
+   * upKey() is return new Game key for the Up.
    *
    * @return {Kiwi.Input.Key} UP_KEY
    */
-  static UP_KEY() {
+  static upKey() {
     if (!this[UP_KEY]) {
       this[UP_KEY] = this._getGameKey(Kiwi.Input.Keycodes.UP);
     }
@@ -107,11 +107,11 @@ class GameKey {
   }
 
   /**
-   * SHOOT_KEY() is return new Game key for the Shoot.
+   * shootKey() is return new Game key for the Shoot.
    *
    * @return {Kiwi.Input.Key} SHOOT_KEY
    */
-  static SHOOT_KEY() {
+  static shootKey() {
     if (!this[SHOOT_KEY]) {
       this[SHOOT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.Z);
     }
@@ -128,11 +128,11 @@ class GameKey {
   }
 
   /**
-   * EXIT_KEY() is return new Game key for the Exit.
+   * exitKey() is return new Game key for the Exit.
    *
    * @return {Kiwi.Input.Key} EXIT_KEY
    */
-  static EXIT_KEY() {
+  static exitKey() {
     if (!this[EXIT_KEY]) {
       this[EXIT_KEY] = this._getGameKey(Kiwi.Input.Keycodes.ESC);
     }
@@ -149,11 +149,11 @@ class GameKey {
   }
 
   /**
-   * RESTART_KEY() is return new Game key for the Restart.
+   * restartKey() is return new Game key for the Restart.
    *
    * @return {Kiwi.Input.Key} RESTART_KEY
    */
-  static RESTART_KEY() {
+  static restartKey() {
     if (!this[RESTART_KEY]) {
       this[RESTART_KEY] = this._getGameKey(Kiwi.Input.Keycodes.R);
     }

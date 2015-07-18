@@ -17,6 +17,7 @@ gulp.task('eslint', function() {
   return gulp.src([
     './app/src/base/helper.js',
     './app/src/base/config.js',
+    './app/src/base/config/**/*.js',
     './app/src/lib/**/*.js',
     './app/src/model/**/*.js',
     './app/src/base/boot.js'

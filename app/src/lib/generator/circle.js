@@ -24,7 +24,7 @@ class CircleGenerator {
       new Kiwi.Components.ArcadePhysics(circle, circle.box)
     );
     circle.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
-    circle.score = 500;
+    circle.score = GameConfig.score.circle;
 
     return circle;
   }

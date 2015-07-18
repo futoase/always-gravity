@@ -53,7 +53,7 @@ class Helper {
    */
   static revive(sprite) {
     sprite.y = -sprite.height;
-    sprite.x = parseInt(Math.random() * 800, 10);
+    sprite.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
     sprite.physics.velocity.y = 0;
     sprite.physics.acceleration.y = 0;
     sprite.alive = true;

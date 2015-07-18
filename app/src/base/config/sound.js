@@ -31,5 +31,5 @@ GameConfig.soundFiles = [
   {
     name: 'caution-of-speed-se',
     path: './assets/media/caution-of-speed.wav',
-  }
+  },
 ];

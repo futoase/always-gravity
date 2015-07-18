@@ -27,7 +27,7 @@ class CylinderGenerator {
     );
     cylinder.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
     cylinder.y = -cylinder.height;
-    cylinder.score = 200;
+    cylinder.score = GameConfig.score.cylinder;
 
     return cylinder;
   }

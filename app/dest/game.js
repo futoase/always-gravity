@@ -69,7 +69,7 @@ var Helper = (function () {
      */
     value: function revive(sprite) {
       sprite.y = -sprite.height;
-      sprite.x = parseInt(Math.random() * 800, 10);
+      sprite.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
       sprite.physics.velocity.y = 0;
       sprite.physics.acceleration.y = 0;
       sprite.alive = true;
@@ -252,6 +252,12 @@ GameConfig.init = {
 GameConfig.kiwiOption = {
   width: 800,
   height: 600
+};
+
+GameConfig.score = {
+  cube: 100,
+  cylinder: 200,
+  circle: 500
 };
 
 GameConfig.setting = {
@@ -537,7 +543,7 @@ var CircleGenerator = (function () {
       circle.anchorPointY = circle.height * 0.5;
       circle.physics = circle.components.add(new Kiwi.Components.ArcadePhysics(circle, circle.box));
       circle.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
-      circle.score = 500;
+      circle.score = GameConfig.score.circle;
 
       return circle;
     }
@@ -571,7 +577,7 @@ var CubeGenerator = (function () {
       cube.anchorPointY = cube.height * 0.5;
       cube.physics = cube.components.add(new Kiwi.Components.ArcadePhysics(cube, cube.box));
       cube.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
-      cube.score = 100;
+      cube.score = GameConfig.score.cube;
 
       return cube;
     }
@@ -608,7 +614,7 @@ var CylinderGenerator = (function () {
       cylinder.physics = cylinder.components.add(new Kiwi.Components.ArcadePhysics(cylinder, cylinder.box));
       cylinder.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
       cylinder.y = -cylinder.height;
-      cylinder.score = 200;
+      cylinder.score = GameConfig.score.cylinder;
 
       return cylinder;
     }

@@ -6,7 +6,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 48,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   subTitle: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -15,7 +15,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 24,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   start: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -24,7 +24,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 20,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   quit: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -33,7 +33,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 20,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   exitGame: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -42,7 +42,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 20,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   gameOver: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -51,7 +51,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 64,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   restart: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -60,7 +60,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 20,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   scoreResults: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -69,7 +69,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 36,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   slowDownCount: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -78,7 +78,7 @@ GameConfig.text = {
     color: '#ffffff',
     size: 48,
     weight: 'bold',
-    fontFamily: 'monospace'
+    fontFamily: 'monospace',
   },
   slowDown: {
     x: (() => { return GameConfig.kiwiOption.width / 2; })(),
@@ -87,6 +87,6 @@ GameConfig.text = {
     color: '#ffffff',
     size: 48,
     weight: 'bold',
-    fontFamily: 'monospace'
-  }
+    fontFamily: 'monospace',
+  },
 };

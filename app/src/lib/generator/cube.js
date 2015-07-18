@@ -24,7 +24,7 @@ class CubeGenerator {
       new Kiwi.Components.ArcadePhysics(cube, cube.box)
     );
     cube.x = parseInt(Math.random() * GameConfig.kiwiOption.width, 10);
-    cube.score = 100;
+    cube.score = GameConfig.score.cube;
 
     return cube;
   }
