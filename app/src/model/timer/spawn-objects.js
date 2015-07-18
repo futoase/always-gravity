@@ -31,7 +31,7 @@ class TimerSpawnObjects {
   }
 
   set spawnRhombus(value) {
-    if (typeof value === "boolean"){
+    if (typeof value === 'boolean') {
       this[TIMER_SPAWN_RHOMBUS] = value;
     }
   }
@@ -44,7 +44,7 @@ class TimerSpawnObjects {
   }
 
   set playSeOfSpawnRhombus(value) {
-    if (typeof value === "boolean") {
+    if (typeof value === 'boolean') {
       this[TIMER_SPAWN_RHOMBUS_PLAY_SE] = value;
     }
   }
@@ -115,7 +115,6 @@ class TimerSpawnObjects {
     }
 
     if (this.spawnRhombus) {
-
       if (this.playSeOfSpawnRhombus === false) {
         this.playSeOfSpawnRhombus = true;
         GameMusic.soundEffectOfSpawnRhombus.stop();
@@ -131,7 +130,6 @@ class TimerSpawnObjects {
         },
         { revive: false }
       );
-
     }
   }
 

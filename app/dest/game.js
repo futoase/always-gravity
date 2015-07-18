@@ -3321,7 +3321,6 @@ var TimerSpawnObjects = (function () {
       }
 
       if (this.spawnRhombus) {
-
         if (this.playSeOfSpawnRhombus === false) {
           this.playSeOfSpawnRhombus = true;
           GameMusic.soundEffectOfSpawnRhombus.stop();
