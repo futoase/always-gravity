@@ -135,14 +135,11 @@ class Bullet {
     let angle;
     if (isLessThanBulletX && !isLessThanBulletY) {
       angle = GameConfig.angle.lowerLeft;
-    }
-    else if (!isLessThanBulletX && !isLessThanBulletY) {
+    } else if (!isLessThanBulletX && !isLessThanBulletY) {
       angle = GameConfig.angle.lowerRight;
-    }
-    else if (isLessThanBulletX && isLessThanBulletY) {
+    } else if (isLessThanBulletX && isLessThanBulletY) {
       angle = GameConfig.angle.upperLeft;
-    }
-    else {
+    } else {
       angle = GameConfig.angle.upperRight;
     }
 
