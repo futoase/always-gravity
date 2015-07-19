@@ -497,6 +497,232 @@ GameConfig.text = {
   }
 };
 
+var GameState = (function () {
+
+  /**
+   * constructor for GameState.
+   *
+   * @param {Symbol} enforcer
+   */
+
+  function GameState(enforcer) {
+    _classCallCheck(this, GameState);
+
+    if (enforcer !== GAMESTATE_SINGLETON_ENFORCER) {
+      throw new Error('Cannot construct singleton!');
+    }
+  }
+
+  _createClass(GameState, [{
+    key: 'current',
+
+    /**
+     * Getter of current GameState
+     *
+     * @return {Kiwi.State} gamestateCurrent
+     */
+    get: function get() {
+      return this[GAMESTATE_CURRENT];
+    },
+
+    /**
+     * Setter of current GameState
+     *
+     * @param {Kiwi.State} value
+     */
+    set: function set(value) {
+      this[GAMESTATE_CURRENT] = value;
+    }
+  }, {
+    key: 'title',
+
+    /**
+     * Getter of TitleState.
+     *
+     * @return {Kiwi.State} TitleState
+     */
+    get: function get() {
+      if (!this[GAMESTATE_TITLE]) {
+        this[GAMESTATE_TITLE] = new Kiwi.State('Title');
+      }
+      return this[GAMESTATE_TITLE];
+    }
+  }, {
+    key: 'play',
+
+    /**
+     * Getter of PlayState.
+     *
+     * @return {Kiwi.State} PlayState
+     */
+    get: function get() {
+      if (!this[GAMESTATE_PLAY]) {
+        this[GAMESTATE_PLAY] = new Kiwi.State('Play');
+      }
+      return this[GAMESTATE_PLAY];
+    }
+  }], [{
+    key: 'instance',
+
+    /**
+     * get() is return a instance of GameState.
+     *
+     * @return {GameState}
+     */
+    get: function get() {
+      if (!this[GAMESTATE_SINGLETON]) {
+        this[GAMESTATE_SINGLETON] = new GameState(GAMESTATE_SINGLETON_ENFORCER);
+      }
+      return this[GAMESTATE_SINGLETON];
+    }
+  }, {
+    key: 'current',
+
+    /**
+     * current() is return of GameState.instance.current.
+     */
+    get: function get() {
+      return GameState.instance.current;
+    }
+  }]);
+
+  return GameState;
+})();
+
+var TitleState = (function () {
+  function TitleState() {
+    _classCallCheck(this, TitleState);
+  }
+
+  _createClass(TitleState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of TitleState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameKey.initializeOfTitle();
+      GameText.initializeOfTitle();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for TitleState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in TitleState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      if (GameKey.activeGameStartKey()) {
+        GameText.destroyOfTitle();
+        this.game.states.switchState('Play');
+      }
+
+      if (GameKey.activeExitKey()) {
+        ipc.sendSync('quit');
+      }
+    }
+  }]);
+
+  return TitleState;
+})();
+
+GameState.instance.title.create = TitleState.create;
+GameState.instance.title.preload = TitleState.preload;
+GameState.instance.title.update = TitleState.update;
+
+var PlayState = (function () {
+  function PlayState() {
+    _classCallCheck(this, PlayState);
+  }
+
+  _createClass(PlayState, null, [{
+    key: 'create',
+
+    /**
+     * create() a setup of PlayState.
+     */
+    value: function create() {
+      Kiwi.State.prototype.create.call(this);
+
+      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
+
+      GameState.instance.current = this;
+
+      GameMusic.main.play();
+
+      HUD.initialize();
+      Group.initialize();
+      MyUnit.initialize();
+      GameKey.initializeOfPlay();
+      Timer.initialize();
+      GameText.createSlowDownCount();
+      GameText.createSlowDown();
+    }
+  }, {
+    key: 'preload',
+
+    /**
+     * preload() a loading of asserts for PlayState.
+     */
+    value: function preload() {
+      Kiwi.State.prototype.preload.call(this);
+
+      Helper.addSprites(this, GameConfig.spriteSheets);
+      Helper.addSound(this, GameConfig.soundFiles);
+    }
+  }, {
+    key: 'update',
+
+    /**
+     * update() is main loop of game in PlayState.
+     */
+    value: function update() {
+      Kiwi.State.prototype.update.call(this);
+
+      MyUnit.update();
+      HUD.update();
+
+      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
+        Bullet.shoot();
+      }
+
+      GroupPool.forEachAll();
+
+      if (GameOver.status) {
+        if (GameKey.activeExitKey()) {
+          ipc.sendSync('quit');
+        }
+
+        if (GameKey.activeRestartKey()) {
+          window.location.reload(true);
+        }
+      }
+    }
+  }]);
+
+  return PlayState;
+})();
+
+GameState.instance.play.create = PlayState.create;
+GameState.instance.play.preload = PlayState.preload;
+GameState.instance.play.update = PlayState.update;
+
 var BulletGenerator = (function () {
   function BulletGenerator() {
     _classCallCheck(this, BulletGenerator);
@@ -2840,98 +3066,6 @@ var MyUnit = (function () {
   return MyUnit;
 })();
 
-var GameState = (function () {
-
-  /**
-   * constructor for GameState.
-   *
-   * @param {Symbol} enforcer
-   */
-
-  function GameState(enforcer) {
-    _classCallCheck(this, GameState);
-
-    if (enforcer !== GAMESTATE_SINGLETON_ENFORCER) {
-      throw new Error('Cannot construct singleton!');
-    }
-  }
-
-  _createClass(GameState, [{
-    key: 'current',
-
-    /**
-     * Getter of current GameState
-     *
-     * @return {Kiwi.State} gamestateCurrent
-     */
-    get: function get() {
-      return this[GAMESTATE_CURRENT];
-    },
-
-    /**
-     * Setter of current GameState
-     *
-     * @param {Kiwi.State} value
-     */
-    set: function set(value) {
-      this[GAMESTATE_CURRENT] = value;
-    }
-  }, {
-    key: 'title',
-
-    /**
-     * Getter of TitleState.
-     *
-     * @return {Kiwi.State} TitleState
-     */
-    get: function get() {
-      if (!this[GAMESTATE_TITLE]) {
-        this[GAMESTATE_TITLE] = new Kiwi.State('Title');
-      }
-      return this[GAMESTATE_TITLE];
-    }
-  }, {
-    key: 'play',
-
-    /**
-     * Getter of PlayState.
-     *
-     * @return {Kiwi.State} PlayState
-     */
-    get: function get() {
-      if (!this[GAMESTATE_PLAY]) {
-        this[GAMESTATE_PLAY] = new Kiwi.State('Play');
-      }
-      return this[GAMESTATE_PLAY];
-    }
-  }], [{
-    key: 'instance',
-
-    /**
-     * get() is return a instance of GameState.
-     *
-     * @return {GameState}
-     */
-    get: function get() {
-      if (!this[GAMESTATE_SINGLETON]) {
-        this[GAMESTATE_SINGLETON] = new GameState(GAMESTATE_SINGLETON_ENFORCER);
-      }
-      return this[GAMESTATE_SINGLETON];
-    }
-  }, {
-    key: 'current',
-
-    /**
-     * current() is return of GameState.instance.current.
-     */
-    get: function get() {
-      return GameState.instance.current;
-    }
-  }]);
-
-  return GameState;
-})();
-
 var Timer = (function () {
 
   /**
@@ -3106,140 +3240,6 @@ var Timer = (function () {
 
   return Timer;
 })();
-
-var PlayState = (function () {
-  function PlayState() {
-    _classCallCheck(this, PlayState);
-  }
-
-  _createClass(PlayState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of PlayState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameMusic.main.play();
-
-      HUD.initialize();
-      Group.initialize();
-      MyUnit.initialize();
-      GameKey.initializeOfPlay();
-      Timer.initialize();
-      GameText.createSlowDownCount();
-      GameText.createSlowDown();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for PlayState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-
-      Helper.addSprites(this, GameConfig.spriteSheets);
-      Helper.addSound(this, GameConfig.soundFiles);
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in PlayState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      MyUnit.update();
-      HUD.update();
-
-      if (this.contains(MyUnit.instance.sprite) && GameKey.activeShootKey()) {
-        Bullet.shoot();
-      }
-
-      GroupPool.forEachAll();
-
-      if (GameOver.status) {
-        if (GameKey.activeExitKey()) {
-          ipc.sendSync('quit');
-        }
-
-        if (GameKey.activeRestartKey()) {
-          window.location.reload(true);
-        }
-      }
-    }
-  }]);
-
-  return PlayState;
-})();
-
-GameState.instance.play.create = PlayState.create;
-GameState.instance.play.preload = PlayState.preload;
-GameState.instance.play.update = PlayState.update;
-
-var TitleState = (function () {
-  function TitleState() {
-    _classCallCheck(this, TitleState);
-  }
-
-  _createClass(TitleState, null, [{
-    key: 'create',
-
-    /**
-     * create() a setup of TitleState.
-     */
-    value: function create() {
-      Kiwi.State.prototype.create.call(this);
-
-      this.game.stage.color = GameConfig.setting.STAGE_COLOR;
-
-      GameState.instance.current = this;
-
-      GameKey.initializeOfTitle();
-      GameText.initializeOfTitle();
-    }
-  }, {
-    key: 'preload',
-
-    /**
-     * preload() a loading of asserts for TitleState.
-     */
-    value: function preload() {
-      Kiwi.State.prototype.preload.call(this);
-    }
-  }, {
-    key: 'update',
-
-    /**
-     * update() is main loop of game in TitleState.
-     */
-    value: function update() {
-      Kiwi.State.prototype.update.call(this);
-
-      if (GameKey.activeGameStartKey()) {
-        GameText.destroyOfTitle();
-        this.game.states.switchState('Play');
-      }
-
-      if (GameKey.activeExitKey()) {
-        ipc.sendSync('quit');
-      }
-    }
-  }]);
-
-  return TitleState;
-})();
-
-GameState.instance.title.create = TitleState.create;
-GameState.instance.title.preload = TitleState.preload;
-GameState.instance.title.update = TitleState.update;
 
 var TimerSpawnObjects = (function () {
 

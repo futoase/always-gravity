@@ -18,6 +18,9 @@ gulp.task('eslint', function() {
     './app/src/base/helper.js',
     './app/src/base/config.js',
     './app/src/base/config/**/*.js',
+    './app/src/state/main.js',
+    './app/src/state/title.js',
+    './app/src/state/play.js',
     './app/src/lib/**/*.js',
     './app/src/model/**/*.js',
     './app/src/base/boot.js'
@@ -65,6 +68,9 @@ gulp.task('concat', function(){
     './app/src/base/helper.js',
     './app/src/base/config.js',
     './app/src/base/config/**/*.js',
+    './app/src/state/main.js',
+    './app/src/state/title.js',
+    './app/src/state/play.js',
     './app/src/lib/**/*.js',
     './app/src/model/**/*.js',
     './app/src/base/boot.js'
