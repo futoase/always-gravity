@@ -159,6 +159,13 @@ var GameCounter = {};
 // Disable output of Kiwi.Logger.
 Kiwi.Log.display = false;
 
+GameConfig.angle = {
+  upperLeft: 240,
+  upperRight: 320,
+  lowerLeft: 120,
+  lowerRight: 40
+};
+
 // Bullet
 var LAST_BULLET_SHOOT_AT = Symbol();
 
@@ -251,6 +258,10 @@ GameConfig.init = {
   spawnSprite: {
     x: -100,
     y: -100
+  },
+  spawnSpriteOfBullet: {
+    x: -1000,
+    y: -1000
   }
 };
 
@@ -744,7 +755,7 @@ var BulletGenerator = (function () {
     value: function create(index) {
       var context = GameState.current;
 
-      var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, GameConfig.init.spawnSprite.x, GameConfig.init.spawnSprite.y);
+      var bullet = new Kiwi.GameObjects.Sprite(context, context.textures.bullet, GameConfig.init.spawnSpriteOfBullet.x, GameConfig.init.spawnSpriteOfBullet.y);
 
       bullet.index = index;
       bullet.hitbox = new Kiwi.Geom.Rectangle(8, 8, 8, 8);
@@ -1113,9 +1124,42 @@ var Bullet = (function () {
      *
      * @param {Kiwi.Sprite} bullet
      */
-    value: function ricochet(bullet) {
+    value: function ricochet(bullet, object) {
+      var angle = this._getAngle(bullet, object);
+      var radian = Helper.radian(angle);
+
+      bullet.physics.velocity.x = Math.cos(radian) * GameConfig.setting.BULLET_SPEED;
+      bullet.physics.velocity.y = Math.sin(radian) * GameConfig.setting.BULLET_SPEED;
+
       GameMusic.soundEffectOfBulletRicochet.stop();
       GameMusic.soundEffectOfBulletRicochet.play();
+    }
+  }, {
+    key: '_getAngle',
+
+    /**
+     * _getAngle() is return a angle of bullet.
+     *
+     * @param {Kiwi.Sprite} bullet
+     * @param {Kiwi.Sprite} object
+     * @return {Number} angle
+     */
+    value: function _getAngle(bullet, object) {
+      var isLessThanBulletX = bullet.x < object.x + object.width / 2;
+      var isLessThanBulletY = bullet.y < object.y + object.height / 2;
+
+      var angle = undefined;
+      if (isLessThanBulletX && !isLessThanBulletY) {
+        angle = GameConfig.angle.lowerLeft;
+      } else if (!isLessThanBulletX && !isLessThanBulletY) {
+        angle = GameConfig.angle.lowerRight;
+      } else if (isLessThanBulletX && isLessThanBulletY) {
+        angle = GameConfig.angle.upperLeft;
+      } else {
+        angle = GameConfig.angle.upperRight;
+      }
+
+      return angle;
     }
   }]);
 
@@ -1191,11 +1235,29 @@ var CollisionDelection = (function () {
      * @param {Kiwi.Sprite} bullet
      */
     value: function bulletCollideWithRhombus(bullet) {
-      var members = GroupPool.rhombus().mebers;
+      var members = GroupPool.rhombus().members;
 
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
-          Bullet.ricochet(bullet);
+          Bullet.ricochet(bullet, member);
+        }
+      });
+    }
+  }, {
+    key: 'bulletCollideWithRhombusSplinter',
+
+    /**
+     * bulletCollideWithRhombusSplinter()
+     * Observe the collision bullet and rhombus splinter.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
+    value: function bulletCollideWithRhombusSplinter(bullet) {
+      var members = GroupPool.rhombusSplinter().members;
+
+      members.map(function (member) {
+        if (bullet.physics.overlaps(member)) {
+          Bullet.ricochet(bullet, member);
         }
       });
     }
@@ -1874,6 +1936,8 @@ var GroupPool = (function () {
         CollisionDelection.bulletCollideWithCube(member);
         CollisionDelection.bulletCollideWithCircle(member);
         CollisionDelection.bulletCollideWithCylinder(member);
+        CollisionDelection.bulletCollideWithRhombus(member);
+        CollisionDelection.bulletCollideWithRhombusSplinter(member);
       });
     }
   }, {

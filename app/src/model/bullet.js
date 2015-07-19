@@ -106,9 +106,47 @@ class Bullet {
    *
    * @param {Kiwi.Sprite} bullet
    */
-  static ricochet(bullet) {
+  static ricochet(bullet, object) {
+    const angle = this._getAngle(bullet, object);
+    const radian = Helper.radian(angle);
+
+    bullet.physics.velocity.x = (
+      Math.cos(radian) * GameConfig.setting.BULLET_SPEED
+    );
+    bullet.physics.velocity.y = (
+      Math.sin(radian) * GameConfig.setting.BULLET_SPEED
+    );
+
     GameMusic.soundEffectOfBulletRicochet.stop();
     GameMusic.soundEffectOfBulletRicochet.play();
+  }
+
+  /**
+   * _getAngle() is return a angle of bullet.
+   *
+   * @param {Kiwi.Sprite} bullet
+   * @param {Kiwi.Sprite} object
+   * @return {Number} angle
+   */
+  static _getAngle(bullet, object) {
+    const isLessThanBulletX = (bullet.x < (object.x + object.width / 2));
+    const isLessThanBulletY = (bullet.y < (object.y + object.height / 2));
+
+    let angle;
+    if (isLessThanBulletX && !isLessThanBulletY) {
+      angle = GameConfig.angle.lowerLeft;
+    }
+    else if (!isLessThanBulletX && !isLessThanBulletY) {
+      angle = GameConfig.angle.lowerRight;
+    }
+    else if (isLessThanBulletX && isLessThanBulletY) {
+      angle = GameConfig.angle.upperLeft;
+    }
+    else {
+      angle = GameConfig.angle.upperRight;
+    }
+
+    return angle;
   }
 
 }

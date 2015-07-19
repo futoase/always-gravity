@@ -12,8 +12,8 @@ class BulletGenerator {
     const bullet = new Kiwi.GameObjects.Sprite(
       context,
       context.textures.bullet,
-      GameConfig.init.spawnSprite.x,
-      GameConfig.init.spawnSprite.y
+      GameConfig.init.spawnSpriteOfBullet.x,
+      GameConfig.init.spawnSpriteOfBullet.y
     );
 
     bullet.index = index;

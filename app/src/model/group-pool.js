@@ -214,6 +214,8 @@ class GroupPool {
       CollisionDelection.bulletCollideWithCube(member);
       CollisionDelection.bulletCollideWithCircle(member);
       CollisionDelection.bulletCollideWithCylinder(member);
+      CollisionDelection.bulletCollideWithRhombus(member);
+      CollisionDelection.bulletCollideWithRhombusSplinter(member);
     });
   }
 

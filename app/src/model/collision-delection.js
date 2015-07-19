@@ -55,11 +55,27 @@ class CollisionDelection {
    * @param {Kiwi.Sprite} bullet
    */
   static bulletCollideWithRhombus(bullet) {
-    const members = GroupPool.rhombus().mebers;
+    const members = GroupPool.rhombus().members;
 
     members.map((member) => {
       if (bullet.physics.overlaps(member)) {
-        Bullet.ricochet(bullet);
+        Bullet.ricochet(bullet, member);
+      }
+    });
+  }
+
+  /**
+   * bulletCollideWithRhombusSplinter()
+   * Observe the collision bullet and rhombus splinter.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
+  static bulletCollideWithRhombusSplinter(bullet) {
+    const members = GroupPool.rhombusSplinter().members;
+
+    members.map((member) => {
+      if (bullet.physics.overlaps(member)) {
+        Bullet.ricochet(bullet, member);
       }
     });
   }
