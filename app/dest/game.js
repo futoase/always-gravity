@@ -215,6 +215,7 @@ var SOUND_EFFECT_OF_CIRCLE = Symbol();
 var SOUND_EFFECT_OF_MYUNIT_EXPLOSION = Symbol();
 var SOUND_EFFECT_OF_SPAWN_RHOMBUS = Symbol();
 var SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER = Symbol();
+var SOUND_EFFECT_OF_BULLET_RICOCHET = Symbol();
 
 // MyUnit
 var MYUNIT_SINGLETON = Symbol();
@@ -335,6 +336,9 @@ GameConfig.soundFiles = [
 }, {
   name: 'spawn-rhombus-splinter-se',
   path: './assets/media/spawn-rhombus-splinter.wav'
+}, {
+  name: 'bullet-ricochet-se',
+  path: './assets/media/bullet-ricochet.wav'
 }];
 
 GameConfig.spriteSheets = [{
@@ -1101,6 +1105,18 @@ var Bullet = (function () {
       se.volume = volume;
       se.play();
     }
+  }, {
+    key: 'ricochet',
+
+    /**
+     * ricochet() is a ricochet of bullet by rhombus.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
+    value: function ricochet(bullet) {
+      GameMusic.soundEffectOfBulletRicochet.stop();
+      GameMusic.soundEffectOfBulletRicochet.play();
+    }
   }]);
 
   return Bullet;
@@ -1162,6 +1178,24 @@ var CollisionDelection = (function () {
       members.map(function (member) {
         if (bullet.physics.overlaps(member)) {
           Bullet.overlapOnObject(bullet, member, 0.6);
+        }
+      });
+    }
+  }, {
+    key: 'bulletCollideWithRhombus',
+
+    /**
+     * bulletCollideWithRhombus()
+     * Observe the collision bullet and rhombus.
+     *
+     * @param {Kiwi.Sprite} bullet
+     */
+    value: function bulletCollideWithRhombus(bullet) {
+      var members = GroupPool.rhombus().mebers;
+
+      members.map(function (member) {
+        if (bullet.physics.overlaps(member)) {
+          Bullet.ricochet(bullet);
         }
       });
     }
@@ -2694,6 +2728,22 @@ var GameMusic = (function () {
         this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER] = new Kiwi.Sound.Audio(context.game, 'spawn-rhombus-splinter-se', GameConfig.setting.BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER, false);
       }
       return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER];
+    }
+  }, {
+    key: 'soundEffectOfBulletRicochet',
+
+    /**
+     * Getter of sound effect for bullet ricochet.
+     *
+     * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_BULLET_RICOCHET
+     */
+    get: function get() {
+      var context = GameState.current;
+
+      if (!this[SOUND_EFFECT_OF_BULLET_RICOCHET]) {
+        this[SOUND_EFFECT_OF_BULLET_RICOCHET] = new Kiwi.Sound.Audio(context.game, 'bullet-ricochet-se', GameConfig.setting.BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER, false);
+      }
+      return this[SOUND_EFFECT_OF_BULLET_RICOCHET];
     }
   }]);
 
