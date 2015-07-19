@@ -185,4 +185,23 @@ class GameMusic {
     return this[SOUND_EFFECT_OF_SPAWN_RHOMBUS_SPLINTER];
   }
 
+  /**
+   * Getter of sound effect for bullet ricochet.
+   *
+   * @return {Kiwi.Sound.Audio} SOUND_EFFECT_OF_BULLET_RICOCHET
+   */
+  static get soundEffectOfBulletRicochet() {
+    const context = GameState.current;
+
+    if (!this[SOUND_EFFECT_OF_BULLET_RICOCHET]) {
+      this[SOUND_EFFECT_OF_BULLET_RICOCHET] = new Kiwi.Sound.Audio(
+        context.game,
+        'bullet-ricochet-se',
+        GameConfig.setting.BASE_SPAWN_RHOMBUS_SPLINTER_VOLUME_PER,
+        false
+      );
+    }
+    return this[SOUND_EFFECT_OF_BULLET_RICOCHET];
+  }
+
 }

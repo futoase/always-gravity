@@ -40,4 +40,8 @@ GameConfig.soundFiles = [
     name: 'spawn-rhombus-splinter-se',
     path: './assets/media/spawn-rhombus-splinter.wav',
   },
+  {
+    name: 'bullet-ricochet-se',
+    path: './assets/media/bullet-ricochet.wav',
+  },
 ];

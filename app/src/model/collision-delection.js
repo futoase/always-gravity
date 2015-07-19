@@ -48,4 +48,20 @@ class CollisionDelection {
     });
   }
 
+  /**
+   * bulletCollideWithRhombus()
+   * Observe the collision bullet and rhombus.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
+  static bulletCollideWithRhombus(bullet) {
+    const members = GroupPool.rhombus().mebers;
+
+    members.map((member) => {
+      if (bullet.physics.overlaps(member)) {
+        Bullet.ricochet(bullet);
+      }
+    });
+  }
+
 }

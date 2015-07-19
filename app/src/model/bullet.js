@@ -101,4 +101,14 @@ class Bullet {
     se.play();
   }
 
+  /**
+   * ricochet() is a ricochet of bullet by rhombus.
+   *
+   * @param {Kiwi.Sprite} bullet
+   */
+  static ricochet(bullet) {
+    GameMusic.soundEffectOfBulletRicochet.stop();
+    GameMusic.soundEffectOfBulletRicochet.play();
+  }
+
 }
