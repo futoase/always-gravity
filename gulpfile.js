@@ -10,6 +10,8 @@ var packageJson = require('./app/package.json');
 gulp.task('clean', ['eslint'], function(done) {
   del([
     './tmp',
+    './cache',
+    './release',
   ], done);
 });
 
@@ -63,7 +65,7 @@ gulp.task('electron', function() {
     .pipe(gulp.dest(''));
 });
 
-gulp.task('concat', function(){
+gulp.task('concat:front', function(){
   return gulp.src([
     './app/src/base/helper.js',
     './app/src/base/config.js',
@@ -77,11 +79,18 @@ gulp.task('concat', function(){
   ])
   .pipe(concat('game.js'))
   .pipe(babel())
-  .pipe(gulp.dest('./app/dest/'));
+  .pipe(gulp.dest('./app/dest/web/'));
+});
+
+gulp.task('concat:app', function() {
+  return gulp.src(['./app/src/electron/**/*.js'])
+    .pipe(babel())
+    .pipe(gulp.dest('./app/dest/electron/'));
 });
 
 gulp.task('watch', function() {
   gulp.watch('app/src/**/**.js', ['eslint', 'concat', 'clean']);
 });
 
+gulp.task('concat', ['concat:front', 'concat:app']);
 gulp.task('default', ['watch']);

@@ -15,7 +15,7 @@ module.exports = function(config) {
     files: [
       'app/public/js/kiwi-v1.3.0.js',
       'app/public/js/primitives-1.0.2.min.js',
-      'app/dest/game.js',
+      'app/dest/web/game.js',
       'node_modules/power-assert/build/power-assert.js',
       'app/spec/spec_helper.js',
       'app/spec/**/*.spec.js'

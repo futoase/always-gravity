@@ -1,6 +1,8 @@
 var app = require('app');
 var ipc = require('ipc');
 var BrowserWindow = require('browser-window');
+var Menu = require('menu');
+var applicationMenu = require('./dest/electron/menu');
 
 require('crash-reporter').start();
 
@@ -25,6 +27,7 @@ app.on('ready', function() {
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
+  Menu.setApplicationMenu(applicationMenu.template);
 });
 
 ipc.on('quit', function(event, arg) {
