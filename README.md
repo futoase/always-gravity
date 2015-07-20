@@ -1,5 +1,7 @@
 # Always Gravity
 
+![ScreenShot](https://cloud.githubusercontent.com/assets/72997/8771859/20ccc82e-2f01-11e5-9889-d110b29872e0.png)
+
 # Key setting
 
 - UP
