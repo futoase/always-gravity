@@ -16,11 +16,11 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    "min-width": 800,
-    "min-height": 600,
-    "max-width": 800,
-    "max-height": 600,
-    "use-content-size": true
+    'min-width': 800,
+    'min-height': 600,
+    'max-width': 800,
+    'max-height': 600,
+    'use-content-size': true
   });
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
   //mainWindow.openDevTools();
