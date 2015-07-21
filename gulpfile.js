@@ -42,29 +42,6 @@ gulp.task('eslint', function() {
     .pipe(eslint.failOnError());
 });
 
-gulp.task('electron', function() {
-  return gulp.src('')
-    .pipe(electron({
-      src: './app',
-      packageJson: packageJson,
-      release: './release',
-      cache: './cache',
-      version: 'v0.30.0',
-      packaging: true,
-      platforms: ['darwin-x64'],
-      platformResources: {
-        darwin: {
-          CFBundleDisplayName: packageJson.name,
-          CFBundleIdentifier: packageJson.name,
-          CFBundleName: packageJson.name,
-          CFBundleVersion: packageJson.version,
-          icon: 'always-gravity.icns'
-        }
-      }
-    }))
-    .pipe(gulp.dest(''));
-});
-
 gulp.task('concat:front', function(){
   return gulp.src([
     './app/src/base/helper.js',

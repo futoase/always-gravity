@@ -12,11 +12,11 @@
     "babel": "^5.6.23",
     "babel-eslint": "^3.1.23",
     "del": "^1.2.0",
+    "electron-packager": "^5.0.1",
     "eslint": "^1.0.0-rc-1",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-concat": "^2.6.0",
-    "gulp-electron": "0.0.7",
     "gulp-eslint": "^0.15.0",
     "gulp-espower": "^0.10.1",
     "gulp-watch": "^4.3.3",
@@ -34,7 +34,7 @@
     "start": "electron ./app",
     "watch": "gulp",
     "concat": "gulp concat",
-    "package": "gulp electron",
+    "package:darwin": "node ./script/package.darwin.x64.js",
     "clean": "gulp clean"
   },
   "engines": {
