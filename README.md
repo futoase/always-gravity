@@ -2,6 +2,29 @@
 
 ![ScreenShot](https://cloud.githubusercontent.com/assets/72997/8771859/20ccc82e-2f01-11e5-9889-d110b29872e0.png)
 
+# Install
+
+## Mac OS X
+
+This is file of binary for the Game.
+Launch an application a always-gravity.app after the download of binary.
+
+- [always-gravity-1.0.0-darwin-x64.zip](https://github.com/futoase/always-gravity/releases/download/v1.0.0/always-gravity-1.0.0-darwin-x64.zip)
+
+## Other
+
+- Use of command is npm.
+
+```
+> npm install -g always-gravity
+```
+
+- Launch an application by execute of command as below.
+
+```
+> always-gravity
+```
+
 # Key setting
 
 - UP
@@ -45,4 +68,3 @@ Licensed under the terms of the MIT License
 
 # Author
 2015 (c) Keiji Matsuzaki
-
